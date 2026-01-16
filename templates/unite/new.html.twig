@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Unite{% endblock %}
+
+{% block body %}
+    <h1>Create new Unite</h1>
+
+    {{ include('unite/_form.html.twig') }}
+
+    <a href="{{ path('app_unite_index') }}">back to list</a>
+{% endblock %}

@@ -1,39 +1,42 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}FamilleArticle index{% endblock %}
+{% block title %}FamilleArticle index
+{% endblock %}
 
 {% block body %}
-    <h1>FamilleArticle index</h1>
+	<h1>FamilleArticle index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Marque</th>
-                <th>Modele</th>
-                <th>Description</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for famille_article in famille_articles %}
-            <tr>
-                <td>{{ famille_article.id }}</td>
-                <td>{{ famille_article.marque }}</td>
-                <td>{{ famille_article.modele }}</td>
-                <td>{{ famille_article.description }}</td>
-                <td>
-                    <a href="{{ path('app_famille_article_show', {'id': famille_article.id}) }}">show</a>
-                    <a href="{{ path('app_famille_article_edit', {'id': famille_article.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Catégorie</th>
+				<th>Marque</th>
+				<th>Modele</th>
+				<th>Description</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for famille_article in famille_articles %}
+				<tr>
+					<td>{{ famille_article.id }}</td>
+					<td>{{famille_article.categorie.nom}}</td>
+					<td>{{ famille_article.marque }}</td>
+					<td>{{ famille_article.modele }}</td>
+					<td>{{ famille_article.description }}</td>
+					<td>
+						<a href="{{ path('app_famille_article_show', {'id': famille_article.id}) }}">show</a>
+						<a href="{{ path('app_famille_article_edit', {'id': famille_article.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_famille_article_new') }}">Create new</a>
+	<a href="{{ path('app_famille_article_new') }}">Create new</a>
 {% endblock %}
