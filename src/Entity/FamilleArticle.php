@@ -15,7 +15,7 @@ class FamilleArticle
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Categorie $category = null;
+    private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $marque = null;
@@ -31,14 +31,14 @@ class FamilleArticle
         return $this->id;
     }
 
-    public function getCategory(): ?Categorie
+    public function getCategorie(): ?Categorie
     {
-        return $this->category;
+        return $this->categorie;
     }
 
-    public function setCategory(?Categorie $category): static
+    public function setCategorie(?Categorie $categorie): static
     {
-        $this->category = $category;
+        $this->categorie = $categorie;
 
         return $this;
     }

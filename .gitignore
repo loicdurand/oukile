@@ -39,6 +39,5 @@ yarn-error.log
 /.php-cs-fixer.cache
 
 .editorconfig
-.env
 .env.dev
 .env.test

@@ -18,7 +18,7 @@ class Lot
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Article $article = null;
+    private ?FamilleArticle $famille = null;
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
@@ -41,14 +41,14 @@ class Lot
         return $this;
     }
 
-    public function getArticle(): ?Article
+    public function getFamilleArticle(): ?FamilleArticle
     {
-        return $this->article;
+        return $this->famille;
     }
 
-    public function setArticle(?Article $article): static
+    public function setFamilleArticle(?FamilleArticle $famille): static
     {
-        $this->article = $article;
+        $this->famille = $famille;
 
         return $this;
     }
