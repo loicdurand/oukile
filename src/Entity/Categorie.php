@@ -6,6 +6,7 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
@@ -13,9 +14,11 @@ class Categorie
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['lot:read', 'familleArticle:read', 'familleArticle:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
+    #[Groups(['lot:read', 'familleArticle:read', 'familleArticle:write'])]
     private ?string $nom = null;
 
     /**

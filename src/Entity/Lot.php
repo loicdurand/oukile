@@ -4,24 +4,33 @@ namespace App\Entity;
 
 use App\Repository\LotRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: LotRepository::class)]
+#[ORM\Entity(repositoryClass: LotRepository::class), ApiResource(
+    normalizationContext: ['groups' => ['lot:read']],
+    denormalizationContext: ['groups' => ['lot:write']]
+)]
 class Lot
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['lot:read', 'lot:write', 'emplacement:read'])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['lot:read', 'lot:write', 'emplacement:read'])]
     private ?int $nombre = null;
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['lot:read', 'lot:write', 'emplacement:read'])]
     private ?FamilleArticle $famille = null;
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['lot:read', 'lot:write'])]
     private ?Emplacement $emplacement = null;
 
     public function getId(): ?int

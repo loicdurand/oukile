@@ -6,26 +6,35 @@ use App\Repository\PieceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: PieceRepository::class)]
+#[ORM\Entity(repositoryClass: PieceRepository::class), ApiResource(
+    normalizationContext: ['groups' => ['piece:read']],
+    denormalizationContext: ['groups' => ['piece:write']]
+)]
 class Piece
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['piece:read', 'piece:write', 'zone:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'pieces')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['piece:read', 'piece:write', 'zone:read'])]
     private ?Unite $unite = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['piece:read', 'piece:write', 'zone:read'])]
     private ?string $nom = null;
 
     /**
      * @var Collection<int, Zone>
      */
     #[ORM\OneToMany(targetEntity: Zone::class, mappedBy: 'piece', orphanRemoval: true)]
+    #[Groups(['piece:read', 'piece:write'])]
     private Collection $zones;
 
     public function __construct()

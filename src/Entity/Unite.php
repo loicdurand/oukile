@@ -6,33 +6,43 @@ use App\Repository\UniteRepository;
 use BcMath\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: UniteRepository::class)]
+#[ORM\Entity(repositoryClass: UniteRepository::class), ApiResource(
+    normalizationContext: ['groups' => ['unite:read']],
+    denormalizationContext: ['groups' => ['unite:write']]
+)]
 class Unite
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['unite:read', 'unite:write', 'piece:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 8)]
+    #[Groups(['unite:read', 'unite:write', 'piece:read'])]
     private ?string $code = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['unite:read', 'unite:write', 'piece:read'])]
     private ?string $nom = null;
 
     /**
      * @var Collection<int, Piece>
      */
     #[ORM\OneToMany(targetEntity: Piece::class, mappedBy: 'unite', orphanRemoval: true)]
+    #[Groups(['unite:read', 'unite:write'])]
     private Collection $pieces;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['unite:read', 'unite:write'])]
     private ?string $mail = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['unite:read', 'unite:write'])]
     private ?int $departement = null;
 
     public function __construct()
