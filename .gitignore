@@ -27,6 +27,12 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+
+.editorconfig
+.env.dev
+.env.test
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -34,10 +40,3 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-
-/.php-cs-fixer.php
-/.php-cs-fixer.cache
-
-.editorconfig
-.env.dev
-.env.test

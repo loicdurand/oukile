@@ -18,12 +18,12 @@ use App\Entity\Registre;
 final class IndexController extends AbstractController
 {
 
-    #[Route('/', name: 'app_index')]
+    #[Route('/', name: 'oukile_index')]
     public function index(#[CurrentUser] ?User $user, EntityManagerInterface $entityManager): Response
     {
 
         if (is_null($user))
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('oukile_login');
 
         return $this->render('index/index.html.twig', []);
     }

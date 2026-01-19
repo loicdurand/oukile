@@ -71,11 +71,11 @@ class SsoAuthenticator extends AbstractAuthenticator
 
         // Cherche ou crée l'unité dans la base
         $codeunite = $ssoData->codeunite;
-        $unite = $this->entityManager->getRepository(Unite::class)->findOneBy(['codeunite' => $codeunite]);
+        $unite = $this->entityManager->getRepository(Unite::class)->findOneBy(['code' => $codeunite]);
         if (!$unite) {
             $unite = new Unite();
-            $unite->setCodeunite($codeunite);
-            $unite->setName($ssoData->unite);
+            $unite->setCode($codeunite);
+            $unite->setNom($ssoData->unite);
             $unite->setDepartement(971);
             $this->entityManager->persist($unite);
             $this->entityManager->flush();
@@ -88,50 +88,16 @@ class SsoAuthenticator extends AbstractAuthenticator
 
             $user = new User();
             $user->setUserId($ssoData->nigend);
-            $user->setUniteId($codeunite);
+            $user->setUnite($unite);
             $user->setGrade($ssoData->title);
-            $user->setTitle($ssoData->displayname);
+            $user->setTitre($ssoData->displayname);
             $user->setSpecialite($ssoData->specialite);
             $user->setMail($ssoData->mail);
             $type = $ssoData->employeeType;
 
-            $grps = [
-                [
-                    'cat' => 'CIV',
-                    'types' => ['CONTR S TECH', 'ADJ TECH', 'OUVR ETAT MA']
-                ],
-                [
-                    'cat' => 'GAV',
-                    'types' => ['GAV']
-                ],
-                [
-                    'cat' => 'SOG',
-                    'types' => ['SOG']
-                ],
-                [
-                    'cat' => 'CSTAGN',
-                    'types' => ['CSTAGN', 'PERS EXT MILIT']
-                ],
-                [
-                    'cat' => 'OG',
-                    'types' => ['OFF GIE', 'OFF CTA']
-                ]
-            ];
-
-            $grp_nickname = 'CIV'; // par défaut
-            foreach ($grps as $grp) {
-                if (in_array($type, $grp['types'])) {
-                    $grp_nickname = $grp['cat'];
-                    break;
-                }
-            }
-
-            $groupe = $this->entityManager->getRepository(Groupe::class)->findOneBy(['nickname' => $grp_nickname]);
-            $unite = $this->entityManager->getRepository(Unite::class)->findOneBy(['codeunite' => $codeunite]);
+            $unite = $this->entityManager->getRepository(Unite::class)->findOneBy(['code' => $codeunite]);
             $user->setUnite($unite);
-            $user->setGroupe($groupe);
             $user->setRoles(['ROLE_USER']);
-            $user->setDepartement(971);
             $this->entityManager->persist($user);
             $this->entityManager->flush();
         }
@@ -142,12 +108,12 @@ class SsoAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // Redirige vers une page après authentification réussie
-        return new RedirectResponse($this->urlGenerator->generate('app_index'));
+        return new RedirectResponse($this->urlGenerator->generate('oukile_index'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         // Redirige ou affiche une erreur en cas d'échec
-        return new RedirectResponse($this->urlGenerator->generate('app_login'));
+        return new RedirectResponse($this->urlGenerator->generate('oukile_login'));
     }
 }

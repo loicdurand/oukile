@@ -4,148 +4,41 @@
 {% endblock %}
 
 {% block body %}
-{# Fil d'arianne #}
-<nav role="navigation" class="fr-breadcrumb" aria-label="vous êtes ici :">
-	<button type="button" class="fr-breadcrumb__button" aria-expanded="false" aria-controls="breadcrumb">Voir le fil d&#39;arianne</button>
+	{# Fil d'arianne #}
+	<nav role="navigation" class="fr-breadcrumb" aria-label="vous êtes ici :">
+		<button type="button" class="fr-breadcrumb__button" aria-expanded="false" aria-controls="breadcrumb">Voir le fil d&#39;arianne</button>
 
-	<div class="fr-collapse" id="breadcrumb">
-		<ol class="fr-breadcrumb__list">
-			<li>
-				<a class="fr-breadcrumb__link" aria-current="page" id="segment-0" href="{{ path('app_index') }}">Accueil</a>
-			</li>
-		</ol>
-	</div>
-</nav>
-{# Fin fil d'arianne #}
+		<div class="fr-collapse" id="breadcrumb">
+			<ol class="fr-breadcrumb__list">
+				<li>
+					<a class="fr-breadcrumb__link" aria-current="page" id="segment-0" href="{{ path('oukile_index') }}">Accueil</a>
+				</li>
+			</ol>
+		</div>
+	</nav>
+	{# Fin fil d'arianne #}
 
-<h2 class="fr-mt-2w">
-	Accueil
-</h2>
+	<h2 class="fr-mt-2w">
+		Accueil
+	</h2>
 
-<p class="fr-text--sm fr-mb-1w">
-	Depuis cette page, vous pouvez vous portez candidat aux élections de votre choix et, bien sûr, prendre part aux vote.
-	<br>
-	Par défaut, ne sont affichées que les élections auxquelles vous pouvez participer.
-	<br>
-	Cependant, la transparence étant de mise, vous pouvez afficher les élecions qui ne vous concernent pas en activant l'interrupteur ci-dessous:
-	<div class="fr-toggle">
-		<input type="checkbox" class="fr-toggle__input" id="toggle-print-all" aria-describedby="toggle-print-all-messages">
-		<label class="fr-toggle__label" for="toggle-print-all">Afficher les élections qui ne me concernent pas.</label>
-		<div class="fr-messages-group" id="toggle-print-all-messages" aria-live="polite"></div>
-	</div>
-</p>
+	<p class="fr-text--sm fr-mb-1w">
+		Depuis cette page, vous pouvez vous portez candidat aux élections de votre choix et, bien sûr, prendre part aux vote.
+		<br>
+		Par défaut, ne sont affichées que les élections auxquelles vous pouvez participer.
+		<br>
+		Cependant, la transparence étant de mise, vous pouvez afficher les élecions qui ne vous concernent pas en activant l'interrupteur ci-dessous:
+		<div class="fr-toggle">
+			<input type="checkbox" class="fr-toggle__input" id="toggle-print-all" aria-describedby="toggle-print-all-messages">
+			<label class="fr-toggle__label" for="toggle-print-all">Afficher les élections qui ne me concernent pas.</label>
+			<div class="fr-messages-group" id="toggle-print-all-messages" aria-live="polite"></div>
+		</div>
+	</p>
 
-<main id="main-elections_en_cours">
+	<main id="main-elections_en_cours">
 
-	<h3>Élections en cours:</h3>
+		<h1>hello</h1>
 
-	<a href="{{ path('app_election_prepare', {action: 'create', election_id: '0'}) }}" target="_self" class="fr-link fr-icon-add-line fr-link--icon-left fr-mt-2w">Créer une nouvelle élection</a>
-
-	<div class="fr-grid-row fr-grid-row--gutters fr-mt-4w">
-
-		{% for election in elections %}
-
-			{% set election_in_perimeter = user_groupe_id in (election.groupesConcernes| map( grp => grp.id )) %}
-			{% set election_in_perimeter = election_in_perimeter and user_unite_id in (election.unitesConcernees| map( unt => unt.id )) %}
-
-			<div class="{{ election_in_perimeter ? '' : 'election-hidden ' }}fr-col-sm-6 fr-col-md-4 fr-col-lg-4 custom-card-container">
-
-				<div class="fr-tile fr-enlarge-link" id="tile-4" {{ election_in_perimeter ? null : 'disabled="disabled"' }}>
-					<div class="fr-tile__body">
-						<div class="fr-tile__content">
-							<h3 class="fr-tile__title">
-
-								{% if election_in_perimeter %}
-									<button type="button" class="custom-tile-menu--opener fr-icon-more-fill" id="election-{{ election.id }}-btn">
-										{{ election.title }}
-									</button>
-								{% else %}
-									{{ election.title }}
-								{% endif %}
-							</h3>
-							<p class="fr-tile__desc">{{ election.explaination }}</p>
-							<p class="fr-tile__detail">
-								Créée par&nbsp;
-								{{ election.user.title }}
-
-								<ul class="fr-tags-group">
-									{% for grp in election.groupesConcernes %}
-										<li>
-											<p class="fr-tag fr-tag--défaut" id="tag-group-0">{{ grp.shortName }}</p>
-										</li>
-									{% endfor %}
-								</ul>
-
-							</p>
-
-							<div class="fr-tile__start">
-								{% set badge_class = election.isNotOpenYet()? 'fr-badge--purple-glycine' : election.isOpen() ? 'fr-badge--success': '' %}
-								{% set badge_title = election.isNotOpenYet()? 'Ouverture prochaine' : election.isOpen() ? 'L\'élection est ouverte': 'Élection fermée' %}
-
-									<p class="fr-badge {{ badge_class }}" title="{{ badge_title }}">Votes ouverts du
-										{{ election.startDate | date('d/m/Y') }}
-										au
-										{{ election.endDate | date('d/m/Y') }}
-									</p>
-							</div>
-						</div> <!-- fin .fr-tile__content -->
-					</div> <!-- fin .fr-tile__body -->
-
-						<div class="fr-tile__header">
-							<div class="fr-tile__pictogram">
-								<svg aria-hidden="true" class="fr-artwork" viewbox="0 0 80 80" width="80px" height="80px">
-									<use class="fr-artwork-decorative" href="{{ asset('artwork/pictograms/buildings/city-hall.svg') }}#artwork-decorative"></use>
-									<use class="fr-artwork-minor" href="{{ asset('artwork/pictograms/buildings/city-hall.svg') }}#artwork-minor"></use>
-									<use class="fr-artwork-major" href="{{ asset('artwork/pictograms/buildings/city-hall.svg') }}#artwork-major"></use>
-								</svg>
-							</div>
-						</div>
-
-						{% if election_in_perimeter %}
-
-							<div class="custom-tile-menu">
-								<menu class="fr-btns-group">
-									<li><button type="button" class="custom-tile-menu--closer fr-btn fr-icon-close-line fr-btn--icon-right fr-btn--tertiary-no-outline">Fermer</button></li>
-									{% if election.isNotOpenYet() and election.candidaturesLibres %}
-										<li><a target="_self" href="{{ path('app_candidature_submit', {election_id: election.id}) }}" class="fr-btn fr-btn--tertiary">Soumettre ma candidature</a></li>
-									{% elseif election.isOpen() %}
-										<li>
-										{% if election.a_deja_vote %}
-											<button disabled title="Vous avez déjà participé au vote" class="fr-btn fr-btn--tertiary">Participer au vote</button>
-										{% else %}
-											<a target="_self" href="{{ path('app_cgv', {election_id: election.id}) }}" class="fr-btn fr-btn--tertiary">Participer au vote</a>
-										{% endif %}
-										</li>
-									{% elseif election.isClosed() %}
-										<li>
-											<a target="_self" href="{{ path('app_stats', {election_id:election.id}) }}" class="fr-btn fr-btn--tertiary">Afficher les résultats</a>
-										</li>
-									{% endif %}
-								</menu>
-							</div>
-
-						{% endif %}
-
-					</div> <!-- fin .fr-tile -->
-					
-				</div> <!-- fin .fr-col -->
-
-			{% else %}
-					
-			<div class="fr-notice fr-notice--info">
-				<div class="fr-container">
-					<div class="fr-notice__body">
-					<p>
-						<span class="fr-notice__title">Vous n'avez pas encore créé d'élection.</span>
-						<a href="{{ path('app_election_prepare', {action:'create', election_id: '0'}) }}" target="_self" class="fr-notice__link">C'est le moment de s'y mettre!</a>
-					</p>
-				</div>
-			</div>
-
-		{% endfor %}
-
-	</div>
-
-</main>
+	</main>
 
 {% endblock %}

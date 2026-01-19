@@ -18,13 +18,13 @@ class SecurityController extends AbstractController
         $this->requestStack = $requestStack;
     }
 
-    #[Route(path: '/login', name: 'app_login')]
+    #[Route(path: '/login', name: 'oukile_login')]
     public function login(): Response
     {
-        return $this->redirectToRoute('app_index');
+        return $this->redirectToRoute('oukile_index');
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: '/logout', name: 'oukile_logout')]
     public function logout(): void
     {
         // throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
