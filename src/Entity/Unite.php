@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\UniteRepository;
+use BcMath\Number;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UniteRepository::class)]
@@ -26,6 +28,12 @@ class Unite
      */
     #[ORM\OneToMany(targetEntity: Piece::class, mappedBy: 'unite', orphanRemoval: true)]
     private Collection $pieces;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $mail = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $departement = null;
 
     public function __construct()
     {
@@ -87,6 +95,30 @@ class Unite
                 $piece->setUnite(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(?string $mail): static
+    {
+        $this->mail = $mail;
+
+        return $this;
+    }
+
+    public function getDepartement(): ?int
+    {
+        return $this->departement;
+    }
+
+    public function setDepartement(?int $departement): static
+    {
+        $this->departement = $departement;
 
         return $this;
     }

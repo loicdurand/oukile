@@ -44,6 +44,7 @@ class AppFixtures extends Fixture
             [
                 'nom' => 'DSOLC Baie-Mahault',
                 'code' => '00086977',
+                'dpt' => 971,
                 'pieces' => [
                     [
                         'nom' => 'BTI',
@@ -113,6 +114,7 @@ class AppFixtures extends Fixture
             $unite = new Unite();
             $unite->setCode($unite_data['code']);
             $unite->setNom($unite_data['nom']);
+            $unite->setDepartement($unite_data['dpt']);
             $manager->persist($unite);
             foreach ($unite_data['pieces'] as $piece_data) {
                 $piece = new Piece();
