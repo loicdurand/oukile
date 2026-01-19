@@ -39,13 +39,13 @@
 
 	<ul class="fr-mb-1w fr-btns-group fr-btns-group--inline">
 		<li>
-			<a class="fr-btn fr-btn--tertiary" href="{{ path('app_unite_edit', {'id': unite.id}) }}">Éditer</a>
+			<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_unite_edit', {'id': unite.id}) }}">Éditer</a>
 		</li>
 		<li>
 			{{ include('unite/_delete_form.html.twig') }}
 		</li>
 	</ul>
 
-	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('app_unite_index') }}">Retour à la liste</a>
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
 {% endblock %}

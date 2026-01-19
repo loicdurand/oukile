@@ -10,21 +10,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use App\Entity\User;
 
 #[Route('/unite')]
 final class UniteController extends AbstractController
 {
-    #[Route(name: 'app_unite_index', methods: ['GET'])]
-    public function index(UniteRepository $uniteRepository): Response
+    #[Route(name: 'oukile_unite_index', methods: ['GET'])]
+    public function index(#[CurrentUser] ?User $user, UniteRepository $uniteRepository): Response
     {
+
+        if (is_null($user))
+            return $this->redirectToRoute('oukile_login');
+
         return $this->render('unite/index.html.twig', [
+            'user' => $user,
             'unites' => $uniteRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'app_unite_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new', name: 'oukile_unite_new', methods: ['GET', 'POST'])]
+    public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager): Response
     {
+        if (is_null($user))
+            return $this->redirectToRoute('oukile_login');
+
         $unite = new Unite();
         $form = $this->createForm(UniteType::class, $unite);
         $form->handleRequest($request);
@@ -33,49 +43,58 @@ final class UniteController extends AbstractController
             $entityManager->persist($unite);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_unite_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('unite/new.html.twig', [
+            'user' => $user,
             'unite' => $unite,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_unite_show', methods: ['GET'])]
-    public function show(Unite $unite): Response
+    #[Route('/{id}', name: 'oukile_unite_show', methods: ['GET'])]
+    public function show(#[CurrentUser] ?User $user, Unite $unite): Response
     {
+        if (is_null($user))
+            return $this->redirectToRoute('oukile_login');
+
         return $this->render('unite/show.html.twig', [
+            'user' => $user,
             'unite' => $unite,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_unite_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Unite $unite, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/edit', name: 'oukile_unite_edit', methods: ['GET', 'POST'])]
+    public function edit(#[CurrentUser] ?User $user, Request $request, Unite $unite, EntityManagerInterface $entityManager): Response
     {
+        if (is_null($user))
+            return $this->redirectToRoute('oukile_login');
+
         $form = $this->createForm(UniteType::class, $unite);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_unite_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('unite/edit.html.twig', [
+            'user' => $user,
             'unite' => $unite,
             'form' => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'app_unite_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'oukile_unite_delete', methods: ['POST'])]
     public function delete(Request $request, Unite $unite, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$unite->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $unite->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($unite);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_unite_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
     }
 }
