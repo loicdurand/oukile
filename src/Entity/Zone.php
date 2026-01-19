@@ -34,7 +34,7 @@ class Zone
      * @var Collection<int, Rangement>
      */
     #[ORM\OneToMany(targetEntity: Rangement::class, mappedBy: 'zone', orphanRemoval: true)]
-    #[Groups(['zone:read', 'zone:write', 'piece:read'])]
+    #[Groups(['zone:read', 'zone:write'])]
     private Collection $rangements;
 
     public function __construct()
