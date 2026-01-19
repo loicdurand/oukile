@@ -1,3 +1,22 @@
+// On rend le footer collant en bas de page
+html,
 body {
-    background-color: skyblue;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+}
+
+footer.fr-footer {
+    margin-top: auto !important;
 }

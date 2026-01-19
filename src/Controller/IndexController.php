@@ -10,10 +10,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use App\Entity\User;
-use App\Entity\Election;
-use App\Entity\Candidat;
-use App\Entity\Vote;
-use App\Entity\Registre;
 
 final class IndexController extends AbstractController
 {
@@ -25,6 +21,8 @@ final class IndexController extends AbstractController
         if (is_null($user))
             return $this->redirectToRoute('oukile_login');
 
-        return $this->render('index/index.html.twig', []);
+        return $this->render('index/index.html.twig', [
+            'user' => $user
+        ]);
     }
 }

@@ -5,40 +5,22 @@
 
 {% block body %}
 	{# Fil d'arianne #}
-	<nav role="navigation" class="fr-breadcrumb" aria-label="vous êtes ici :">
-		<button type="button" class="fr-breadcrumb__button" aria-expanded="false" aria-controls="breadcrumb">Voir le fil d&#39;arianne</button>
-
-		<div class="fr-collapse" id="breadcrumb">
-			<ol class="fr-breadcrumb__list">
-				<li>
-					<a class="fr-breadcrumb__link" aria-current="page" id="segment-0" href="{{ path('oukile_index') }}">Accueil</a>
-				</li>
-			</ol>
-		</div>
-	</nav>
+	{# <nav role="navigation" class="fr-breadcrumb" aria-label="vous êtes ici :">
+						<button type="button" class="fr-breadcrumb__button" aria-expanded="false" aria-controls="breadcrumb">Voir le fil d&#39;arianne</button>
+				
+						<div class="fr-collapse" id="breadcrumb">
+							<ol class="fr-breadcrumb__list">
+								<li>
+									<a class="fr-breadcrumb__link" aria-current="page" id="segment-0" href="{{ path('oukile_index') }}">Accueil</a>
+								</li>
+							</ol>
+						</div>
+					</nav> #}
 	{# Fin fil d'arianne #}
 
-	<h2 class="fr-mt-2w">
-		Accueil
+		<h2 class="fr-mt-2w"> Bienvenue
 	</h2>
 
-	<p class="fr-text--sm fr-mb-1w">
-		Depuis cette page, vous pouvez vous portez candidat aux élections de votre choix et, bien sûr, prendre part aux vote.
-		<br>
-		Par défaut, ne sont affichées que les élections auxquelles vous pouvez participer.
-		<br>
-		Cependant, la transparence étant de mise, vous pouvez afficher les élecions qui ne vous concernent pas en activant l'interrupteur ci-dessous:
-		<div class="fr-toggle">
-			<input type="checkbox" class="fr-toggle__input" id="toggle-print-all" aria-describedby="toggle-print-all-messages">
-			<label class="fr-toggle__label" for="toggle-print-all">Afficher les élections qui ne me concernent pas.</label>
-			<div class="fr-messages-group" id="toggle-print-all-messages" aria-live="polite"></div>
-		</div>
-	</p>
-
-	<main id="main-elections_en_cours">
-
-		<h1>hello</h1>
-
-	</main>
+	<main></main>
 
 {% endblock %}

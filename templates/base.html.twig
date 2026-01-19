@@ -24,12 +24,12 @@
 		<link rel="manifest" href="{{ asset('favicons/manifest.webmanifest') }}" crossorigin="use-credentials">
 
 		{% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+			{{ encore_entry_link_tags('app') }}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 
 		{% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
+			{{ encore_entry_script_tags('app') }}
 			{% block importmap %}
 				{{ importmap('app') }}
 			{% endblock %}
@@ -82,7 +82,7 @@
 
 										{% if user is defined and user.userId %}
 											<a class="fr-btn fr-icon-logout-box-r-line" href="{{ path('oukile_logout') }}" title="Se déconnecter">
-												<span class="login">{{user.title}}&nbsp;- Déconnexion</span>.
+												<span class="login">{{user.titre}}&nbsp;- Déconnexion</span>.
 											</a>
 										{% else %}
 											<a class="fr-btn fr-icon-logout-box-r-line" href="{{ path('oukile_login') }}" title="Se connecter">
@@ -134,7 +134,7 @@
 						</div>
 						<div class="fr-footer__content">
 							<p class="fr-footer__content-desc">
-								Ce site a été créé par votre SOLC Saint-Claude et votre DSOLC Baie-Mahault d'après une idée du major Régis TONDEUR.
+								Ce site a été créé par votre SOLC Saint-Claude et votre DSOLC Baie-Mahault.
 								<br>
 								<br>Son utilisation est libre. Nous vous rappelons que vous pouvez créer des sondages de toute sorte sur
 								<a target="_blank" href="https://planif-mgmsic.interieur.rie.gouv.fr" class="fr-footer__content-link">le site officiel dédié</a>
@@ -158,22 +158,22 @@
 					<div
 						class="fr-footer__bottom">
 						{# <ul class="fr-footer__bottom-list">
-																																																																																					<li class="fr-footer__bottom-item">
-																																																																																						<a id="footer__bottom-link-4" href="#" class="fr-footer__bottom-link">Plan du site</a>
-																																																																																					</li>
-																																																																																					<li class="fr-footer__bottom-item">
-																																																																																						<a id="footer__bottom-link-5" href="#" class="fr-footer__bottom-link">Accessibilité : partiellement conforme</a>
-																																																																																					</li>
-																																																																																					<li class="fr-footer__bottom-item">
-																																																																																						<a id="footer__bottom-link-6" href="#" class="fr-footer__bottom-link">Mentions légales</a>
-																																																																																					</li>
-																																																																																					<li class="fr-footer__bottom-item">
-																																																																																						<a id="footer__bottom-link-7" href="#" class="fr-footer__bottom-link">Données personnelles</a>
-																																																																																					</li>
-																																																																																					<li class="fr-footer__bottom-item">
-																																																																																						<a id="footer__bottom-link-8" href="#" class="fr-footer__bottom-link">Gestion des cookies</a>
-																																																																																					</li>
-																																																																																				</ul> #}
+																																																																																																	<li class="fr-footer__bottom-item">
+																																																																																																		<a id="footer__bottom-link-4" href="#" class="fr-footer__bottom-link">Plan du site</a>
+																																																																																																	</li>
+																																																																																																	<li class="fr-footer__bottom-item">
+																																																																																																		<a id="footer__bottom-link-5" href="#" class="fr-footer__bottom-link">Accessibilité : partiellement conforme</a>
+																																																																																																	</li>
+																																																																																																	<li class="fr-footer__bottom-item">
+																																																																																																		<a id="footer__bottom-link-6" href="#" class="fr-footer__bottom-link">Mentions légales</a>
+																																																																																																	</li>
+																																																																																																	<li class="fr-footer__bottom-item">
+																																																																																																		<a id="footer__bottom-link-7" href="#" class="fr-footer__bottom-link">Données personnelles</a>
+																																																																																																	</li>
+																																																																																																	<li class="fr-footer__bottom-item">
+																																																																																																		<a id="footer__bottom-link-8" href="#" class="fr-footer__bottom-link">Gestion des cookies</a>
+																																																																																																	</li>
+																																																																																																</ul> #}
 						<div class="fr-footer__bottom-copy">
 							<p>Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous
 								<a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank" rel="noopener external" title="Licence etalab - nouvelle fenêtre">licence etalab-2.0</a>

@@ -3,7 +3,7 @@ twig:
     form_themes: ['form/dsfr.html.twig']
     globals:
         app_env: '%env(APP_ENV)%'
-        app_name: 'oukilé' 
+        app_name: 'Oukilé?' 
         app_tagline: 'COMGENDGP'
         app_slug: 'Arrez de gérer votre matériel avec Excell!'
 
