@@ -18,23 +18,23 @@ class Emplacement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['emplacement:read', 'emplacement:write', 'rangement:read', 'rangement:expand:read'])]
+    #[Groups(['emplacement:read', 'emplacement:write', 'rangement:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['emplacement:read', 'emplacement:write', 'rangement:read', 'rangement:expand:read'])]
+    #[Groups(['emplacement:read', 'emplacement:write', 'rangement:read'])]
     private ?string $nom = null;
 
     #[ORM\ManyToOne(inversedBy: 'emplacements')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['emplacement:read', 'emplacement:write', 'rangement:expand:read'])]
+    #[Groups(['emplacement:read', 'emplacement:write'])]
     private ?Rangement $rangement = null;
 
     /**
      * @var Collection<int, Lot>
      */
     #[ORM\OneToMany(targetEntity: Lot::class, mappedBy: 'emplacement', orphanRemoval: true)]
-    #[Groups(['emplacement:read', 'emplacement:write', 'rangement:read', 'rangement:expand:read'])]
+    #[Groups(['emplacement:read', 'emplacement:write'])]
     private Collection $lots;
 
     public function __construct()

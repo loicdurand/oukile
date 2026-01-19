@@ -16,24 +16,24 @@ class FamilleArticle
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read', 'rangement:expand:read'])]
+    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read', 'rangement:expand:read'])]
+    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read', 'rangement:expand:read'])]
+    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?string $marque = null;
 
     #[ORM\Column(length: 20, nullable: true)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read', 'rangement:expand:read'])]
+    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?string $modele = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read', 'rangement:expand:read'])]
+    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?string $description = null;
 
     public function getId(): ?int

@@ -16,21 +16,21 @@ class Lot
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['lot:read', 'lot:write', 'emplacement:read', 'rangement:expand:read'])]
+    #[Groups(['lot:read', 'lot:write', 'emplacement:read'])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['lot:read', 'lot:write', 'emplacement:read', 'rangement:expand:read'])]
+    #[Groups(['lot:read', 'lot:write', 'emplacement:read'])]
     private ?int $nombre = null;
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['lot:read', 'lot:write', 'emplacement:read', 'rangement:expand:read'])]
+    #[Groups(['lot:read', 'lot:write', 'emplacement:read'])]
     private ?FamilleArticle $famille = null;
 
     #[ORM\ManyToOne(inversedBy: 'lots')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['lot:read', 'lot:write', 'unite:expand:read'])]
+    #[Groups(['lot:read', 'lot:write'])]
     private ?Emplacement $emplacement = null;
 
     public function getId(): ?int

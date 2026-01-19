@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RangementRepository::class), ApiResource(
-    normalizationContext: ['groups' => ['rangement:expand:read']],
+    normalizationContext: ['groups' => ['rangement:read']],
     denormalizationContext: ['groups' => ['rangement:write']]
 )]
 class Rangement
@@ -18,27 +18,27 @@ class Rangement
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['rangement:read', 'rangement:write', 'zone:read', 'rangement:expand:read'])]
+    #[Groups(['rangement:read', 'rangement:write', 'zone:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'rangements')]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['rangement:read', 'rangement:write', 'rangement:expand:read'])]
+    #[Groups(['rangement:read', 'rangement:write'])]
     private ?Zone $zone = null;
 
     #[ORM\ManyToOne]
-    #[Groups(['rangement:read', 'rangement:write', 'rangement:expand:read'])]
+    #[Groups(['rangement:read', 'rangement:write'])]
     private ?TypeRangement $type = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['rangement:read', 'rangement:write', 'zone:read', 'rangement:expand:read'])]
+    #[Groups(['rangement:read', 'rangement:write', 'zone:read'])]
     private ?string $nom = null;
 
     /**
      * @var Collection<int, Emplacement>
      */
     #[ORM\OneToMany(targetEntity: Emplacement::class, mappedBy: 'rangement', orphanRemoval: true)]
-    #[Groups(['rangement:read', 'rangement:write', 'zone:read', 'rangement:expand:read'])]
+    #[Groups(['rangement:read', 'rangement:write'])]
     private Collection $emplacements;
 
     public function __construct()

@@ -2,7 +2,7 @@ api_platform:
     title: Hello API Platform
     version: 1.0.0
     eager_loading:
-        max_joins: 30
+        max_joins: 50
     defaults:
         stateless: true
         cache_headers:
