@@ -33,7 +33,7 @@ final class PieceController extends AbstractController
             $entityManager->persist($piece);
             $entityManager->flush();
 
-            return $this->redirectToRoute('oukile_piece_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('piece/new.html.twig', [
@@ -59,7 +59,7 @@ final class PieceController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('oukile_piece_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('piece/edit.html.twig', [
@@ -76,6 +76,6 @@ final class PieceController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('oukile_piece_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
     }
 }

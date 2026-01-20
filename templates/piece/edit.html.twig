@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Piece
+{% block title %}Éditer une pièce
 {% endblock %}
 
 {% block body %}
-	<h1>Edit Piece</h1>
 
-	{{ include('piece/_form.html.twig', {'button_label': 'Update'}) }}
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
-	<a href="{{ path('oukile_piece_index') }}">back to list</a>
+	<h1 class="fr-mt-2w">Éditer une pièce</h1>
 
-	{{ include('piece/_delete_form.html.twig') }}
+	{{ include('piece/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
 {% endblock %}
