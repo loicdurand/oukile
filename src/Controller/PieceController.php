@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\UniteRepository;
 
 #[Route('/piece')]
 final class PieceController extends AbstractController
@@ -23,9 +24,16 @@ final class PieceController extends AbstractController
     }
 
     #[Route('/new', name: 'oukile_piece_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UniteRepository $uniteRepository): Response
     {
         $piece = new Piece();
+        $uniteId = $request->query->get('id');
+        if ($uniteId) {
+            $unite = $uniteRepository->find($uniteId);
+            if ($unite) {
+                $piece->setUnite($unite);
+            }
+        }
         $form = $this->createForm(PieceType::class, $piece);
         $form->handleRequest($request);
 

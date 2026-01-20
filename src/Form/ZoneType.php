@@ -17,7 +17,7 @@ class ZoneType extends AbstractType
             ->add('nom')
             ->add('piece', EntityType::class, [
                 'class' => Piece::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
         ;
     }

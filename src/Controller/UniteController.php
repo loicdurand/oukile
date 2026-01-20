@@ -40,6 +40,7 @@ final class UniteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $unite->setCode($this->addZeros($unite->getCode(), 8));
             $entityManager->persist($unite);
             $entityManager->flush();
 
@@ -96,5 +97,13 @@ final class UniteController extends AbstractController
         }
 
         return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    private function addZeros($str, $maxlen = 2)
+    {
+        $str = '' . $str;
+        while (strlen($str) < $maxlen)
+            $str = "0" . $str;
+        return $str;
     }
 }
