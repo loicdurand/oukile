@@ -73,7 +73,7 @@ final class RangementController extends AbstractController
                 $entityManager->persist($rangement);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('oukile_rangement_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
             }
         }
 

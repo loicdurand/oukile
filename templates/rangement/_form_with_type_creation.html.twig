@@ -20,16 +20,16 @@
 			</div>
 
 			{% if form.createNewType is defined %}
-				<div class="fr-mt-2w">
+
+				<div class="fr-checkbox-group fr-mt-2w">
 					{{ form_widget(form.createNewType) }}
 					{{ form_label(form.createNewType) }}
+					<div class="fr-messages-group" id="checkbox-0-messages" aria-live="polite"></div>
 				</div>
 
 				<div id="new-type-form" class="fr-mt-3w" style="display: none;">
 					<fieldset class="fr-fieldset">
-						<legend class="fr-fieldset__legend--regular fr-fieldset__legend">
-							Créer un nouveau type de rangement
-						</legend>
+
 						<div class="fr-fieldset__content">
 							<div class="fr-form-group">
 								{{ form_label(form.newTypeName) }}
