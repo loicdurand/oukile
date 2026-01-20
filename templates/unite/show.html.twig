@@ -133,6 +133,15 @@
 																		{{ rangement.nom }}
 																	</h5>
 
+																	<ul class="fr-mb-1w fr-card__desc fr-btns-group fr-btns-group--inline">
+																		<li>
+																			<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
+																		</li>
+																		<li>
+																			{{ include('rangement/_delete_form.html.twig') }}
+																		</li>
+																	</ul>
+
 																	{% set ne = rangement.emplacements | length %}
 																	{% if ne == 0 %}
 																		<p class="fr-card__desc">Rangement vide.</p>

@@ -55,7 +55,7 @@ class RangementType extends AbstractType
             $form->add('newTypeName', TextType::class, [
                 'mapped' => false,
                 'required' => false,
-                'label' => 'Nom du nouveau type',
+                'label' => 'Nouveau type de rangement',
             ]);
         });
     }
