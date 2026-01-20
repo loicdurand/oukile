@@ -25,6 +25,9 @@ class Article
     #[ORM\JoinColumn(nullable: false)]
     private ?FamilleArticle $famille = null;
 
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $code_gesfi = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +65,18 @@ class Article
     public function setFamille(?FamilleArticle $famille): static
     {
         $this->famille = $famille;
+
+        return $this;
+    }
+
+    public function getCodeGesfi(): ?string
+    {
+        return $this->code_gesfi;
+    }
+
+    public function setCodeGesfi(?string $code_gesfi): static
+    {
+        $this->code_gesfi = $code_gesfi;
 
         return $this;
     }

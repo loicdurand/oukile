@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/rangement')]
 final class RangementController extends AbstractController
 {
-    #[Route(name: 'app_rangement_index', methods: ['GET'])]
+    #[Route(name: 'oukile_rangement_index', methods: ['GET'])]
     public function index(RangementRepository $rangementRepository): Response
     {
         return $this->render('rangement/index.html.twig', [
@@ -22,7 +22,7 @@ final class RangementController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_rangement_new', methods: ['GET', 'POST'])]
+    #[Route('/new', name: 'oukile_rangement_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $rangement = new Rangement();
@@ -33,7 +33,7 @@ final class RangementController extends AbstractController
             $entityManager->persist($rangement);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_rangement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_rangement_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('rangement/new.html.twig', [
@@ -42,7 +42,7 @@ final class RangementController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_rangement_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'oukile_rangement_show', methods: ['GET'])]
     public function show(Rangement $rangement): Response
     {
         return $this->render('rangement/show.html.twig', [
@@ -50,7 +50,7 @@ final class RangementController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_rangement_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'oukile_rangement_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Rangement $rangement, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RangementType::class, $rangement);
@@ -59,7 +59,7 @@ final class RangementController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_rangement_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_rangement_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('rangement/edit.html.twig', [
@@ -68,14 +68,14 @@ final class RangementController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_rangement_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'oukile_rangement_delete', methods: ['POST'])]
     public function delete(Request $request, Rangement $rangement, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$rangement->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $rangement->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($rangement);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_rangement_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('oukile_rangement_index', [], Response::HTTP_SEE_OTHER);
     }
 }

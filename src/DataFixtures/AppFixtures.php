@@ -54,7 +54,7 @@ class AppFixtures extends Fixture
                                 'rangements' => [
                                     [
                                         'type' => $etagere,
-                                        'nom' => 'Étagère A',
+                                        'nom' => 'A',
                                         'emplacements' => [
                                             [
                                                 'nom' => 'A10',
@@ -81,7 +81,7 @@ class AppFixtures extends Fixture
                                     ],
                                     [
                                         'type' => $etagere,
-                                        'nom' => 'Étagère B',
+                                        'nom' => 'B',
                                         'emplacements' => [
                                             ['nom' => 'B10'],
                                             ['nom' => 'B11'],
@@ -90,7 +90,7 @@ class AppFixtures extends Fixture
                                     ],
                                     [
                                         'type' => $etagere,
-                                        'nom' => 'Étagère C'
+                                        'nom' => 'C'
                                     ]
                                 ]
                             ],

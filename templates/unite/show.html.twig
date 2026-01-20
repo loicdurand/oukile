@@ -6,46 +6,184 @@
 
 {% block body %}
 
-	<div class="fr-table" id="table-0-component">
-		<div class="fr-table__wrapper">
-			<div class="fr-table__container">
-				<div class="fr-table__content">
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
-					<table class="table">
-						<caption>
-							Détail de l'unité
+	<main>
 
-						</caption>
-						<tbody>
-							<tr>
-								<th>Id</th>
-								<td>{{ unite.id }}</td>
-							</tr>
-							<tr>
-								<th>Code</th>
-								<td>{{ unite.code }}</td>
-							</tr>
-							<tr>
-								<th>Nom</th>
-								<td>{{ unite.nom }}</td>
-							</tr>
-						</tbody>
-					</table>
+		<div class="fr-table" id="table-unite-component">
+			<div class="fr-table__wrapper">
+				<div class="fr-table__container">
+					<div class="fr-table__content">
 
+						<table class="table">
+							<caption>
+								Détail de l'unité
+
+							</caption>
+							<tbody>
+								<tr>
+									<th>Id</th>
+									<td>{{ unite.id }}</td>
+								</tr>
+								<tr>
+									<th>Code</th>
+									<td>{{ unite.code }}</td>
+								</tr>
+								<tr>
+									<th>Nom</th>
+									<td>{{ unite.nom }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<ul class="fr-mb-1w fr-btns-group fr-btns-group--inline">
-		<li>
-			<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_unite_edit', {'id': unite.id}) }}">Éditer</a>
-		</li>
-		<li>
-			{{ include('unite/_delete_form.html.twig') }}
-		</li>
-	</ul>
+		<ul class="fr-mb-1w fr-btns-group fr-btns-group--inline">
+			<li>
+				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_unite_edit', {'id': unite.id}) }}">Éditer</a>
+			</li>
+			<li>
+				{{ include('unite/_delete_form.html.twig') }}
+			</li>
+		</ul>
 
-	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
+		<h2 class="fr-h4">Pièces de l'unité</h2>
+
+		<div data-fr-group="true" class="fr-accordions-group">
+			{% for piece in unite.pieces %}
+				<section class="fr-accordion">
+					<h3 class="fr-accordion__title">
+						<button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-piece-{{piece.id}}">{{ piece.nom }}</button>
+					</h3>
+					<div class="fr-collapse" id="accordion-piece-{{piece.id}}">
+						<p>
+							{% set nz = piece.zones | length %}
+							{% if nz == 0 %}
+								Cette pièce ne contient aucune zone.
+							{% elseif nz == 1 %}
+								Cette pièce contient une zone.
+							{% else %}
+								Cette pièce contient
+								{{ nz }}
+								zones:
+							{% endif %}
+						</p>
+						{% if nz > 0 %}
+							<div data-fr-group="true" class="fr-accordions-group">
+								{% for zone in piece.zones %}
+									<section class="fr-accordion">
+										<h4 class="fr-accordion__title">
+											<button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-zone-{{zone.id}}">{{zone.nom}}</button>
+										</h4>
+										<div class="fr-collapse" id="accordion-zone-{{zone.id}}">
+											<p>
+												{% set nr = zone.rangements | length %}
+												{% if nr == 0 %}
+													Cette zone ne contient aucun rangement.
+												{% elseif nr == 1 %}
+													Cette zone contient un rangement.
+												{% else %}
+													Cette zone contient
+													{{ nr }}
+													rangements:
+												{% endif %}
+											</p>
+											{% if nr > 0%}
+												<div class="fr-grid fr-grid-row fr-grid-row--gutters">
+													{% for rangement in zone.rangements %}
+														<div class="fr-col-6 fr-col-md-6 fr-col-lg-6 fr-mb-2w">
+															<div class="fr-card">
+																<div class="fr-card__body">
+
+																	<h5 class="fr-card__title">
+																		{{ rangement.type.nom | capitalize }}
+																		-
+																		{{ rangement.nom }}
+																	</h5>
+
+																	{% set ne = rangement.emplacements | length %}
+																	{% if ne == 0 %}
+																		<p class="fr-card__desc">Rangement vide.</p>
+																	{% else %}
+																		{% for emplacement in rangement.emplacements %}
+
+																			{% set nl = emplacement.lots | length %}
+
+																			{% if nl == 0 %}
+																				<p class="fr-card__desc fr-h6">{{emplacement.nom}}
+																					(vide)</p>
+																			{% else %}
+
+																				<div class="fr-card__desc fr-table" id="table-emplacement-{{emplacement.id}}-component">
+																					<div class="fr-table__wrapper">
+																						<div class="fr-table__container">
+																							<div class="fr-table__content">
+																								<table id="table-emplacement-{{emplacement.id}}">
+																									<caption class="fr-h6">Contenu de
+																										{{emplacement.nom}}</caption>
+																									<thead>
+																										<tr>
+																											<th>
+																												Nombre
+																											</th>
+																											<th>
+																												Catégorie
+																											</th>
+																											<th>
+																												Marque
+																											</th>
+																											<th>
+																												Modèle
+																											</th>
+																											<th>
+																												Description
+																											</th>
+																										</tr>
+																									</thead>
+																									<tbody>
+																										{% for i,lot in emplacement.lots %}
+																											<tr id="table-emplacement-{{emplacement.id}}-row-key-{{lot.id}}" data-row-key="{{ i + 1}}">
+																												<td>{{ lot.nombre }}</td>
+																												<td>{{ lot.familleArticle.categorie.nom }}</td>
+																												<td>{{ lot.familleArticle.marque }}</td>
+																												<td>{{ lot.familleArticle.modele }}</td>
+																												<td>{{ lot.familleArticle.description }}</td>
+																											</tr>
+																										{% endfor %}
+																									</tbody>
+																								</table>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			{% endif %}
+
+																		{% endfor %}
+																	{% endif %}
+																</div>
+															</div>
+														</div>
+													{% else %}
+														<p>Aucune pièce associée à cette unité.</p>
+													{% endfor %}
+
+												</div>
+											{% endif %}
+										</div>
+									</section>
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+				</section>
+			{% else %}
+				<p>Aucune pièce associée à cette unité.</p>
+			{% endfor %}
+		</div>
+
+	</main>
 
 {% endblock %}

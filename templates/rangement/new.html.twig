@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Rangement{% endblock %}
+{% block title %}New Rangement
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Rangement</h1>
+	<h1>Create new Rangement</h1>
 
-    {{ include('rangement/_form.html.twig') }}
+	{{ include('rangement/_form.html.twig') }}
 
-    <a href="{{ path('app_rangement_index') }}">back to list</a>
+	<a href="{{ path('oukile_rangement_index') }}">back to list</a>
 {% endblock %}

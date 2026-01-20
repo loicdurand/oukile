@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Piece{% endblock %}
+{% block title %}Edit Piece
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Piece</h1>
+	<h1>Edit Piece</h1>
 
-    {{ include('piece/_form.html.twig', {'button_label': 'Update'}) }}
+	{{ include('piece/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_piece_index') }}">back to list</a>
+	<a href="{{ path('oukile_piece_index') }}">back to list</a>
 
-    {{ include('piece/_delete_form.html.twig') }}
+	{{ include('piece/_delete_form.html.twig') }}
 {% endblock %}
