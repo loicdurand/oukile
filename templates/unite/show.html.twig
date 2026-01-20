@@ -90,6 +90,16 @@
 											<button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-zone-{{zone.id}}">{{zone.nom}}</button>
 										</h4>
 										<div class="fr-collapse" id="accordion-zone-{{zone.id}}">
+
+											<ul class="fr-mb-1w fr-btns-group fr-btns-group--inline">
+												<li>
+													<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_zone_edit', {'id': zone.id}) }}">Éditer</a>
+												</li>
+												<li>
+													{{ include('zone/_delete_form.html.twig') }}
+												</li>
+											</ul>
+
 											<p>
 												{% set nr = zone.rangements | length %}
 												{% if nr == 0 %}
@@ -101,7 +111,15 @@
 													{{ nr }}
 													rangements:
 												{% endif %}
+
+												<ul class="fr-btns-group fr-btns-group--inline">
+													<li>
+														<a class="fr-btn fr-btn--tertiary-no-outline" href="{{ path('oukile_rangement_new', {'id': zone.id}) }}">+ Ajouter un rangement</a>
+													</li>
+												</ul>
+
 											</p>
+
 											{% if nr > 0%}
 												<div class="fr-grid fr-grid-row fr-grid-row--gutters">
 													{% for rangement in zone.rangements %}
