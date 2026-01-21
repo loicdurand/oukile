@@ -53,7 +53,9 @@
 				{% set nz = piece.zones | length %}
 				<section class="fr-accordion">
 					<h3 class="fr-accordion__title">
-						<button type="button" class="fr-accordion__btn {{ nz == 0 ? 'cs-text-default-grey cs-text-fw-initial' :''}}" aria-expanded="false" aria-controls="accordion-piece-{{piece.id}}">{{ piece.nom }}</button>
+						<button type="button" class="fr-accordion__btn {{ nz == 0 ? 'cs-text-default-grey cs-text-fw-initial' :''}}" aria-expanded="false" aria-controls="accordion-piece-{{piece.id}}">
+							<a class="action_edit" id="action_patch_pieces_{{piece.id}}_nom" href="{{ path('oukile_piece_edit', {'id': piece.id}) }}">{{ piece.nom }}</a>
+						</button>
 					</h3>
 					<div class="fr-collapse" id="accordion-piece-{{piece.id}}">
 
@@ -152,7 +154,7 @@
 																				<span>-
 																					{{emplacement.nom}}</span>
 																				&nbsp;
-																				<button class="fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary">Ajouter du contenu</button>
+																				<a class="fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary" href="{{ path('oukile_emplacement_manage', {'id': emplacement.id}) }}">Gérer le contenu</a>
 																				<a class="fr-link cs-absolute" style=";right: 10ch;" href="{{ path('oukile_emplacement_edit', {'id': emplacement.id}) }}">Éditer</a>
 																				<a class="fr-link cs-absolute right-0" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
 

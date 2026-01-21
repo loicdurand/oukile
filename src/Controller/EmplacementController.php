@@ -76,6 +76,24 @@ final class EmplacementController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/manage', name: 'oukile_emplacement_manage', methods: ['GET', 'POST'])]
+    public function manage(Request $request, Emplacement $emplacement, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(EmplacementType::class, $emplacement);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        return $this->render('emplacement/manage.html.twig', [
+            'emplacement' => $emplacement,
+            'form' => $form,
+        ]);
+    }
+
     #[Route('/{id}', name: 'oukile_emplacement_delete', methods: ['POST'])]
     public function delete(Request $request, Emplacement $emplacement, EntityManagerInterface $entityManager): Response
     {
