@@ -22,10 +22,6 @@
 							</caption>
 							<tbody>
 								<tr>
-									<th>Id</th>
-									<td>{{ unite.id }}</td>
-								</tr>
-								<tr>
 									<th>Code</th>
 									<td>{{ unite.code }}</td>
 								</tr>
@@ -123,7 +119,7 @@
 											{% if nr > 0%}
 												<div class="fr-grid fr-grid-row fr-grid-row--gutters">
 													{% for rangement in zone.rangements %}
-														<div class="fr-col-6 fr-col-md-6 fr-col-lg-6 fr-mb-2w">
+														<div class="fr-col-6 fr-col-md-6 fr-col-lg-12 fr-mb-2w">
 															<div class="fr-card">
 																<div class="fr-card__body">
 
@@ -148,29 +144,32 @@
 
 																	{% else %}
 
-																		{% for emplacement in rangement.emplacements %}
+																		{% for i, emplacement in rangement.emplacements %}
 
 																			{% set nl = emplacement.lots | length %}
 
-																			{% if nl == 0 %}
-																				<p class="fr-card__desc fr-h6">
-																					{{emplacement.nom}}
-																					(vide)
-																					<a class="fr-link" href="{{ path('oukile_emplacement_edit', {'id': emplacement.id}) }}">Éditer</a>
-																					<a class="fr-link" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
+																			<p class="fr-card__desc fr-p cs-relative cs-emplacement-vide {{ i==0 ? 'fr-mt-1w' : '' }}">
+																				<span>-
+																					{{emplacement.nom}}</span>
+																				&nbsp;
+																				<button class="fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary">Ajouter du contenu</button>
+																				<a class="fr-link cs-absolute" style=";right: 10ch;" href="{{ path('oukile_emplacement_edit', {'id': emplacement.id}) }}">Éditer</a>
+																				<a class="fr-link cs-absolute right-0" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
 
-																					{{ include('emplacement/_delete_form.html.twig') }}
+																				{{ include('emplacement/_delete_form.html.twig') }}
 
-																				</p>
-																			{% else %}
+																			</p>
 
-																				<div class="fr-card__desc fr-table" id="table-emplacement-{{emplacement.id}}-component">
+																			{% if nl > 0 %}
+
+																				<div class="fr-card__desc fr-table fr-table--no-caption" id="table-emplacement-{{emplacement.id}}-component">
 																					<div class="fr-table__wrapper">
 																						<div class="fr-table__container">
 																							<div class="fr-table__content">
 																								<table id="table-emplacement-{{emplacement.id}}">
-																									<caption class="fr-h6">Contenu de
-																										{{emplacement.nom}}</caption>
+																									<caption class="fr-p">
+																										{{emplacement.nom}}
+																									</caption>
 																									<thead>
 																										<tr>
 																											<th>
@@ -180,10 +179,7 @@
 																												Catégorie
 																											</th>
 																											<th>
-																												Marque
-																											</th>
-																											<th>
-																												Modèle
+																												Marque / Modèle
 																											</th>
 																											<th>
 																												Description
@@ -195,8 +191,8 @@
 																											<tr id="table-emplacement-{{emplacement.id}}-row-key-{{lot.id}}" data-row-key="{{ i + 1}}">
 																												<td>{{ lot.nombre }}</td>
 																												<td>{{ lot.familleArticle.categorie.nom }}</td>
-																												<td>{{ lot.familleArticle.marque }}</td>
-																												<td>{{ lot.familleArticle.modele }}</td>
+																												<td>{{ lot.familleArticle.marque }}
+																													{{ lot.familleArticle.modele }}</td>
 																												<td>{{ lot.familleArticle.description }}</td>
 																											</tr>
 																										{% endfor %}
@@ -248,7 +244,5 @@
 				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_piece_new', {'id': unite.id}) }}">+ Ajouter une pièce</a>
 			</li>
 		</ul>
-
 	</main>
-
 {% endblock %}

@@ -21,6 +21,18 @@ footer.fr-footer {
     margin-top: auto !important;
 }
 
+.cs-relative {
+    position: relative !important;
+}
+
+.cs-absolute {
+    position: absolute !important;
+
+    &.right-0 {
+        right: 0 !important;
+    }
+}
+
 .cs-text-fw-initial {
     font-weight: initial !important;
 }
@@ -31,4 +43,21 @@ footer.fr-footer {
 
 .cs-text-align-right {
     text-align: right !important;
+}
+
+main section.fr-accordion section.fr-accordion {
+    background-color: rgba(0, 0, 0, 0.025);
+    border: 1px solid rgba(0, 0, 0, .15);
+}
+
+table caption.fr-p,
+.cs-emplacement-vide {
+    line-height: 24px;
+    font-size: 1rem;
+    line-height: 24px;
+    font-size: 1rem;
+
+    & span {
+        font-weight: 700;
+    }
 }
