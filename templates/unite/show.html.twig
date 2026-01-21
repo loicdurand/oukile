@@ -133,7 +133,7 @@
 																		{{ rangement.nom }}
 																	</h5>
 
-																	<ul class="fr-mb-1w fr-card__desc fr-btns-group fr-btns-group--inline">
+																	<ul class="fr-mb-2w fr-card__desc fr-btns-group fr-btns-group--inline">
 																		<li>
 																			<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
 																		</li>
@@ -145,14 +145,23 @@
 																	{% set ne = rangement.emplacements | length %}
 																	{% if ne == 0 %}
 																		<p class="fr-card__desc">Rangement vide.</p>
+
 																	{% else %}
+
 																		{% for emplacement in rangement.emplacements %}
 
 																			{% set nl = emplacement.lots | length %}
 
 																			{% if nl == 0 %}
-																				<p class="fr-card__desc fr-h6">{{emplacement.nom}}
-																					(vide)</p>
+																				<p class="fr-card__desc fr-h6">
+																					{{emplacement.nom}}
+																					(vide)
+																					<a class="fr-link" href="{{ path('oukile_emplacement_edit', {'id': emplacement.id}) }}">Éditer</a>
+																					<a class="fr-link" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
+
+																					{{ include('emplacement/_delete_form.html.twig') }}
+
+																				</p>
 																			{% else %}
 
 																				<div class="fr-card__desc fr-table" id="table-emplacement-{{emplacement.id}}-component">
@@ -201,6 +210,13 @@
 
 																		{% endfor %}
 																	{% endif %}
+
+																	<ul class="fr-card__desc fr-btns-group fr-btns-group--inline">
+																		<li>
+																			<a class="fr-btn fr-btn--tertiary-no-outline" href="{{ path('oukile_emplacement_new', {'id': rangement.id}) }}">+ Ajouter un emplacement</a>
+																		</li>
+																	</ul>
+
 																</div>
 															</div>
 														</div>

@@ -17,7 +17,7 @@ class EmplacementType extends AbstractType
             ->add('nom')
             ->add('rangement', EntityType::class, [
                 'class' => Rangement::class,
-                'choice_label' => 'id',
+                'choice_label' => 'nom',
             ])
         ;
     }
