@@ -26,18 +26,23 @@ const AXIOS_HEADERS = {
 
     function edit(e) {
         voidEvent(e);
-        const target = e.target;
-        const currentText = target.innerText;
-        const input = document.createElement('input');
+        const // 
+            target = e.target,
+            currentText = target.innerText,
+            deletebtn_id = target.dataset.deletebtn,
+            deletebtn = document.getElementById(deletebtn_id),
+            input = document.createElement('input');
         input.type = 'text';
         input.value = currentText;
         input.style.minWidth = '200px';
         input.id = target.id;
         input.dataset.href = target.href;
+        input.dataset.deletebtn = deletebtn_id;
         target.replaceWith(input);
         input.focus();
 
         input.addEventListener('blur', onceEdited);
+        deletebtn.classList.remove('fr-hidden');
     }
 
     function onceEdited(e) {
@@ -45,11 +50,14 @@ const AXIOS_HEADERS = {
         const //
             target = e.target,
             newText = target.value,
-            newLink = document.createElement('a');
+            newLink = document.createElement('a'),
+            deletebtn_id = target.dataset.deletebtn,
+            deletebtn = document.getElementById(deletebtn_id);
         newLink.className = 'action_edit';
         newLink.id = target.id;
         newLink.href = target.dataset.href;
         newLink.innerText = newText;
+        newLink.dataset.deletebtn = deletebtn_id;
         newLink.addEventListener('click', voidEvent);
         newLink.addEventListener('dblclick', edit);
         target.replaceWith(newLink);
@@ -57,5 +65,7 @@ const AXIOS_HEADERS = {
         axios[method](`/oukile/api/${entity}/${id}`, {
             [attr]: newText
         }, AXIOS_HEADERS);
+        deletebtn.classList.add('fr-hidden');
+
     }
 });

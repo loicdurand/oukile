@@ -23,6 +23,10 @@ footer.fr-footer {
     margin-top: auto !important;
 }
 
+.cs-inline {
+    display: inline !important;
+}
+
 .cs-relative {
     position: relative !important;
 }
@@ -64,9 +68,14 @@ table caption.fr-p,
     }
 }
 
-.cs-cross-btn {
+.fr-accordion__title .cs-cross-btn {
     position: absolute;
-    color: var(--red-6);
-    right: 3rem;
+    color: var(--red-6) !important;
+    left: 200px;
     top: .5rem;
+}
+
+.cs-cross-btn {
+    position: relative;
+    color: var(--red-6) !important;
 }
