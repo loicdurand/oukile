@@ -79,4 +79,7 @@ table caption.fr-p,
 .cs-cross-btn {
     position: relative;
     color: var(--red-6) !important;
+    left: -1.5rem;
+    top: 2px;
+    z-index: 1;
 }

@@ -127,28 +127,28 @@
 															<div class="fr-card">
 																<div class="fr-p-4w">
 
-																	<h5 class="fr-card__title">
+																	<h5 class="fr-card__title fr-pb-2w">
 																		{{ rangement.type.nom | capitalize }}
 																		-
-																		<a class="relative action_edit" id="action_patch_rangements_{{rangement.id}}_nom" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">
+																		<a class="relative action_edit" data-deletebtn="delete_rangement_{{rangement.id}}" id="action_patch_rangements_{{rangement.id}}_nom" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">
 																			{{ rangement.nom }}
 																		</a>
 																		<form class="cs-inline" method="post" action="{{ path('oukile_rangement_delete', {'id': rangement.id}) }}" onsubmit="return confirm('Êtes vous sûr de vouloir supprimer cette pièce?');">
 																			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rangement.id) }}">
-																			<button class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm cs-cross-btn" title="Supprimer">
+																			<button id="delete_rangement_{{rangement.id}}" class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm cs-cross-btn fr-hidden" title="Supprimer">
 																				&#x2715;
 																			</button>
 																		</form>
 																	</h5>
 
-																	<ul class="fr-mb-2w fr-card__desc fr-btns-group fr-btns-group--inline">
-																		<li>
-																			<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
-																		</li>
-																		<li>
-																			{{ include('rangement/_delete_form.html.twig') }}
-																		</li>
-																	</ul>
+																	{# <ul class="fr-mb-2w fr-card__desc fr-btns-group fr-btns-group--inline">
+																																																																																																																																																										<li>
+																																																																																																																																																											<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
+																																																																																																																																																										</li>
+																																																																																																																																																										<li>
+																																																																																																																																																											{{ include('rangement/_delete_form.html.twig') }}
+																																																																																																																																																										</li>
+																																																																																																																																																									</ul> #}
 
 																	{% set ne = rangement.emplacements | length %}
 																	{% if ne == 0 %}

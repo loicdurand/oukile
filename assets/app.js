@@ -47,26 +47,28 @@ const AXIOS_HEADERS = {
 
     function onceEdited(e) {
         removeEventListener('blur', onceEdited);
-        const //
-            target = e.target,
-            newText = target.value,
-            newLink = document.createElement('a'),
-            deletebtn_id = target.dataset.deletebtn,
-            deletebtn = document.getElementById(deletebtn_id);
-        newLink.className = 'action_edit';
-        newLink.id = target.id;
-        newLink.href = target.dataset.href;
-        newLink.innerText = newText;
-        newLink.dataset.deletebtn = deletebtn_id;
-        newLink.addEventListener('click', voidEvent);
-        newLink.addEventListener('dblclick', edit);
-        target.replaceWith(newLink);
-        const [, method, entity, id, attr] = target.id.split('_');
-        axios[method](`/oukile/api/${entity}/${id}`, {
-            [attr]: newText
-        }, AXIOS_HEADERS);
         setTimeout(() => {
-            deletebtn.classList.add('fr-hidden');
+            const //
+                target = e.target,
+                newText = target.value,
+                newLink = document.createElement('a'),
+                deletebtn_id = target.dataset.deletebtn,
+                deletebtn = document.getElementById(deletebtn_id);
+            newLink.className = 'action_edit';
+            newLink.id = target.id;
+            newLink.href = target.dataset.href;
+            newLink.innerText = newText;
+            newLink.dataset.deletebtn = deletebtn_id;
+            newLink.addEventListener('click', voidEvent);
+            newLink.addEventListener('dblclick', edit);
+            target.replaceWith(newLink);
+            const [, method, entity, id, attr] = target.id.split('_');
+            axios[method](`/oukile/api/${entity}/${id}`, {
+                [attr]: newText
+            }, AXIOS_HEADERS);
+            setTimeout(() => {
+                deletebtn.classList.add('fr-hidden');
+            }, 120);
         }, 400);
 
     }
