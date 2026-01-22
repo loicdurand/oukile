@@ -71,8 +71,9 @@ table caption.fr-p,
 .fr-accordion__title .cs-cross-btn {
     position: absolute;
     color: var(--red-6) !important;
-    left: 200px;
+    left: 193px;
     top: .5rem;
+    z-index: 1;
 }
 
 .cs-cross-btn {

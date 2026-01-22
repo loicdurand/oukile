@@ -65,7 +65,9 @@ const AXIOS_HEADERS = {
         axios[method](`/oukile/api/${entity}/${id}`, {
             [attr]: newText
         }, AXIOS_HEADERS);
-        deletebtn.classList.add('fr-hidden');
+        setTimeout(() => {
+            deletebtn.classList.add('fr-hidden');
+        }, 400);
 
     }
 });
