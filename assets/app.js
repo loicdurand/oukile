@@ -38,6 +38,7 @@ function edit(e) {
     input.style.minWidth = '200px';
     input.id = target.id;
     input.dataset.href = target.href;
+    input.dataset.value = currentText;
     input.dataset.deletebtn = deletebtn_id;
     input.dataset.message = message_id;
 
@@ -53,6 +54,7 @@ function onceEdited(e) {
     setTimeout(async () => {
         const //
             target = e.target,
+            oldText = e.target.dataset.value,
             newText = target.value,
             newLink = document.createElement('a'),
             deletebtn_id = target.dataset.deletebtn,
@@ -69,6 +71,8 @@ function onceEdited(e) {
         newLink.addEventListener('click', voidEvent);
         newLink.addEventListener('dblclick', edit);
         target.replaceWith(newLink);
+        if (oldText === newText)
+            return deletebtn.classList.add('fr-hidden');
         const [, method, entity, id, attr] = target.id.split('_');
         axios[method](`/oukile/api/${entity}/${id}`, {
             [attr]: newText

@@ -48,6 +48,12 @@
 
 		<h2 class="fr-h4">Pièces de l'unité</h2>
 
+		<ul class="fr-mt-4w fr-mb-2w fr-btns-group fr-btns-group--inline">
+			<li>
+				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_piece_new', {'id': unite.id}) }}">+ Ajouter une pièce</a>
+			</li>
+		</ul>
+
 		<div id="success-message-piece" class="fr-alert fr-alert--success fr-mb-2w cs-disappear fr-hidden cs-hide">
 			<h3 class="fr-alert__title">La pièce a été mise à jour avec succès.</h3>
 		</div>
@@ -166,14 +172,11 @@
 																		</form>
 																	</h5>
 
-																	{# <ul class="fr-mb-2w fr-card__desc fr-btns-group fr-btns-group--inline">
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																													<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																												</li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																												<li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																													{{ include('rangement/_delete_form.html.twig') }}
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																												</li>
-																																																																																																																																																																																																																																																																																																																																																																																																																																																																											</ul> #}
+																	<ul class="fr-card__desc fr-btns-group fr-btns-group--inline">
+																		<li>
+																			<a class="fr-btn fr-btn--tertiary-no-outline" href="{{ path('oukile_emplacement_new', {'id': rangement.id}) }}">+ Ajouter un emplacement</a>
+																		</li>
+																	</ul>
 
 																	{% set ne = rangement.emplacements | length %}
 																	{% if ne == 0 %}
@@ -189,9 +192,8 @@
 																				<span>-
 																					{{emplacement.nom}}</span>
 																				&nbsp;
-																				<a class="fr-btn fr-btn--sm fr-icon-add-line fr-btn--icon-left fr-btn--tertiary" href="{{ path('oukile_emplacement_manage', {'id': emplacement.id}) }}">Gérer le contenu</a>
-																				<a class="fr-link cs-absolute" style=";right: 10ch;" href="{{ path('oukile_emplacement_edit', {'id': emplacement.id}) }}">Éditer</a>
-																				<a class="fr-link cs-absolute right-0" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
+																				<a class="fr-btn fr-btn--sm fr-icon-edit-line fr-btn--tertiary" href="{{ path('oukile_emplacement_manage', {'id': emplacement.id}) }}">Gérer le contenu</a>
+																				<a class="fr-link cs-absolute right-0 fr-icon-delete-line fr-link--icon-left" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
 
 																				{{ include('emplacement/_delete_form.html.twig') }}
 
@@ -244,12 +246,6 @@
 																		{% endfor %}
 																	{% endif %}
 
-																	<ul class="fr-card__desc fr-btns-group fr-btns-group--inline">
-																		<li>
-																			<a class="fr-btn fr-btn--tertiary-no-outline" href="{{ path('oukile_emplacement_new', {'id': rangement.id}) }}">+ Ajouter un emplacement</a>
-																		</li>
-																	</ul>
-
 																</div>
 															</div>
 														</div>
@@ -276,10 +272,5 @@
 			{% endfor %}
 		</div>
 
-		<ul class="fr-mt-4w fr-mb-2w fr-btns-group fr-btns-group--inline">
-			<li>
-				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_piece_new', {'id': unite.id}) }}">+ Ajouter une pièce</a>
-			</li>
-		</ul>
 	</main>
 {% endblock %}
