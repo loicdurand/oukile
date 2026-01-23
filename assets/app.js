@@ -18,18 +18,11 @@ const AXIOS_HEADERS = {
 onReady('.action_edit').then(() => {
 
     [...document.getElementsByClassName('action_edit')].forEach(lien_editable => {
-        // 
         lien_editable.addEventListener('click', voidEvent);
         lien_editable.addEventListener('dblclick', edit);
-
     });
 
 });
-
-function voidEvent(e) {
-    e.preventDefault();
-    e.stopPropagation();
-}
 
 function edit(e) {
     voidEvent(e);
@@ -38,6 +31,7 @@ function edit(e) {
         currentText = target.innerText,
         deletebtn_id = target.dataset.deletebtn,
         deletebtn = document.getElementById(deletebtn_id),
+        message_id = target.dataset.message,
         input = document.createElement('input');
     input.type = 'text';
     input.value = currentText;
@@ -45,6 +39,8 @@ function edit(e) {
     input.id = target.id;
     input.dataset.href = target.href;
     input.dataset.deletebtn = deletebtn_id;
+    input.dataset.message = message_id;
+
     target.replaceWith(input);
     input.focus();
 
@@ -54,28 +50,55 @@ function edit(e) {
 
 function onceEdited(e) {
     removeEventListener('blur', onceEdited);
-    setTimeout(() => {
+    setTimeout(async () => {
         const //
             target = e.target,
             newText = target.value,
             newLink = document.createElement('a'),
             deletebtn_id = target.dataset.deletebtn,
-            deletebtn = document.getElementById(deletebtn_id);
+            deletebtn = document.getElementById(deletebtn_id),
+            message_id = target.dataset.message,
+            successmessage = document.getElementById(`success-${message_id}`),
+            errormessage = document.getElementById(`error-${message_id}`);
         newLink.className = 'action_edit';
         newLink.id = target.id;
         newLink.href = target.dataset.href;
         newLink.innerText = newText;
         newLink.dataset.deletebtn = deletebtn_id;
+        newLink.dataset.message = message_id;
         newLink.addEventListener('click', voidEvent);
         newLink.addEventListener('dblclick', edit);
         target.replaceWith(newLink);
         const [, method, entity, id, attr] = target.id.split('_');
         axios[method](`/oukile/api/${entity}/${id}`, {
             [attr]: newText
-        }, AXIOS_HEADERS);
-        setTimeout(() => {
-            deletebtn.classList.add('fr-hidden');
-        }, 120);
+        }, AXIOS_HEADERS)
+            .then(() => showMessage(successmessage))
+            .catch(() => showMessage(errormessage))
+            .finally(() => {
+                setTimeout(() => {
+                    deletebtn.classList.add('fr-hidden');
+                }, 120);
+            });
+
+
     }, 400);
 
+}
+
+function voidEvent(e) {
+    e.preventDefault();
+    e.stopPropagation();
+}
+
+function showMessage(element) {
+    element.classList.remove('fr-hidden');
+    element.classList.remove('cs-hide');
+    setTimeout(() => {
+        element.classList.add('cs-hide');
+        setTimeout(() => {
+            element.classList.add('fr-hidden');
+            element.classList.remove('cs-hide');
+        }, 500);
+    }, 2000);
 }

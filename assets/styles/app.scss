@@ -83,3 +83,12 @@ table caption.fr-p,
     top: 2px;
     z-index: 1;
 }
+
+.cs-disappear {
+    opacity: 1;
+    transition: opacity 500ms;
+
+    &.cs-hide {
+        opacity: 0;
+    }
+}

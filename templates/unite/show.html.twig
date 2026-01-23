@@ -81,13 +81,22 @@
 								zones:
 							{% endif %}
 						</p>
+
+						<div id="success-message-zone" class="fr-alert fr-alert--success fr-mb-2w cs-disappear fr-hidden cs-hide">
+							<h3 class="fr-alert__title">La zone a été mise à jour avec succès.</h3>
+						</div>
+
+						<div id="error-message-zone" class="fr-alert fr-alert--warning fr-mb-2w cs-disappear fr-hidden cs-hide">
+							<h3 class="fr-alert__title">Une erreur est survenue. La mise à jour a échoué.</h3>
+						</div>
+
 						{% if nz > 0 %}
 							<div data-fr-group="true" class="fr-accordions-group">
 								{% for zone in piece.zones %}
 									<section class="fr-accordion">
 										<h4 class="fr-accordion__title cs-relative">
 											<button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-zone-{{zone.id}}">
-												<a class="action_edit" data-deletebtn="delete_zone_{{zone.id}}" id="action_patch_zones_{{zone.id}}_nom" href="{{ path('oukile_zone_edit', {'id': zone.id}) }}">
+												<a class="action_edit" data-deletebtn="delete_zone_{{zone.id}}" data-message="message-zone" id="action_patch_zones_{{zone.id}}_nom" href="{{ path('oukile_zone_edit', {'id': zone.id}) }}">
 													{{ zone.nom }}
 												</a>
 											</button>
@@ -142,13 +151,13 @@
 																	</h5>
 
 																	{# <ul class="fr-mb-2w fr-card__desc fr-btns-group fr-btns-group--inline">
-																																																																																																																																																										<li>
-																																																																																																																																																											<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
-																																																																																																																																																										</li>
-																																																																																																																																																										<li>
-																																																																																																																																																											{{ include('rangement/_delete_form.html.twig') }}
-																																																																																																																																																										</li>
-																																																																																																																																																									</ul> #}
+																																																																																																																																																																																																																																																																																																																			<li>
+																																																																																																																																																																																																																																																																																																																				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">Éditer</a>
+																																																																																																																																																																																																																																																																																																																			</li>
+																																																																																																																																																																																																																																																																																																																			<li>
+																																																																																																																																																																																																																																																																																																																				{{ include('rangement/_delete_form.html.twig') }}
+																																																																																																																																																																																																																																																																																																																			</li>
+																																																																																																																																																																																																																																																																																																																		</ul> #}
 
 																	{% set ne = rangement.emplacements | length %}
 																	{% if ne == 0 %}
