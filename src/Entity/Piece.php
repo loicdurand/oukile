@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: PieceRepository::class), ApiResource(
@@ -36,6 +40,12 @@ class Piece
     #[ORM\OneToMany(targetEntity: Zone::class, mappedBy: 'piece', orphanRemoval: true)]
     #[Groups(['piece:read', 'piece:write'])]
     private Collection $zones;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['piece:read', 'piece:write'])]
+    public ?MediaObject $image = null;
 
     public function __construct()
     {
