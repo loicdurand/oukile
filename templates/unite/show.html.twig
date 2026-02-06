@@ -193,9 +193,11 @@
 																					{{emplacement.nom}}</span>
 																				&nbsp;
 																				<a class="fr-btn fr-btn--sm fr-icon-edit-line fr-btn--tertiary" href="{{ path('oukile_emplacement_manage', {'id': emplacement.id}) }}">Gérer le contenu</a>
-																				<a class="fr-link cs-absolute right-0 fr-icon-delete-line fr-link--icon-left" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
 
-																				{{ include('emplacement/_delete_form.html.twig') }}
+																				{% if nl == 0 %}
+																					<a class="fr-link cs-absolute right-0 fr-icon-delete-line fr-link--icon-left" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
+																					{{ include('emplacement/_delete_form.html.twig') }}
+																				{% endif %}
 
 																			</p>
 
