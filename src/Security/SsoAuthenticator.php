@@ -43,7 +43,7 @@ class SsoAuthenticator extends AbstractAuthenticator
         if (is_null($this->sso::user()))
             return true;
 
-        if (!isset($_COOKIE[$_ENV['COOKIE_NAME']]))
+        if (isset($_COOKIE[$_ENV['COOKIE_NAME']]))
             return true;
 
         if ($request->getPathInfo() == '/login')

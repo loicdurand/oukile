@@ -63,7 +63,7 @@
         role="tabpanel"
         aria-labelledby="tab-trouver"
     >
-        <div class="qs__search-bar">
+        <div class="qs__autocomplete">
             <input
                 type="search"
                 id="trouver-query"
@@ -71,12 +71,24 @@
                 placeholder="Rechercher un article (marque, modèle, description)…"
                 autocomplete="off"
                 aria-label="Rechercher un article"
+                aria-autocomplete="list"
+                aria-haspopup="listbox"
+                aria-controls="trouver-dropdown"
+                aria-expanded="false"
                 autofocus
             />
-            <div class="qs__loading" id="trouver-loading" hidden>
-                <span class="qs__spinner" aria-hidden="true"></span>
-                Recherche en cours…
-            </div>
+            <ul
+                class="qs__dropdown"
+                id="trouver-dropdown"
+                role="listbox"
+                aria-label="Suggestions d'articles"
+                hidden
+            ></ul>
+        </div>
+
+        <div class="qs__loading" id="trouver-loading" hidden>
+            <span class="qs__spinner" aria-hidden="true"></span>
+            Recherche en cours…
         </div>
 
         <div class="qs__results" id="trouver-results" aria-live="polite"></div>

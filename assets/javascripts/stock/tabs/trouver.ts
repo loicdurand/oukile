@@ -1,13 +1,9 @@
 import { searchFamilles, getLotsForFamille } from '../api';
 import { resolveLocation } from '../store';
-import { SEARCH_DEBOUNCE_MS } from '../config';
+import { Autocomplete } from '../components/autocomplete';
 import type { FamilleArticle, Lot } from '../types';
 
-// ── Rendering ─────────────────────────────────────────────────────────────
-
-function familleTitle(f: FamilleArticle): string {
-    return [f.marque, f.modele].filter(Boolean).join(' ') || f.description || '(sans nom)';
-}
+// ── Location card rendering ────────────────────────────────────────────────
 
 function renderCard(famille: FamilleArticle, lots: Lot[]): HTMLElement {
     const card = document.createElement('div');
@@ -19,23 +15,24 @@ function renderCard(famille: FamilleArticle, lots: Lot[]): HTMLElement {
 
     const title = document.createElement('span');
     title.className = 'qs__result-title';
-    title.textContent = familleTitle(famille);
-
-    const subtitle = document.createElement('span');
-    subtitle.className = 'qs__result-subtitle';
-    subtitle.textContent = famille.description ?? '';
-
-    const categorieBadge = document.createElement('span');
-    categorieBadge.className = 'qs__result-categorie';
-    categorieBadge.textContent = famille.categorie?.nom ?? '';
+    title.textContent = [famille.marque, famille.modele].filter(Boolean).join(' ') || famille.description || '(sans nom)';
 
     header.appendChild(title);
+
     if (famille.description && (famille.marque || famille.modele)) {
+        const subtitle = document.createElement('span');
+        subtitle.className = 'qs__result-subtitle';
+        subtitle.textContent = famille.description;
         header.appendChild(subtitle);
     }
+
     if (famille.categorie?.nom) {
-        header.appendChild(categorieBadge);
+        const badge = document.createElement('span');
+        badge.className = 'qs__result-categorie';
+        badge.textContent = famille.categorie.nom;
+        header.appendChild(badge);
     }
+
     card.appendChild(header);
 
     // Locations
@@ -84,53 +81,25 @@ function renderCard(famille: FamilleArticle, lots: Lot[]): HTMLElement {
     return card;
 }
 
-function renderResults(container: HTMLElement, familles: FamilleArticle[], lotsMap: Map<number, Lot[]>): void {
-    container.innerHTML = '';
-
-    if (familles.length === 0) {
-        const msg = document.createElement('p');
-        msg.className = 'qs__no-results';
-        msg.textContent = 'Aucun article trouvé pour cette recherche.';
-        container.appendChild(msg);
-        return;
-    }
-
-    familles.forEach((f) => {
-        const lots = lotsMap.get(f.id) ?? [];
-        container.appendChild(renderCard(f, lots));
-    });
-}
-
 // ── Init ──────────────────────────────────────────────────────────────────
 
 export function initTrouver(): () => void {
-    const input = document.getElementById('trouver-query') as HTMLInputElement;
-    const results = document.getElementById('trouver-results') as HTMLElement;
-    const loading = document.getElementById('trouver-loading') as HTMLElement;
+    const input    = document.getElementById('trouver-query')    as HTMLInputElement;
+    const dropdown = document.getElementById('trouver-dropdown') as HTMLUListElement;
+    const results  = document.getElementById('trouver-results')  as HTMLElement;
+    const loading  = document.getElementById('trouver-loading')  as HTMLElement;
 
-    let debounceTimer: ReturnType<typeof setTimeout> | null = null;
-
-    async function doSearch(query: string): Promise<void> {
+    async function onFamilleSelected(famille: FamilleArticle): Promise<void> {
         loading.hidden = false;
         results.innerHTML = '';
 
         try {
-            const familles = await searchFamilles(query);
-
-            const lotsMap = new Map<number, Lot[]>();
-            await Promise.all(
-                familles.map(async (f) => {
-                    const lots = await getLotsForFamille(f.id);
-                    lotsMap.set(f.id, lots);
-                }),
-            );
-
-            renderResults(results, familles, lotsMap);
+            const lots = await getLotsForFamille(famille.id);
+            results.appendChild(renderCard(famille, lots));
         } catch (err) {
             const msg = document.createElement('p');
             msg.className = 'qs__error';
             msg.textContent = 'Erreur lors de la recherche. Veuillez réessayer.';
-            results.innerHTML = '';
             results.appendChild(msg);
             console.error('[Trouver]', err);
         } finally {
@@ -138,17 +107,7 @@ export function initTrouver(): () => void {
         }
     }
 
-    input.addEventListener('input', () => {
-        const query = input.value.trim();
-        if (debounceTimer) clearTimeout(debounceTimer);
+    const autocomplete = new Autocomplete(input, dropdown, searchFamilles, onFamilleSelected);
 
-        if (query.length < 2) {
-            results.innerHTML = '';
-            return;
-        }
-
-        debounceTimer = setTimeout(() => doSearch(query), SEARCH_DEBOUNCE_MS);
-    });
-
-    return () => input.focus();
+    return () => autocomplete.focus();
 }

@@ -164,12 +164,18 @@ $qs-transition:    160ms ease;
 // ── Loading indicator ──────────────────────────────────────────────────────
 
 .qs__loading {
-    display: flex;
+    // `display` is intentionally omitted here so the HTML `hidden` attribute
+    // keeps its native `display: none` effect. Only override display when
+    // the element is actually visible.
     align-items: center;
     gap: 8px;
     margin-top: 10px;
     font-size: 0.85rem;
     color: $qs-text-muted;
+
+    &:not([hidden]) {
+        display: flex;
+    }
 }
 
 .qs__spinner {
