@@ -1,20 +1,20 @@
 export interface ApiCollection<T> {
-    'hydra:member': T[];
-    'hydra:totalItems': number;
-    'hydra:view'?: {
-        '@id': string;
-        'hydra:next'?: string;
+    member: T[];
+    totalItems: number;
+    "hydra:view"?: {
+        "@id": string;
+        "hydra:next"?: string;
     };
 }
 
 export interface Categorie {
-    '@id': string;
+    "@id": string;
     id: number;
     nom: string;
 }
 
 export interface FamilleArticle {
-    '@id': string;
+    "@id": string;
     id: number;
     marque: string | null;
     modele: string | null;
@@ -23,7 +23,7 @@ export interface FamilleArticle {
 }
 
 export interface Piece {
-    '@id': string;
+    "@id": string;
     id: number;
     nom: string;
 }
@@ -33,7 +33,7 @@ export interface Piece {
  * `piece` is embedded (Piece fields carry zone:read group).
  */
 export interface Zone {
-    '@id': string;
+    "@id": string;
     id: number;
     nom: string;
     piece: Piece | string;
@@ -44,7 +44,7 @@ export interface Zone {
  * `zone` is an IRI string (Zone fields do not carry rangement:read).
  */
 export interface Rangement {
-    '@id': string;
+    "@id": string;
     id: number;
     nom: string;
     zone: string;
@@ -55,7 +55,7 @@ export interface Rangement {
  * `rangement` is an IRI string (Rangement fields do not carry emplacement:read).
  */
 export interface Emplacement {
-    '@id': string;
+    "@id": string;
     id: number;
     nom: string;
     rangement: string;
@@ -67,7 +67,7 @@ export interface Emplacement {
  * `emplacement` is an IRI string (Emplacement fields do not carry lot:read).
  */
 export interface Lot {
-    '@id': string;
+    "@id": string;
     id: number;
     nombre: number;
     famille: FamilleArticle;

@@ -1,10 +1,10 @@
-import { SEARCH_DEBOUNCE_MS } from '../config';
-import type { FamilleArticle } from '../types';
+import { SEARCH_DEBOUNCE_MS } from "../config";
+import type { FamilleArticle } from "../types";
 
 export type FamilleSelectCallback = (famille: FamilleArticle) => void;
 
 export function formatFamille(f: FamilleArticle): string {
-    return [f.marque, f.modele, f.description].filter(Boolean).join(' · ');
+    return [f.marque, f.modele, f.description].filter(Boolean).join(" · ");
 }
 
 /**
@@ -32,9 +32,9 @@ export class Autocomplete {
         this.searchFn = searchFn;
         this.onSelect = onSelect;
 
-        this.input.addEventListener('input', this.handleInput.bind(this));
-        this.input.addEventListener('keydown', this.handleKeydown.bind(this));
-        this.input.addEventListener('blur', this.handleBlur.bind(this));
+        this.input.addEventListener("input", this.handleInput.bind(this));
+        this.input.addEventListener("keydown", this.handleKeydown.bind(this));
+        this.input.addEventListener("blur", this.handleBlur.bind(this));
     }
 
     // ── Event handlers ────────────────────────────────────────────────────────
@@ -48,26 +48,31 @@ export class Autocomplete {
             return;
         }
 
-        this.debounceTimer = setTimeout(() => this.search(query), SEARCH_DEBOUNCE_MS);
+        this.debounceTimer = setTimeout(
+            () => this.search(query),
+            SEARCH_DEBOUNCE_MS,
+        );
     }
 
     private handleKeydown(e: KeyboardEvent): void {
         if (this.dropdown.hidden) return;
 
         switch (e.key) {
-            case 'ArrowDown':
+            case "ArrowDown":
                 e.preventDefault();
-                this.setActive(Math.min(this.activeIndex + 1, this.results.length - 1));
+                this.setActive(
+                    Math.min(this.activeIndex + 1, this.results.length - 1),
+                );
                 break;
-            case 'ArrowUp':
+            case "ArrowUp":
                 e.preventDefault();
                 this.setActive(Math.max(this.activeIndex - 1, -1));
                 break;
-            case 'Enter':
+            case "Enter":
                 e.preventDefault();
                 if (this.activeIndex >= 0) this.pick(this.activeIndex);
                 break;
-            case 'Escape':
+            case "Escape":
                 this.close();
                 break;
         }
@@ -87,26 +92,26 @@ export class Autocomplete {
     }
 
     private renderDropdown(): void {
-        this.dropdown.innerHTML = '';
+        this.dropdown.innerHTML = "";
 
         if (this.results.length === 0) {
-            const li = document.createElement('li');
-            li.className = 'qs__dropdown-empty';
-            li.textContent = 'Aucun résultat.';
+            const li = document.createElement("li");
+            li.className = "qs__dropdown-empty";
+            li.textContent = "Aucun résultat.";
             this.dropdown.appendChild(li);
             this.dropdown.hidden = false;
             return;
         }
 
         this.results.forEach((f, i) => {
-            const li = document.createElement('li');
-            li.className = 'qs__dropdown-item';
-            li.setAttribute('role', 'option');
+            const li = document.createElement("li");
+            li.className = "qs__dropdown-item";
+            li.setAttribute("role", "option");
             li.dataset.index = String(i);
             li.textContent = formatFamille(f);
 
             // mousedown (not click) to fire before blur
-            li.addEventListener('mousedown', (e) => {
+            li.addEventListener("mousedown", (e) => {
                 e.preventDefault();
                 this.pick(i);
             });
@@ -115,16 +120,18 @@ export class Autocomplete {
         });
 
         this.dropdown.hidden = false;
-        this.input.setAttribute('aria-expanded', 'true');
+        this.input.setAttribute("aria-expanded", "true");
     }
 
     private setActive(index: number): void {
         this.activeIndex = index;
-        this.dropdown.querySelectorAll<HTMLLIElement>('.qs__dropdown-item').forEach((item, i) => {
-            const active = i === index;
-            item.classList.toggle('qs__dropdown-item--active', active);
-            item.setAttribute('aria-selected', String(active));
-        });
+        this.dropdown
+            .querySelectorAll<HTMLLIElement>(".qs__dropdown-item")
+            .forEach((item, i) => {
+                const active = i === index;
+                item.classList.toggle("qs__dropdown-item--active", active);
+                item.setAttribute("aria-selected", String(active));
+            });
     }
 
     private pick(index: number): void {
@@ -137,14 +144,14 @@ export class Autocomplete {
 
     private close(): void {
         this.dropdown.hidden = true;
-        this.input.setAttribute('aria-expanded', 'false');
+        this.input.setAttribute("aria-expanded", "false");
         this.activeIndex = -1;
     }
 
     // ── Public ────────────────────────────────────────────────────────────────
 
     reset(): void {
-        this.input.value = '';
+        this.input.value = "";
         this.results = [];
         this.close();
     }
