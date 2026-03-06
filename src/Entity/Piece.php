@@ -3,20 +3,23 @@
 namespace App\Entity;
 
 use App\Repository\PieceRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\ApiProperty;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-use Symfony\Component\Serializer\Attribute\Groups;
-
-#[ORM\Entity(repositoryClass: PieceRepository::class), ApiResource(
+#[ORM\Entity(repositoryClass: PieceRepository::class)]
+#[ApiResource(
     normalizationContext: ['groups' => ['piece:read']],
     denormalizationContext: ['groups' => ['piece:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['unite.id' => 'exact'])]
 class Piece
 {
     #[ORM\Id]

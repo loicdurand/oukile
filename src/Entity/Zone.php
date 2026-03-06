@@ -3,16 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\ZoneRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: ZoneRepository::class), ApiResource(
+#[ORM\Entity(repositoryClass: ZoneRepository::class)]
+#[ApiResource(
     normalizationContext: ['groups' => ['zone:read']],
     denormalizationContext: ['groups' => ['zone:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['piece.unite.id' => 'exact'])]
 class Zone
 {
     #[ORM\Id]

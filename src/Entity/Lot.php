@@ -3,14 +3,22 @@
 namespace App\Entity;
 
 use App\Repository\LotRepository;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: LotRepository::class), ApiResource(
+#[ORM\Entity(repositoryClass: LotRepository::class)]
+#[ApiResource(
     normalizationContext: ['groups' => ['lot:read']],
     denormalizationContext: ['groups' => ['lot:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'famille.id'                                => 'exact',
+    'emplacement.id'                            => 'exact',
+    'emplacement.rangement.zone.piece.unite.id' => 'exact',
+])]
 class Lot
 {
     #[ORM\Id]

@@ -3,16 +3,20 @@
 namespace App\Entity;
 
 use App\Repository\EmplacementRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Metadata\ApiResource;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: EmplacementRepository::class), ApiResource(
+#[ORM\Entity(repositoryClass: EmplacementRepository::class)]
+#[ApiResource(
     normalizationContext: ['groups' => ['emplacement:read']],
     denormalizationContext: ['groups' => ['emplacement:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: ['rangement.zone.piece.unite.id' => 'exact'])]
 class Emplacement
 {
     #[ORM\Id]

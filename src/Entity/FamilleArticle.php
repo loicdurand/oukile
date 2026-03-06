@@ -3,14 +3,22 @@
 namespace App\Entity;
 
 use App\Repository\FamilleArticleRepository;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
-#[ORM\Entity(repositoryClass: FamilleArticleRepository::class), ApiResource(
+#[ORM\Entity(repositoryClass: FamilleArticleRepository::class)]
+#[ApiResource(
     normalizationContext: ['groups' => ['familleArticle:read']],
     denormalizationContext: ['groups' => ['familleArticle:write']]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    'marque'      => 'partial',
+    'modele'      => 'partial',
+    'description' => 'partial',
+])]
 class FamilleArticle
 {
     #[ORM\Id]
