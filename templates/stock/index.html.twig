@@ -13,13 +13,16 @@
 {% endblock %}
 
 {% block body %}
-<div class="qs" id="qs-app">
+<div id="qs-app" class="fr-tabs qs-app">
 
     {# ── Tab bar ────────────────────────────────────────────────────────── #}
 
-    <nav class="qs__tabs" role="tablist" aria-label="Fonctions">
+    <nav role="tablist" aria-label="Fonctions">
+        <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
+            <li role="presentation">
         <button
-            class="qs__tab qs__tab--active"
+            class="fr-tabs__tab qs__tabs"
+            aria-selected="true"
             id="tab-trouver"
             role="tab"
             aria-selected="true"
@@ -29,9 +32,11 @@
             <span class="qs__tab-label">Trouver</span>
             <kbd class="qs__tab-kbd" title="Raccourci : touche 1">1</kbd>
         </button>
-
+            </li>
+<li role="presentation">
         <button
-            class="qs__tab"
+            class="fr-tabs__tab qs__tabs"
+            aria-selected="false"
             id="tab-ranger"
             role="tab"
             aria-selected="false"
@@ -41,9 +46,11 @@
             <span class="qs__tab-label">Ranger</span>
             <kbd class="qs__tab-kbd" title="Raccourci : touche 2">2</kbd>
         </button>
-
+</li>
+<li role="presentation">
         <button
-            class="qs__tab"
+            class="fr-tabs__tab qs__tabs"
+            aria-selected="false"
             id="tab-sortir"
             role="tab"
             aria-selected="false"
@@ -53,12 +60,13 @@
             <span class="qs__tab-label">Sortir</span>
             <kbd class="qs__tab-kbd" title="Raccourci : touche 3">3</kbd>
         </button>
+</li>
     </nav>
 
     {# ── Panel : Trouver ────────────────────────────────────────────────── #}
 
     <div
-        class="qs__panel"
+        class="fr-tabs__panel fr-tabs__panel--selected"
         id="panel-trouver"
         role="tabpanel"
         aria-labelledby="tab-trouver"
@@ -97,7 +105,7 @@
     {# ── Panel : Ranger ─────────────────────────────────────────────────── #}
 
     <div
-        class="qs__panel"
+        class="fr-tabs__panel"
         id="panel-ranger"
         role="tabpanel"
         aria-labelledby="tab-ranger"
@@ -191,7 +199,7 @@
     {# ── Panel : Sortir ─────────────────────────────────────────────────── #}
 
     <div
-        class="qs__panel"
+        class="fr-tabs__panel"
         id="panel-sortir"
         role="tabpanel"
         aria-labelledby="tab-sortir"

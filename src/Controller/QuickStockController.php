@@ -10,13 +10,13 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 final class QuickStockController extends AbstractController
 {
-    #[Route('/stock', name: 'oukile_stock')]
+    #[Route("/", name: "oukile_stock")]
     public function index(#[CurrentUser] ?User $user): Response
     {
         if (is_null($user)) {
-            return $this->redirectToRoute('oukile_login');
+            return $this->redirectToRoute("oukile_login");
         }
 
-        return $this->render('stock/index.html.twig', ['user' => $user]);
+        return $this->render("stock/index.html.twig", ["user" => $user]);
     }
 }

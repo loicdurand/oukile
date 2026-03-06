@@ -231,10 +231,10 @@
 																										{% for i,lot in emplacement.lots %}
 																											<tr id="table-emplacement-{{emplacement.id}}-row-key-{{lot.id}}" data-row-key="{{ i + 1}}">
 																												<td>{{ lot.nombre }}</td>
-																												<td>{{ lot.familleArticle.categorie.nom }}</td>
-																												<td>{{ lot.familleArticle.marque }}
-																													{{ lot.familleArticle.modele }}</td>
-																												<td>{{ lot.familleArticle.description }}</td>
+																												<td>{{ lot.famille.categorie.nom }}</td>
+																												<td>{{ lot.famille.marque }}
+																													{{ lot.famille.modele }}</td>
+																												<td>{{ lot.famille.description }}</td>
 																											</tr>
 																										{% endfor %}
 																									</tbody>

@@ -49,7 +49,7 @@
 						<div class="fr-header__brand fr-enlarge-link">
 							<div class="fr-header__brand-top">
 								<div class="fr-header__logo">
-									<a href="{{ path('oukile_index') }}" title="Accueil - {{ app_name | raw }} - {{ app_tagline }}">
+									<a href="{{ path('oukile_stock') }}" title="Accueil - {{ app_name | raw }} - {{ app_tagline }}">
 										<p class="fr-logo">
 											Gendarmerie
 											<br/>
@@ -64,7 +64,7 @@
 								</div>
 							</div>
 							<div class="fr-header__service">
-								<a href="{{ path('oukile_index') }}" title="Accueil - {{ app_name | raw }} - {{ app_tagline }}">
+								<a href="{{ path('oukile_stock') }}" title="Accueil - {{ app_name | raw }} - {{ app_tagline }}">
 									<p class="fr-header__service-title">
 										{{ app_name | raw }}
 									</p>
@@ -107,7 +107,7 @@
 					<nav class="fr-nav" role="navigation" aria-label="Menu principal">
 						<ul class="fr-nav__list">
 							<li class="fr-nav__item">
-								<a class="fr-nav__link" aria-current="{{ app.request.pathinfo == '/' ? 'true' : 'false' }}" href="{{ path('oukile_index')}}" target="_self">
+								<a class="fr-nav__link" aria-current="{{ app.request.pathinfo == '/' ? 'true' : 'false' }}" href="{{ path('oukile_stock')}}" target="_self">
 									Accueil
 								</a>
 							</li>
@@ -118,15 +118,16 @@
 		</header>
 
 		{# BODY #}
-		<div class="fr-container fr-mt-2w"> {% block body %}{% endblock %}
-			</div>
+		<main class="fr-container fr-mt-2w">
+		{% block body %}{% endblock %}
+		</main>
 
 			{# FOOTER #}
 			<footer class="fr-footer fr-mt-4w" role="contentinfo" id="footer">
 				<div class="fr-container">
 					<div class="fr-footer__body">
 						<div class="fr-footer__brand fr-enlarge-link">
-							<a id="brand-link" title="Retour à l'accueil du site - Eleksyon - République Française" href="{{ path('oukile_index')}}">
+							<a id="brand-link" title="Retour à l'accueil du site - Eleksyon - République Française" href="{{ path('oukile_stock')}}">
 								<p class="fr-logo">
 									{{ app_name | raw }}
 								</p>
@@ -155,23 +156,6 @@
 					</div>
 					<div
 						class="fr-footer__bottom">
-						{# <ul class="fr-footer__bottom-list">
-																																																																																																																															<li class="fr-footer__bottom-item">
-																																																																																																																																<a id="footer__bottom-link-4" href="#" class="fr-footer__bottom-link">Plan du site</a>
-																																																																																																																															</li>
-																																																																																																																															<li class="fr-footer__bottom-item">
-																																																																																																																																<a id="footer__bottom-link-5" href="#" class="fr-footer__bottom-link">Accessibilité : partiellement conforme</a>
-																																																																																																																															</li>
-																																																																																																																															<li class="fr-footer__bottom-item">
-																																																																																																																																<a id="footer__bottom-link-6" href="#" class="fr-footer__bottom-link">Mentions légales</a>
-																																																																																																																															</li>
-																																																																																																																															<li class="fr-footer__bottom-item">
-																																																																																																																																<a id="footer__bottom-link-7" href="#" class="fr-footer__bottom-link">Données personnelles</a>
-																																																																																																																															</li>
-																																																																																																																															<li class="fr-footer__bottom-item">
-																																																																																																																																<a id="footer__bottom-link-8" href="#" class="fr-footer__bottom-link">Gestion des cookies</a>
-																																																																																																																															</li>
-																																																																																																																														</ul> #}
 						<div class="fr-footer__bottom-copy">
 							<p>Sauf mention explicite de propriété intellectuelle détenue par des tiers, les contenus de ce site sont proposés sous
 								<a href="https://github.com/etalab/licence-ouverte/blob/master/LO.md" target="_blank" rel="noopener external" title="Licence etalab - nouvelle fenêtre">licence etalab-2.0</a>
