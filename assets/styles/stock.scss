@@ -1,38 +1,23 @@
 // =============================================================================
 // Quick Stock SPA — styles
 // Naming: BEM with .qs__ prefix
+// Tokens: DSFR CSS custom properties + Marianne font
 // =============================================================================
 
-// ── Variables ──────────────────────────────────────────────────────────────
+// ── DSFR token aliases ──────────────────────────────────────────────────────
+// All colours come from the DSFR CSS variables injected by @gouvfr/dsfr.
+// We only define fallbacks for the very few cases where we need a tint.
 
-$qs-primary:       #1a56db;
-$qs-primary-dark:  #1140a5;
-$qs-primary-tint:  rgba(#1a56db, 0.08);
-$qs-success:       #0d7340;
-$qs-success-tint:  rgba(#0d7340, 0.10);
-$qs-danger:        #c0392b;
-$qs-danger-tint:   rgba(#c0392b, 0.10);
-
-$qs-text:          #111827;
-$qs-text-muted:    #6b7280;
-$qs-border:        #e5e7eb;
-$qs-bg:            #f9fafb;
-$qs-card:          #ffffff;
-
-$qs-radius:        12px;
-$qs-radius-sm:     8px;
-$qs-shadow:        0 1px 3px rgba(0, 0, 0, 0.07), 0 4px 20px rgba(0, 0, 0, 0.05);
-$qs-transition:    160ms ease;
+$qs-transition: 160ms ease;
 
 // ── Root ───────────────────────────────────────────────────────────────────
 
 .qs {
     max-width: 700px;
-    margin: 2rem auto 4rem;
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    color: $qs-text;
+    margin: var(--spacing-6w, 1.5rem) auto var(--spacing-12w, 3rem);
+    font-family: Marianne, arial, sans-serif;
+    color: var(--text-default-grey);
 
-    // Loading overlay while store is being fetched
     &[data-loading] {
         opacity: 0.5;
         pointer-events: none;
@@ -43,12 +28,12 @@ $qs-transition:    160ms ease;
 
 .qs__tabs {
     display: flex;
-    gap: 4px;
-    background: $qs-bg;
-    border: 1px solid $qs-border;
-    border-radius: $qs-radius;
-    padding: 4px;
-    margin-bottom: 1.5rem;
+    gap: 2px;
+    background: var(--background-alt-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    padding: 3px;
+    margin-bottom: var(--spacing-4w, 1rem);
 }
 
 .qs__tab {
@@ -56,31 +41,35 @@ $qs-transition:    160ms ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 7px;
-    padding: 10px 8px;
+    gap: var(--spacing-2v, 0.5rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-2v, 0.5rem);
     background: transparent;
     border: none;
-    border-radius: calc($qs-radius - 4px);
+    border-radius: 2px;
     cursor: pointer;
-    font-size: 0.9rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
     font-weight: 500;
-    color: $qs-text-muted;
-    transition: background $qs-transition, color $qs-transition, box-shadow $qs-transition;
+    color: var(--text-mention-grey);
+    transition:
+        background $qs-transition,
+        color $qs-transition,
+        box-shadow $qs-transition;
 
     &:hover {
-        background: $qs-primary-tint;
-        color: $qs-primary;
+        background: var(--background-default-grey-hover);
+        color: var(--text-action-high-blue-france);
     }
 
     &--active {
-        background: $qs-card;
-        color: $qs-primary;
-        font-weight: 600;
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.10);
+        background: var(--background-default-grey);
+        color: var(--text-action-high-blue-france);
+        font-weight: 700;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     }
 
     &:focus-visible {
-        outline: 2px solid $qs-primary;
+        outline: 2px solid var(--border-action-high-blue-france);
         outline-offset: 2px;
     }
 }
@@ -96,57 +85,73 @@ $qs-transition:    160ms ease;
     justify-content: center;
     width: 18px;
     height: 18px;
-    border: 1px solid $qs-border;
-    border-radius: 4px;
-    font-size: 0.65rem;
+    border: 1px solid var(--border-default-grey);
+    border-radius: 3px;
+    font-size: 0.625rem;
     font-family: monospace;
-    background: $qs-bg;
-    color: $qs-text-muted;
+    background: var(--background-alt-grey);
+    color: var(--text-mention-grey);
     line-height: 1;
-    opacity: 0.75;
+    opacity: 0.8;
 
     .qs__tab--active & {
-        border-color: rgba($qs-primary, 0.3);
-        color: $qs-primary;
-        background: $qs-primary-tint;
+        border-color: var(--border-action-high-blue-france);
+        color: var(--text-action-high-blue-france);
+        background: var(--background-contrast-blue-france);
     }
 }
 
 // ── Panel ──────────────────────────────────────────────────────────────────
 
 .qs__panel {
-    background: $qs-card;
-    border: 1px solid $qs-border;
-    border-radius: $qs-radius;
-    padding: 1.5rem;
-    box-shadow: $qs-shadow;
+    background: var(--background-default-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    padding: var(--spacing-4w, 1rem);
+    box-shadow: var(--raised-shadow, 0 2px 6px rgba(0, 0, 18, 0.08));
     animation: qs-fade-in 180ms ease;
 }
 
 @keyframes qs-fade-in {
-    from { opacity: 0; transform: translateY(6px); }
-    to   { opacity: 1; transform: translateY(0);   }
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 // ── Input ──────────────────────────────────────────────────────────────────
 
 .qs__input {
     width: 100%;
-    padding: 11px 14px;
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3v, 0.75rem);
+    font-family: Marianne, arial, sans-serif;
     font-size: 1rem;
-    border: 1.5px solid $qs-border;
-    border-radius: $qs-radius-sm;
+    line-height: 1.5rem;
+    border: 2px solid var(--border-default-grey);
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-bottom-color: var(--border-plain-grey);
     outline: none;
-    background: $qs-card;
-    color: $qs-text;
-    transition: border-color $qs-transition, box-shadow $qs-transition;
+    background: var(--background-default-grey);
+    color: var(--text-default-grey);
+    transition:
+        border-color $qs-transition,
+        box-shadow $qs-transition;
     box-sizing: border-box;
 
-    &::placeholder { color: $qs-text-muted; }
+    &::placeholder {
+        color: var(--text-disabled-grey);
+    }
 
     &:focus {
-        border-color: $qs-primary;
-        box-shadow: 0 0 0 3px rgba($qs-primary, 0.12);
+        border-color: var(--border-action-high-blue-france);
+        border-bottom-color: var(--border-action-high-blue-france);
+        box-shadow: inset 0 -2px 0 0 var(--border-action-high-blue-france);
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
     }
 
     &--number {
@@ -154,24 +159,22 @@ $qs-transition:    160ms ease;
         text-align: center;
     }
 
-    // Remove browser chrome from search inputs
     &[type="search"] {
         &::-webkit-search-cancel-button,
-        &::-webkit-search-decoration { -webkit-appearance: none; }
+        &::-webkit-search-decoration {
+            -webkit-appearance: none;
+        }
     }
 }
 
 // ── Loading indicator ──────────────────────────────────────────────────────
 
 .qs__loading {
-    // `display` is intentionally omitted here so the HTML `hidden` attribute
-    // keeps its native `display: none` effect. Only override display when
-    // the element is actually visible.
     align-items: center;
-    gap: 8px;
-    margin-top: 10px;
-    font-size: 0.85rem;
-    color: $qs-text-muted;
+    gap: var(--spacing-2v, 0.5rem);
+    margin-top: var(--spacing-2w, 0.5rem);
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
 
     &:not([hidden]) {
         display: flex;
@@ -182,13 +185,17 @@ $qs-transition:    160ms ease;
     flex-shrink: 0;
     width: 14px;
     height: 14px;
-    border: 2px solid $qs-border;
-    border-top-color: $qs-primary;
+    border: 2px solid var(--border-default-grey);
+    border-top-color: var(--border-action-high-blue-france);
     border-radius: 50%;
     animation: qs-spin 600ms linear infinite;
 }
 
-@keyframes qs-spin { to { transform: rotate(360deg); } }
+@keyframes qs-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 
 // ── Autocomplete dropdown ──────────────────────────────────────────────────
 
@@ -199,46 +206,48 @@ $qs-transition:    160ms ease;
 .qs__dropdown {
     position: absolute;
     inset-inline: 0;
-    top: calc(100% + 4px);
-    background: $qs-card;
-    border: 1.5px solid $qs-primary;
-    border-radius: $qs-radius-sm;
-    box-shadow: $qs-shadow;
+    top: calc(100% + 2px);
+    background: var(--background-default-grey);
+    border: 1px solid var(--border-action-high-blue-france);
+    border-radius: 0 0 0.25rem 0.25rem;
+    box-shadow: var(--raised-shadow, 0 4px 12px rgba(0, 0, 18, 0.12));
     max-height: 260px;
     overflow-y: auto;
     z-index: 200;
     margin: 0;
-    padding: 4px;
+    padding: var(--spacing-1v, 0.25rem);
     list-style: none;
 }
 
 .qs__dropdown-item {
-    padding: 9px 12px;
-    border-radius: calc($qs-radius-sm - 3px);
+    padding: var(--spacing-2v, 0.5rem) var(--spacing-3v, 0.75rem);
+    border-radius: 2px;
     cursor: pointer;
     font-size: 0.875rem;
-    transition: background $qs-transition, color $qs-transition;
+    transition:
+        background $qs-transition,
+        color $qs-transition;
 
     &:hover,
     &--active {
-        background: $qs-primary-tint;
-        color: $qs-primary;
+        background: var(--background-contrast-blue-france);
+        color: var(--text-action-high-blue-france);
     }
 }
 
 .qs__dropdown-empty {
-    padding: 10px 12px;
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3v, 0.75rem);
     font-size: 0.875rem;
-    color: $qs-text-muted;
+    color: var(--text-mention-grey);
     font-style: italic;
 }
 
 // ── Steps (ranger / sortir) ────────────────────────────────────────────────
 
 .qs__step + .qs__step {
-    margin-top: 1.25rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid $qs-border;
+    margin-top: var(--spacing-3w, 0.75rem);
+    padding-top: var(--spacing-3w, 0.75rem);
+    border-top: 1px solid var(--border-default-grey);
 }
 
 // ── Famille badge ──────────────────────────────────────────────────────────
@@ -246,14 +255,14 @@ $qs-transition:    160ms ease;
 .qs__famille-badge {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    background: $qs-primary-tint;
-    color: $qs-primary;
+    gap: var(--spacing-2v, 0.5rem);
+    background: var(--background-contrast-blue-france);
+    color: var(--text-action-high-blue-france);
     border-radius: 999px;
-    padding: 6px 14px;
+    padding: var(--spacing-1w, 0.25rem) var(--spacing-3w, 0.75rem);
     font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 1.25rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-3w, 0.75rem);
     max-width: 100%;
     overflow: hidden;
 }
@@ -263,16 +272,18 @@ $qs-transition:    160ms ease;
     background: none;
     border: none;
     cursor: pointer;
-    color: $qs-text-muted;
-    font-size: 0.85rem;
+    color: var(--text-mention-grey);
+    font-size: 0.875rem;
     padding: 2px 5px;
-    border-radius: 4px;
+    border-radius: 2px;
     line-height: 1;
-    transition: color $qs-transition, background $qs-transition;
+    transition:
+        color $qs-transition,
+        background $qs-transition;
 
     &:hover {
-        color: $qs-danger;
-        background: $qs-danger-tint;
+        color: var(--text-default-error);
+        background: var(--background-contrast-error);
     }
 }
 
@@ -281,8 +292,8 @@ $qs-transition:    160ms ease;
 .qs__selects {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.875rem 1rem;
-    margin-bottom: 1.25rem;
+    gap: var(--spacing-3w, 0.75rem) var(--spacing-4w, 1rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
 
     @media (max-width: 520px) {
         grid-template-columns: 1fr;
@@ -293,72 +304,96 @@ $qs-transition:    160ms ease;
 .qs__quantity-group {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: var(--spacing-1v, 0.25rem);
 }
 
 .qs__label {
     font-size: 0.75rem;
     font-weight: 700;
-    color: $qs-text-muted;
+    color: var(--text-mention-grey);
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .qs__select {
-    padding: 10px 12px;
-    border: 1.5px solid $qs-border;
-    border-radius: $qs-radius-sm;
-    font-size: 0.9rem;
-    background: $qs-card;
-    color: $qs-text;
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3v, 0.75rem);
+    border: 2px solid var(--border-default-grey);
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-bottom-color: var(--border-plain-grey);
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    background: var(--background-default-grey);
+    color: var(--text-default-grey);
     cursor: pointer;
     outline: none;
-    transition: border-color $qs-transition, box-shadow $qs-transition;
+    transition:
+        border-color $qs-transition,
+        box-shadow $qs-transition;
 
     &:focus {
-        border-color: $qs-primary;
-        box-shadow: 0 0 0 3px rgba($qs-primary, 0.12);
+        border-color: var(--border-action-high-blue-france);
+        border-bottom-color: var(--border-action-high-blue-france);
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
     }
 
     &:disabled {
-        background: $qs-bg;
-        color: $qs-text-muted;
+        background: var(--background-disabled-grey);
+        color: var(--text-disabled-grey);
+        border-bottom-color: var(--border-disabled-grey);
         cursor: not-allowed;
     }
 }
 
 // ── Confirm button ─────────────────────────────────────────────────────────
+// Mirror fr-btn styling without adding the class to the Twig template.
 
 .qs__confirm-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 11px 22px;
-    background: $qs-primary;
-    color: #fff;
-    border: none;
-    border-radius: $qs-radius-sm;
-    font-size: 0.95rem;
-    font-weight: 600;
+    gap: var(--spacing-2v, 0.5rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-6v, 1.5rem);
+    background: var(--background-action-high-blue-france);
+    color: var(--text-inverted-blue-france);
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
     cursor: pointer;
-    transition: background $qs-transition, transform 80ms ease;
+    transition:
+        background $qs-transition,
+        transform 80ms ease;
 
-    &:hover:not(:disabled) { background: $qs-primary-dark; }
-    &:active:not(:disabled) { transform: scale(0.97); }
+    &:hover:not(:disabled) {
+        background: var(--background-action-high-blue-france-hover);
+    }
+
+    &:active:not(:disabled) {
+        background: var(--background-action-high-blue-france-active);
+    }
 
     &:disabled {
-        background: $qs-border;
-        color: $qs-text-muted;
+        background: var(--background-disabled-grey);
+        color: var(--text-disabled-grey);
         cursor: not-allowed;
     }
 
     &--danger {
-        background: $qs-danger;
-        &:hover:not(:disabled) { background: darken($qs-danger, 8%); }
+        background: var(--background-action-high-error);
+        color: var(--text-inverted-error);
+
+        &:hover:not(:disabled) {
+            background: var(--background-action-high-error-hover);
+        }
+        &:active:not(:disabled) {
+            background: var(--background-action-high-error-active);
+        }
     }
 
     &:focus-visible {
-        outline: 2px solid $qs-primary;
+        outline: 2px solid var(--border-action-high-blue-france);
         outline-offset: 2px;
     }
 }
@@ -371,48 +406,50 @@ $qs-transition:    160ms ease;
 // ── Results (Trouver) ──────────────────────────────────────────────────────
 
 .qs__results {
-    margin-top: 1.25rem;
+    margin-top: var(--spacing-3w, 0.75rem);
     display: flex;
     flex-direction: column;
-    gap: 0.875rem;
+    gap: var(--spacing-3w, 0.75rem);
 }
 
 .qs__result-card {
-    background: $qs-bg;
-    border: 1px solid $qs-border;
-    border-radius: $qs-radius-sm;
-    padding: 1rem;
+    background: var(--background-alt-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    padding: var(--spacing-3w, 0.75rem);
     transition: border-color $qs-transition;
 
-    &:hover { border-color: rgba($qs-primary, 0.35); }
+    &:hover {
+        border-color: var(--border-action-high-blue-france);
+    }
 }
 
 .qs__result-header {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 6px 10px;
-    margin-bottom: 0.625rem;
+    gap: var(--spacing-1v, 0.25rem) var(--spacing-3v, 0.75rem);
+    margin-bottom: var(--spacing-2w, 0.5rem);
 }
 
 .qs__result-title {
     font-weight: 700;
-    font-size: 0.95rem;
-    color: $qs-text;
+    font-size: 0.9375rem;
+    color: var(--text-default-grey);
 }
 
 .qs__result-subtitle {
-    font-size: 0.85rem;
-    color: $qs-text-muted;
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
     flex: 1 1 auto;
 }
 
 .qs__result-categorie {
-    font-size: 0.7rem;
+    font-size: 0.6875rem;
     font-weight: 700;
-    background: $qs-primary-tint;
-    color: $qs-primary;
-    padding: 2px 9px;
+    background: var(--background-contrast-blue-france);
+    color: var(--text-action-high-blue-france);
+    padding: 2px var(--spacing-2v, 0.5rem);
     border-radius: 999px;
     white-space: nowrap;
     text-transform: uppercase;
@@ -427,62 +464,115 @@ $qs-transition:    160ms ease;
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2px;
 }
 
 .qs__location-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 6px 10px;
-    background: $qs-card;
-    border-radius: calc($qs-radius-sm - 2px);
-    gap: 1rem;
-    font-size: 0.85rem;
+    padding: var(--spacing-1w, 0.25rem) var(--spacing-3v, 0.75rem);
+    background: var(--background-default-grey);
+    border-left: 3px solid var(--border-action-high-blue-france);
+    gap: var(--spacing-4w, 1rem);
+    font-size: 0.875rem;
 }
 
 .qs__location-path {
-    color: $qs-text-muted;
-    // The › character provides visual separation; no extra styling needed.
+    flex: 1 1 auto;
+    color: var(--text-mention-grey);
+}
+
+.qs__location-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1v, 0.25rem);
 }
 
 .qs__location-qty {
-    flex-shrink: 0;
     font-weight: 700;
-    color: $qs-primary;
+    color: var(--text-action-high-blue-france);
     font-size: 0.875rem;
-    min-width: 2rem;
-    text-align: right;
+    min-width: 2.25rem;
+    text-align: center;
+}
+
+// ── +/− quick-action buttons ───────────────────────────────────────────────
+
+.qs__qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-default-grey);
+    background: var(--background-default-grey);
+    color: var(--text-default-grey);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background $qs-transition,
+        border-color $qs-transition,
+        color $qs-transition;
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &--plus {
+        border-color: var(--border-action-high-blue-france);
+        color: var(--text-action-high-blue-france);
+
+        &:hover {
+            background: var(--background-action-high-blue-france);
+            color: var(--text-inverted-blue-france);
+        }
+    }
+
+    &--minus {
+        border-color: var(--border-plain-error);
+        color: var(--text-default-error);
+
+        &:hover {
+            background: var(--background-action-high-error);
+            color: var(--text-inverted-error);
+        }
+    }
 }
 
 .qs__location-empty {
-    font-size: 0.85rem;
-    color: $qs-text-muted;
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
     font-style: italic;
     margin: 0;
-    padding: 4px 0;
+    padding: var(--spacing-1v, 0.25rem) 0;
 }
 
 // ── Feedback ───────────────────────────────────────────────────────────────
+// Mirror fr-alert styling (success / error) without the full component markup.
 
 .qs__feedback {
-    margin-top: 1rem;
-    padding: 11px 15px;
-    border-radius: $qs-radius-sm;
+    margin-top: var(--spacing-3w, 0.75rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-4w, 1rem);
+    border-radius: 0.25rem;
     font-size: 0.875rem;
     font-weight: 500;
-    line-height: 1.4;
+    line-height: 1.5;
 
     &--success {
-        background: $qs-success-tint;
-        color: $qs-success;
-        border: 1px solid rgba($qs-success, 0.25);
+        background: var(--background-contrast-success);
+        color: var(--text-default-success);
+        border-left: 4px solid var(--border-plain-success);
     }
 
     &--error {
-        background: $qs-danger-tint;
-        color: $qs-danger;
-        border: 1px solid rgba($qs-danger, 0.25);
+        background: var(--background-contrast-error);
+        color: var(--text-default-error);
+        border-left: 4px solid var(--border-plain-error);
     }
 }
 
@@ -491,10 +581,113 @@ $qs-transition:    160ms ease;
 .qs__no-results,
 .qs__error {
     text-align: center;
-    color: $qs-text-muted;
+    color: var(--text-mention-grey);
     font-size: 0.875rem;
-    padding: 1.5rem;
+    padding: var(--spacing-6w, 1.5rem);
     margin: 0;
 }
 
-.qs__error { color: $qs-danger; }
+.qs__error {
+    color: var(--text-default-error);
+}
+
+// ── Confirmation modal ─────────────────────────────────────────────────────
+// Uses the native <dialog> element styled to match fr-modal.
+
+.qs__modal {
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0;
+    width: min(480px, calc(100vw - 2rem));
+    box-shadow: 0 8px 32px rgba(0, 0, 18, 0.18);
+    background: var(--background-default-grey);
+
+    &::backdrop {
+        background: rgba(0, 0, 18, 0.48);
+    }
+}
+
+.qs__modal-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.qs__modal-header {
+    padding: var(--spacing-4w, 1rem) var(--spacing-6w, 1.5rem) 0;
+    border-bottom: 1px solid var(--border-default-grey);
+    padding-bottom: var(--spacing-3w, 0.75rem);
+}
+
+.qs__modal-title {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-default-grey);
+    margin: 0;
+}
+
+.qs__modal-body {
+    padding: var(--spacing-4w, 1rem) var(--spacing-6w, 1.5rem);
+}
+
+.qs__modal-message {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1rem;
+    color: var(--text-default-grey);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.qs__modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3w, 0.75rem);
+    padding: 0 var(--spacing-6w, 1.5rem) var(--spacing-4w, 1rem);
+}
+
+.qs__modal-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-6v, 1.5rem);
+    border-radius: 0.25rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    cursor: pointer;
+    transition: background $qs-transition;
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    &--cancel {
+        background: transparent;
+        color: var(--text-action-high-blue-france);
+        border: 1px solid var(--border-action-high-blue-france);
+
+        &:hover:not(:disabled) {
+            background: var(--background-contrast-blue-france);
+        }
+    }
+
+    &--confirm {
+        background: var(--background-action-high-blue-france);
+        color: var(--text-inverted-blue-france);
+        border: 1px solid transparent;
+
+        &:hover:not(:disabled) {
+            background: var(--background-action-high-blue-france-hover);
+        }
+
+        &:active:not(:disabled) {
+            background: var(--background-action-high-blue-france-active);
+        }
+    }
+}
