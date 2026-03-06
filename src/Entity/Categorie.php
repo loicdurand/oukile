@@ -3,28 +3,59 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[
+    ApiResource(
+        normalizationContext: ["groups" => ["categorie:read"]],
+        denormalizationContext: ["groups" => ["categorie:write"]],
+    ),
+]
+#[ApiFilter(SearchFilter::class, properties: ["nom" => "partial"])]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['lot:read', 'familleArticle:read', 'familleArticle:write'])]
+    #[
+        Groups([
+            "lot:read",
+            "familleArticle:read",
+            "familleArticle:write",
+            "categorie:read",
+        ]),
+    ]
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]
-    #[Groups(['lot:read', 'familleArticle:read', 'familleArticle:write'])]
+    #[
+        Groups([
+            "lot:read",
+            "familleArticle:read",
+            "familleArticle:write",
+            "categorie:read",
+            "categorie:write",
+        ]),
+    ]
     private ?string $nom = null;
 
     /**
      * @var Collection<int, Article>
      */
-    #[ORM\OneToMany(targetEntity: Article::class, mappedBy: 'categorie', orphanRemoval: true)]
+    #[
+        ORM\OneToMany(
+            targetEntity: Article::class,
+            mappedBy: "categorie",
+            orphanRemoval: true,
+        ),
+    ]
     private Collection $articles;
 
     public function __construct()

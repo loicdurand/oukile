@@ -18,49 +18,60 @@
     {# ── Tab bar ────────────────────────────────────────────────────────── #}
 
     <nav role="tablist" aria-label="Fonctions">
-        <ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
+        <ul class="fr-tabs__list" role="tablist" aria-label="Fonctions de gestion du stock">
             <li role="presentation">
-        <button
-            class="fr-tabs__tab qs__tabs"
-            aria-selected="true"
-            id="tab-trouver"
-            role="tab"
-            aria-selected="true"
-            aria-controls="panel-trouver"
-        >
-            <span class="qs__tab-icon" aria-hidden="true">&#128269;</span>
-            <span class="qs__tab-label">Trouver</span>
-            <kbd class="qs__tab-kbd" title="Raccourci : touche 1">1</kbd>
-        </button>
+                <button
+                    class="fr-tabs__tab qs__tabs"
+                    id="tab-trouver"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="panel-trouver"
+                >
+                    <span class="qs__tab-icon" aria-hidden="true">&#128269;</span>
+                    <span class="qs__tab-label">Trouver</span>
+                    <kbd class="qs__tab-kbd" title="Raccourci : touche 1">1</kbd>
+                </button>
             </li>
-<li role="presentation">
-        <button
-            class="fr-tabs__tab qs__tabs"
-            aria-selected="false"
-            id="tab-ranger"
-            role="tab"
-            aria-selected="false"
-            aria-controls="panel-ranger"
-        >
-            <span class="qs__tab-icon" aria-hidden="true">&#128229;</span>
-            <span class="qs__tab-label">Ranger</span>
-            <kbd class="qs__tab-kbd" title="Raccourci : touche 2">2</kbd>
-        </button>
-</li>
-<li role="presentation">
-        <button
-            class="fr-tabs__tab qs__tabs"
-            aria-selected="false"
-            id="tab-sortir"
-            role="tab"
-            aria-selected="false"
-            aria-controls="panel-sortir"
-        >
-            <span class="qs__tab-icon" aria-hidden="true">&#128228;</span>
-            <span class="qs__tab-label">Sortir</span>
-            <kbd class="qs__tab-kbd" title="Raccourci : touche 3">3</kbd>
-        </button>
-</li>
+            <li role="presentation">
+                <button
+                    class="fr-tabs__tab qs__tabs"
+                    id="tab-ranger"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-ranger"
+                >
+                    <span class="qs__tab-icon" aria-hidden="true">&#128229;</span>
+                    <span class="qs__tab-label">Ranger</span>
+                    <kbd class="qs__tab-kbd" title="Raccourci : touche 2">2</kbd>
+                </button>
+            </li>
+            <li role="presentation">
+                <button
+                    class="fr-tabs__tab qs__tabs"
+                    id="tab-sortir"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-sortir"
+                >
+                    <span class="qs__tab-icon" aria-hidden="true">&#128228;</span>
+                    <span class="qs__tab-label">Sortir</span>
+                    <kbd class="qs__tab-kbd" title="Raccourci : touche 3">3</kbd>
+                </button>
+            </li>
+            <li role="presentation">
+                <button
+                    class="fr-tabs__tab qs__tabs"
+                    id="tab-catalogue"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="panel-catalogue"
+                >
+                    <span class="qs__tab-icon" aria-hidden="true">&#128218;</span>
+                    <span class="qs__tab-label">Articles</span>
+                    <kbd class="qs__tab-kbd" title="Raccourci : touche 4">4</kbd>
+                </button>
+            </li>
+        </ul>
     </nav>
 
     {# ── Panel : Trouver ────────────────────────────────────────────────── #}
@@ -290,5 +301,121 @@
         <div class="qs__feedback" id="sortir-feedback" role="alert" hidden></div>
     </div>
 
-</div>
+    {# ── Panel : Catalogue ──────────────────────────────────────────────── #}
+
+    <div
+        class="fr-tabs__panel"
+        id="panel-catalogue"
+        role="tabpanel"
+        aria-labelledby="tab-catalogue"
+        hidden
+    >
+        <div class="cat__feedback" id="cat-feedback" hidden></div>
+
+        {# ── Section : Articles (FamilleArticle) ──────────────────────── #}
+
+        <section class="cat__section" aria-labelledby="cat-famille-heading">
+            <div class="cat__section-header">
+                <div class="cat__section-title-group">
+                    <h2 class="cat__section-title" id="cat-famille-heading">
+                        <span aria-hidden="true">📦</span> Articles
+                    </h2>
+                    <span class="cat__count" id="cat-famille-count" aria-live="polite"></span>
+                </div>
+                <button
+                    class="fr-btn fr-btn--sm fr-icon-add-line"
+                    id="cat-famille-create"
+                    type="button"
+                >
+                    Nouvel article
+                </button>
+            </div>
+
+            <div class="cat__search-row">
+                <label class="fr-label fr-sr-only" for="cat-famille-search">Filtrer les articles</label>
+                <input
+                    type="search"
+                    id="cat-famille-search"
+                    class="fr-input cat__search"
+                    placeholder="Filtrer par marque, modèle, description, catégorie…"
+                    autocomplete="off"
+                    aria-label="Filtrer les articles"
+                />
+            </div>
+
+            <div class="fr-table fr-table--bordered cat__table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Marque / Modèle</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Catégorie</th>
+                            <th scope="col" class="cat__col-actions">
+                                <span class="fr-sr-only">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="cat-famille-tbody">
+                        <tr>
+                            <td colspan="4" class="cat__empty">Chargement…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        {# ── Section : Catégories ─────────────────────────────────────── #}
+
+        <section class="cat__section" aria-labelledby="cat-categorie-heading">
+            <div class="cat__section-header">
+                <div class="cat__section-title-group">
+                    <h2 class="cat__section-title" id="cat-categorie-heading">
+                        <span aria-hidden="true">🏷️</span> Catégories
+                    </h2>
+                    <span class="cat__count" id="cat-categorie-count" aria-live="polite"></span>
+                </div>
+                <button
+                    class="fr-btn fr-btn--sm fr-btn--secondary fr-icon-add-line"
+                    id="cat-categorie-create"
+                    type="button"
+                >
+                    Nouvelle catégorie
+                </button>
+            </div>
+
+            <div class="cat__search-row">
+                <label class="fr-label fr-sr-only" for="cat-categorie-search">Filtrer les catégories</label>
+                <input
+                    type="search"
+                    id="cat-categorie-search"
+                    class="fr-input cat__search"
+                    placeholder="Filtrer par nom…"
+                    autocomplete="off"
+                    aria-label="Filtrer les catégories"
+                />
+            </div>
+
+            <div class="fr-table fr-table--bordered cat__table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th scope="col">Nom</th>
+                            <th scope="col">Articles</th>
+                            <th scope="col" class="cat__col-actions">
+                                <span class="fr-sr-only">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="cat-categorie-tbody">
+                        <tr>
+                            <td colspan="3" class="cat__empty">Chargement…</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>{# /panel-catalogue #}
+
+</div>{# /qs-app #}
 {% endblock %}

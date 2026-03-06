@@ -2,10 +2,11 @@ import { initStore } from "./store";
 import { initTrouver } from "./tabs/trouver";
 import { initRanger } from "./tabs/ranger";
 import { initSortir } from "./tabs/sortir";
+import { initCatalogue } from "./tabs/catalogue";
 
-type TabId = "trouver" | "ranger" | "sortir";
+type TabId = "trouver" | "ranger" | "sortir" | "catalogue";
 
-const TAB_ORDER: TabId[] = ["trouver", "ranger", "sortir"];
+const TAB_ORDER: TabId[] = ["trouver", "ranger", "sortir", "catalogue"];
 
 let activeTab: TabId = "trouver";
 const focusFns = new Map<TabId, () => void>();
@@ -63,6 +64,7 @@ export async function initApp(): Promise<void> {
     focusFns.set("trouver", initTrouver());
     focusFns.set("ranger", initRanger());
     focusFns.set("sortir", initSortir());
+    focusFns.set("catalogue", initCatalogue());
 
     // Wire up tab buttons.
     TAB_ORDER.forEach((id) => {
@@ -83,6 +85,7 @@ export async function initApp(): Promise<void> {
         if (e.key === "1") activateTab("trouver");
         if (e.key === "2") activateTab("ranger");
         if (e.key === "3") activateTab("sortir");
+        if (e.key === "4") activateTab("catalogue");
     });
 
     // Focus the first tab.

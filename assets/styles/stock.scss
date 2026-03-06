@@ -672,4 +672,256 @@ $qs-transition: 160ms ease;
             background: var(--background-action-high-blue-france-active);
         }
     }
+
+    &--danger {
+        background: var(--background-action-high-error);
+        color: var(--text-inverted-error);
+        border: 1px solid transparent;
+
+        &:hover:not(:disabled) {
+            background: var(--background-action-high-error-hover);
+        }
+    }
+}
+
+// ── Form modal fields ──────────────────────────────────────────────────────
+
+.qs__modal--form {
+    width: min(540px, calc(100vw - 2rem));
+}
+
+.cat__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1v, 0.25rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
+
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+
+.cat__form-input,
+.cat__form-select {
+    // fr-input / fr-select already provide base styles via DSFR;
+    // we only ensure box-sizing consistency here.
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.cat__form-error {
+    margin-top: var(--spacing-2w, 0.5rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3w, 0.75rem);
+    border-left: 4px solid var(--border-plain-error);
+    background: var(--background-contrast-error);
+    color: var(--text-default-error);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+// ── Catalogue panel ────────────────────────────────────────────────────────
+
+.cat__feedback {
+    margin-bottom: var(--spacing-3w, 0.75rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-4w, 1rem);
+    border-radius: 0.25rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+
+    &--success {
+        background: var(--background-contrast-success);
+        color: var(--text-default-success);
+        border-left: 4px solid var(--border-plain-success);
+    }
+
+    &--error {
+        background: var(--background-contrast-error);
+        color: var(--text-default-error);
+        border-left: 4px solid var(--border-plain-error);
+    }
+}
+
+.cat__section {
+    margin-bottom: var(--spacing-8w, 2rem);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.cat__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-2w, 0.5rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
+}
+
+.cat__section-title-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3w, 0.75rem);
+}
+
+.cat__section-title {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-default-grey);
+    margin: 0;
+}
+
+.cat__count {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-mention-grey);
+    background: var(--background-alt-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 999px;
+    padding: 2px var(--spacing-2v, 0.5rem);
+    white-space: nowrap;
+}
+
+.cat__search-row {
+    margin-bottom: var(--spacing-3w, 0.75rem);
+}
+
+.cat__search {
+    // fr-input provides the base; ensure full width.
+    box-sizing: border-box;
+    width: 100%;
+}
+
+// ── Catalogue table ────────────────────────────────────────────────────────
+
+.cat__table-wrapper {
+    // fr-table handles most styling; we fine-tune here.
+    width: 100%;
+    overflow-x: auto;
+
+    table {
+        width: 100%;
+    }
+}
+
+.cat__col-actions {
+    width: 6rem;
+    text-align: right;
+}
+
+.cat__row {
+    transition: background $qs-transition;
+
+    &:hover {
+        background: var(--background-alt-grey);
+    }
+}
+
+.cat__cell {
+    vertical-align: middle;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-default-grey);
+
+    &--main {
+        font-weight: 700;
+    }
+
+    &--actions {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    &--count {
+        text-align: center;
+    }
+}
+
+.cat__muted {
+    color: var(--text-disabled-grey);
+}
+
+.cat__empty {
+    text-align: center;
+    color: var(--text-mention-grey);
+    font-style: italic;
+    font-size: 0.875rem;
+    padding: var(--spacing-6w, 1.5rem) !important;
+}
+
+// ── Catalogue badges ───────────────────────────────────────────────────────
+
+.cat__badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    background: var(--background-contrast-blue-france);
+    color: var(--text-action-high-blue-france);
+    padding: 2px var(--spacing-2v, 0.5rem);
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.cat__count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    background: var(--background-alt-grey);
+    color: var(--text-default-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 999px;
+    padding: 0 var(--spacing-1v, 0.25rem);
+}
+
+// ── Catalogue action buttons ───────────────────────────────────────────────
+
+.cat__action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    background: var(--background-default-grey);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition:
+        background $qs-transition,
+        border-color $qs-transition;
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    &--edit {
+        &:hover:not(:disabled) {
+            background: var(--background-contrast-blue-france);
+            border-color: var(--border-action-high-blue-france);
+        }
+    }
+
+    &--delete {
+        &:hover:not(:disabled) {
+            background: var(--background-contrast-error);
+            border-color: var(--border-plain-error);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 import { API_BASE, UNITE_ID } from "./config";
 import type {
     ApiCollection,
+    Categorie,
     FamilleArticle,
     Piece,
     Zone,
@@ -36,7 +37,114 @@ async function fetchAll<T>(baseUrl: string): Promise<T[]> {
     return results;
 }
 
+// ── Categorie ───────────────────────────────────────────────────────────────
+
+export async function getCategories(): Promise<Categorie[]> {
+    return fetchAll<Categorie>(`${API_BASE}/categories`);
+}
+
+export async function createCategorie(nom: string): Promise<Categorie> {
+    const res = await fetch(`${API_BASE}/categories`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/ld+json",
+            Accept: "application/ld+json",
+        },
+        body: JSON.stringify({ nom }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json() as Promise<Categorie>;
+}
+
+export async function patchCategorie(
+    id: number,
+    nom: string,
+): Promise<Categorie> {
+    const res = await fetch(`${API_BASE}/categories/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/merge-patch+json",
+            Accept: "application/ld+json",
+        },
+        body: JSON.stringify({ nom }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json() as Promise<Categorie>;
+}
+
+export async function deleteCategorie(id: number): Promise<void> {
+    const res = await fetch(`${API_BASE}/categories/${id}`, {
+        method: "DELETE",
+        headers: { Accept: "application/ld+json" },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
+
 // ── FamilleArticle ──────────────────────────────────────────────────────────
+
+export async function getFamilles(): Promise<FamilleArticle[]> {
+    return fetchAll<FamilleArticle>(`${API_BASE}/famille_articles`);
+}
+
+export async function createFamille(payload: {
+    categorieIri: string;
+    marque: string | null;
+    modele: string | null;
+    description: string | null;
+}): Promise<FamilleArticle> {
+    const res = await fetch(`${API_BASE}/famille_articles`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/ld+json",
+            Accept: "application/ld+json",
+        },
+        body: JSON.stringify({
+            categorie: payload.categorieIri,
+            marque: payload.marque || null,
+            modele: payload.modele || null,
+            description: payload.description || null,
+        }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json() as Promise<FamilleArticle>;
+}
+
+export async function patchFamille(
+    id: number,
+    payload: {
+        categorieIri?: string;
+        marque?: string | null;
+        modele?: string | null;
+        description?: string | null;
+    },
+): Promise<FamilleArticle> {
+    const body: Record<string, unknown> = {};
+    if (payload.categorieIri !== undefined)
+        body["categorie"] = payload.categorieIri;
+    if (payload.marque !== undefined) body["marque"] = payload.marque || null;
+    if (payload.modele !== undefined) body["modele"] = payload.modele || null;
+    if (payload.description !== undefined)
+        body["description"] = payload.description || null;
+
+    const res = await fetch(`${API_BASE}/famille_articles/${id}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/merge-patch+json",
+            Accept: "application/ld+json",
+        },
+        body: JSON.stringify(body),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json() as Promise<FamilleArticle>;
+}
+
+export async function deleteFamille(id: number): Promise<void> {
+    const res = await fetch(`${API_BASE}/famille_articles/${id}`, {
+        method: "DELETE",
+        headers: { Accept: "application/ld+json" },
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+}
 
 /**
  * Searches famille_articles across marque, modele and description fields (OR).
