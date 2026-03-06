@@ -155,7 +155,7 @@ class AppFixtures extends Fixture
 
                                                 $lot = new Lot();
                                                 $lot->setNombre($lot_data['nombre']);
-                                                $lot->setFamilleArticle($famille);
+                                                $lot->setFamille($famille);
                                                 $lot->setEmplacement($emplacement);
                                                 $manager->persist($lot);
                                                 $manager->persist($lot);
