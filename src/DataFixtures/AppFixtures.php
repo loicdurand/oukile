@@ -69,5 +69,52 @@ class AppFixtures extends Fixture
         $manager->flush();
         $manager->clear();
         fclose($handle);
+
+        $this->fusionnerDoublons($manager);
+    }
+
+    public function fusionnerDoublons(ObjectManager $manager): void
+    {
+        $repoFamille = $manager->getRepository(FamilleArticle::class);
+        $repoLot = $manager->getRepository(Lot::class);
+
+        // 1. On récupère les combinaisons Marque/Modele qui apparaissent plus d'une fois
+        $doublons = $manager->createQuery(
+            'SELECT f.marque, f.modele, COUNT(f.id) as total
+         FROM App\Entity\FamilleArticle f
+         GROUP BY f.marque, f.modele
+         HAVING total > 1'
+        )->getResult();
+
+        foreach ($doublons as $groupe) {
+            // Récupérer toutes les entités de ce groupe
+            $entites = $repoFamille->findBy([
+                'marque' => $groupe['marque'],
+                'modele' => $groupe['modele']
+            ]);
+
+            // Le premier devient le Maître
+            $maitre = array_shift($entites);
+
+            foreach ($entites as $esclave) {
+                // 2. On récupère les lots rattachés à l'esclave
+                $lots = $repoLot->findBy(['famille' => $esclave]);
+
+                foreach ($lots as $lot) {
+                    // 3. On réassigne le lot au maître
+                    $lot->setFamille($maitre);
+                }
+
+                // 4. On supprime l'esclave (Doctrine gérera la suppression en fin de flush)
+                $manager->remove($esclave);
+            }
+
+            // On flush par groupe pour ne pas saturer la mémoire
+            $manager->flush();
+            $manager->clear();
+
+            // Note : Après clear(), il faut re-fetch le repo ou les objets si on continue 
+            // mais ici on boucle sur le résultat du premier Query, donc c'est OK.
+        }
     }
 }
