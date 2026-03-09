@@ -6,7 +6,7 @@
 
 {% block body %}
 
-	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_stock') }}">Retour à l'accueil</a>
 
 	<main>
 
@@ -41,12 +41,11 @@
 			<li>
 				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_unite_edit', {'id': unite.id}) }}">Éditer</a>
 			</li>
-			<li>
-				{{ include('unite/_delete_form.html.twig') }}
-			</li>
 		</ul>
 
 		<h2 class="fr-h4">Pièces de l'unité</h2>
+
+		<p>Pour éditer une entrée, effectuez un <span class="bold">double-click</span> dessus.</p>
 
 		<ul class="fr-mt-4w fr-mb-2w fr-btns-group fr-btns-group--inline">
 			<li>

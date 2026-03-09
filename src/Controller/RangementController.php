@@ -16,26 +16,31 @@ use App\Repository\ZoneRepository;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use App\Entity\User;
 
-#[Route('/rangement')]
+#[Route("/rangement")]
 final class RangementController extends AbstractController
 {
-    #[Route(name: 'oukile_rangement_index', methods: ['GET'])]
+    #[Route(name: "oukile_rangement_index", methods: ["GET"])]
     public function index(RangementRepository $rangementRepository): Response
     {
-        return $this->render('rangement/index.html.twig', [
-            'rangements' => $rangementRepository->findAll(),
+        return $this->render("rangement/index.html.twig", [
+            "rangements" => $rangementRepository->findAll(),
         ]);
     }
 
-    #[Route('/new', name: 'oukile_rangement_new', methods: ['GET', 'POST'])]
-    public function new(#[CurrentUser] ?User $user, Request $request, EntityManagerInterface $entityManager, ZoneRepository $zoneRepository, TypeRangementRepository $typeRangementRepository): Response
-    {
-
-        if (is_null($user))
-            return $this->redirectToRoute('oukile_login');
+    #[Route("/new", name: "oukile_rangement_new", methods: ["GET", "POST"])]
+    public function new(
+        #[CurrentUser] ?User $user,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ZoneRepository $zoneRepository,
+        TypeRangementRepository $typeRangementRepository,
+    ): Response {
+        if (is_null($user)) {
+            return $this->redirectToRoute("oukile_login");
+        }
 
         $rangement = new Rangement();
-        $zoneId = $request->query->get('id');
+        $zoneId = $request->query->get("id");
         if ($zoneId) {
             $zone = $zoneRepository->find($zoneId);
             if ($zone) {
@@ -47,9 +52,9 @@ final class RangementController extends AbstractController
 
         if ($form->isSubmitted()) {
             // Vérifier si un nouveau type a été créé
-            $createNewType = $form->get('createNewType')->getData();
+            $createNewType = $form->get("createNewType")->getData();
             if ($createNewType) {
-                $newTypeName = $form->get('newTypeName')->getData();
+                $newTypeName = $form->get("newTypeName")->getData();
                 if ($newTypeName) {
                     $newType = new TypeRangement();
                     $newType->setNom($newTypeName);
@@ -62,10 +67,10 @@ final class RangementController extends AbstractController
             // Valider que si on ne crée pas un nouveau type, le type doit être sélectionné
             if (!$createNewType && !$rangement->getType()) {
                 // Le formulaire n'est pas valid, on réaffiche
-                return $this->render('rangement/new.html.twig', [
-                    'user' => $user,
-                    'rangement' => $rangement,
-                    'form' => $form,
+                return $this->render("rangement/new.html.twig", [
+                    "user" => $user,
+                    "rangement" => $rangement,
+                    "form" => $form,
                 ]);
             }
 
@@ -73,36 +78,50 @@ final class RangementController extends AbstractController
                 $entityManager->persist($rangement);
                 $entityManager->flush();
 
-                return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute(
+                    "oukile_unite_show",
+                    ["id" => $user->getUnite()->getId()],
+                    Response::HTTP_SEE_OTHER,
+                );
             }
         }
 
-        return $this->render('rangement/new.html.twig', [
-            'user' => $user,
-            'rangement' => $rangement,
-            'form' => $form,
+        return $this->render("rangement/new.html.twig", [
+            "user" => $user,
+            "rangement" => $rangement,
+            "form" => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'oukile_rangement_show', methods: ['GET'])]
+    #[Route("/{id}", name: "oukile_rangement_show", methods: ["GET"])]
     public function show(Rangement $rangement): Response
     {
-        return $this->render('rangement/show.html.twig', [
-            'rangement' => $rangement,
+        return $this->render("rangement/show.html.twig", [
+            "rangement" => $rangement,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'oukile_rangement_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Rangement $rangement, EntityManagerInterface $entityManager, TypeRangementRepository $typeRangementRepository): Response
-    {
+    #[
+        Route(
+            "/{id}/edit",
+            name: "oukile_rangement_edit",
+            methods: ["GET", "POST"],
+        ),
+    ]
+    public function edit(
+        Request $request,
+        Rangement $rangement,
+        EntityManagerInterface $entityManager,
+        TypeRangementRepository $typeRangementRepository,
+    ): Response {
         $form = $this->createForm(RangementType::class, $rangement);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
             // Vérifier si un nouveau type a été créé
-            $createNewType = $form->get('createNewType')->getData();
+            $createNewType = $form->get("createNewType")->getData();
             if ($createNewType) {
-                $newTypeName = $form->get('newTypeName')->getData();
+                $newTypeName = $form->get("newTypeName")->getData();
                 if ($newTypeName) {
                     $newType = new TypeRangement();
                     $newType->setNom($newTypeName);
@@ -115,33 +134,49 @@ final class RangementController extends AbstractController
             // Valider que si on ne crée pas un nouveau type, le type doit être sélectionné
             if (!$createNewType && !$rangement->getType()) {
                 // Le formulaire n'est pas valid, on réaffiche
-                return $this->render('rangement/edit.html.twig', [
-                    'rangement' => $rangement,
-                    'form' => $form,
+                return $this->render("rangement/edit.html.twig", [
+                    "rangement" => $rangement,
+                    "form" => $form,
                 ]);
             }
 
             if ($form->isValid()) {
                 $entityManager->flush();
 
-                return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute(
+                    "oukile_unite_index",
+                    [],
+                    Response::HTTP_SEE_OTHER,
+                );
             }
         }
 
-        return $this->render('rangement/edit.html.twig', [
-            'rangement' => $rangement,
-            'form' => $form,
+        return $this->render("rangement/edit.html.twig", [
+            "rangement" => $rangement,
+            "form" => $form,
         ]);
     }
 
-    #[Route('/{id}', name: 'oukile_rangement_delete', methods: ['POST'])]
-    public function delete(Request $request, Rangement $rangement, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $rangement->getId(), $request->getPayload()->getString('_token'))) {
+    #[Route("/{id}", name: "oukile_rangement_delete", methods: ["POST"])]
+    public function delete(
+        Request $request,
+        Rangement $rangement,
+        EntityManagerInterface $entityManager,
+    ): Response {
+        if (
+            $this->isCsrfTokenValid(
+                "delete" . $rangement->getId(),
+                $request->getPayload()->getString("_token"),
+            )
+        ) {
             $entityManager->remove($rangement);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('oukile_rangement_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute(
+            "oukile_unite_show",
+            ["id" => $rangement->getZone()->getPiece()->getUnite()->getId()],
+            Response::HTTP_SEE_OTHER,
+        );
     }
 }
