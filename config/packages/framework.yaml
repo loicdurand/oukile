@@ -8,6 +8,10 @@ framework:
     #esi: true
     #fragments: true
 
+    serializer:
+        default_context:
+            max_depth: 3
+
 when@test:
     framework:
         test: true

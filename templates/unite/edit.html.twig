@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer une unité
+{% endblock %}
+
+{% block body %}
+
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_show',{id: user.unite.id}) }}">Retour</a>
+
+	<h1 class="fr-mt-2w">Éditer une unité</h1>
+
+	{{ include('unite/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+{% endblock %}

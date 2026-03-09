@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rangement
+{% endblock %}
+
+{% block body %}
+	<h1>Rangement</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ rangement.id }}</td>
+			</tr>
+			<tr>
+				<th>Nom</th>
+				<td>{{ rangement.nom }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('oukile_rangement_index') }}">back to list</a>
+
+	<a href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">edit</a>
+
+	{{ include('rangement/_delete_form.html.twig') }}
+{% endblock %}

@@ -3,30 +3,52 @@
 namespace App\Entity;
 
 use App\Repository\PieceRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: PieceRepository::class)]
+#[ApiResource(
+    normalizationContext: ['groups' => ['piece:read']],
+    denormalizationContext: ['groups' => ['piece:write']]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['unite.id' => 'exact'])]
 class Piece
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['piece:read', 'piece:write', 'zone:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'pieces')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['piece:read', 'piece:write', 'zone:read'])]
     private ?Unite $unite = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['piece:read', 'piece:write', 'zone:read'])]
     private ?string $nom = null;
 
     /**
      * @var Collection<int, Zone>
      */
     #[ORM\OneToMany(targetEntity: Zone::class, mappedBy: 'piece', orphanRemoval: true)]
+    #[Groups(['piece:read', 'piece:write'])]
     private Collection $zones;
+
+    #[ORM\ManyToOne(targetEntity: MediaObject::class)]
+    #[ORM\JoinColumn(nullable: true)]
+    #[ApiProperty(types: ['https://schema.org/image'])]
+    #[Groups(['piece:read', 'piece:write'])]
+    public ?MediaObject $image = null;
 
     public function __construct()
     {

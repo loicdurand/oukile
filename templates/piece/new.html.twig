@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer une nouvelle pièce
+{% endblock %}
+
+{% block body %}
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_show',{id: piece.unite.id}) }}">Retour</a>
+
+	<h1 class="fr-mt-2w">Ajouter une pièce</h1>
+
+	{{ include('piece/_form.html.twig') }}
+
+{% endblock %}

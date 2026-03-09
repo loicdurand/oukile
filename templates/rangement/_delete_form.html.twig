@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('oukile_rangement_delete', {'id': rangement.id}) }}" onsubmit="return confirm('Êtes vous sûr de vouloir supprimer ce rangement?');">
+	<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rangement.id) }}">
+	<button class="fr-btn fr-btn--tertiary">Supprimer</button>
+</form>

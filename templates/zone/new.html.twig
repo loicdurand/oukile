@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvelle zone
+{% endblock %}
+
+{% block body %}
+
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_show',{id: zone.piece.unite.id}) }}">Retour</a>
+
+	<h1 class="fr-mt-2w">Créer une nouvelle zone</h1>
+
+	{{ include('zone/_form.html.twig') }}
+
+{% endblock %}

@@ -44,6 +44,7 @@ class AppFixtures extends Fixture
             [
                 'nom' => 'DSOLC Baie-Mahault',
                 'code' => '00086977',
+                'dpt' => 971,
                 'pieces' => [
                     [
                         'nom' => 'BTI',
@@ -53,7 +54,7 @@ class AppFixtures extends Fixture
                                 'rangements' => [
                                     [
                                         'type' => $etagere,
-                                        'nom' => 'Étagère A',
+                                        'nom' => 'A',
                                         'emplacements' => [
                                             [
                                                 'nom' => 'A10',
@@ -80,7 +81,7 @@ class AppFixtures extends Fixture
                                     ],
                                     [
                                         'type' => $etagere,
-                                        'nom' => 'Étagère B',
+                                        'nom' => 'B',
                                         'emplacements' => [
                                             ['nom' => 'B10'],
                                             ['nom' => 'B11'],
@@ -89,7 +90,7 @@ class AppFixtures extends Fixture
                                     ],
                                     [
                                         'type' => $etagere,
-                                        'nom' => 'Étagère C'
+                                        'nom' => 'C'
                                     ]
                                 ]
                             ],
@@ -113,6 +114,7 @@ class AppFixtures extends Fixture
             $unite = new Unite();
             $unite->setCode($unite_data['code']);
             $unite->setNom($unite_data['nom']);
+            $unite->setDepartement($unite_data['dpt']);
             $manager->persist($unite);
             foreach ($unite_data['pieces'] as $piece_data) {
                 $piece = new Piece();
@@ -153,7 +155,7 @@ class AppFixtures extends Fixture
 
                                                 $lot = new Lot();
                                                 $lot->setNombre($lot_data['nombre']);
-                                                $lot->setFamilleArticle($famille);
+                                                $lot->setFamille($famille);
                                                 $lot->setEmplacement($emplacement);
                                                 $manager->persist($lot);
                                                 $manager->persist($lot);
