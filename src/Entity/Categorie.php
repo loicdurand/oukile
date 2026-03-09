@@ -34,7 +34,7 @@ class Categorie
     ]
     private ?int $id = null;
 
-    #[ORM\Column(length: 20)]
+    #[ORM\Column(length: 100)]
     #[
         Groups([
             "lot:read",

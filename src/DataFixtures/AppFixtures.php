@@ -19,157 +19,55 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $etagere = new TypeRangement();
-        $etagere->setNom('étagère');
-        $manager->persist($etagere);
+        // $connection = $manager->getConnection();
+        // 1. On coupe les logs pour économiser la RAM
+        // $connection->getConfiguration()->setSQLLogger(null);
 
-        $ecran = new Categorie();
-        $ecran->setNom('Écran');
-        $manager->persist($ecran);
+        $filePath = __DIR__ . "/materiel-solaris.csv";
+        $handle = fopen($filePath, "r");
+        $header = fgetcsv($handle);
 
-        $familles = [
-            'acer_22' => [
-                'categorie' => $ecran,
-                'marque' => 'Acer',
-                'description' => 'Écran Acer 22" pied rotatif'
-            ],
-            'dell_24' => [
-                'categorie' => $ecran,
-                'marque' => 'Dell',
-                'description' => 'Écran Dell 24" pied fixe'
-            ]
-        ];
+        // On charge TOUTES les catégories existantes une seule fois en mémoire
+        // (800 lignes, c'est rien pour un tableau PHP indexé)
+        $categories = [];
+        $existingCats = $manager->getRepository(Categorie::class)->findAll();
+        foreach ($existingCats as $cat) {
+            $categories[$cat->getNom()] = $cat;
+        }
 
-        $unites = [
-            [
-                'nom' => 'DSOLC Baie-Mahault',
-                'code' => '00086977',
-                'dpt' => 971,
-                'pieces' => [
-                    [
-                        'nom' => 'BTI',
-                        'zones' => [
-                            [
-                                'nom' => 'Zone étagères',
-                                'rangements' => [
-                                    [
-                                        'type' => $etagere,
-                                        'nom' => 'A',
-                                        'emplacements' => [
-                                            [
-                                                'nom' => 'A10',
-                                                'lots' => [
-                                                    [
-                                                        'nombre' => 8,
-                                                        'famille' => $familles['acer_22']
-                                                    ],
-                                                    [
-                                                        'nombre' => 2,
-                                                        'famille' => $familles['dell_24']
-                                                    ]
-                                                ]
-                                            ],
-                                            ['nom' => 'A11'],
-                                            ['nom' => 'A12'],
-                                            ['nom' => 'A20'],
-                                            ['nom' => 'A21'],
-                                            ['nom' => 'A22'],
-                                            ['nom' => 'A30'],
-                                            ['nom' => 'A31'],
-                                            ['nom' => 'A32']
-                                        ]
-                                    ],
-                                    [
-                                        'type' => $etagere,
-                                        'nom' => 'B',
-                                        'emplacements' => [
-                                            ['nom' => 'B10'],
-                                            ['nom' => 'B11'],
-                                            ['nom' => 'B12']
-                                        ]
-                                    ],
-                                    [
-                                        'type' => $etagere,
-                                        'nom' => 'C'
-                                    ]
-                                ]
-                            ],
-                            'Zone vrac'
-                        ]
-                    ],
-                    [
-                        'nom' => 'Garage'
-                    ],
-                    [
-                        'nom' => 'Atelier'
-                    ],
-                    [
-                        'nom' => 'Salle Pinabel'
-                    ]
-                ]
-            ]
-        ];
+        $i = 0;
+        while (($row = fgetcsv($handle)) !== false) {
+            $line = array_combine($header, $row);
+            $nomCat = $line["Familles"];
 
-        foreach ($unites as $unite_data) {
-            $unite = new Unite();
-            $unite->setCode($unite_data['code']);
-            $unite->setNom($unite_data['nom']);
-            $unite->setDepartement($unite_data['dpt']);
-            $manager->persist($unite);
-            foreach ($unite_data['pieces'] as $piece_data) {
-                $piece = new Piece();
-                $piece->setNom($piece_data['nom']);
-                $piece->setUnite($unite);
-                $manager->persist($piece);
+            // Si la catégorie n'est pas dans notre index local, on la crée
+            if (!isset($categories[$nomCat])) {
+                $categorie = new Categorie();
+                $categorie->setNom($nomCat);
+                $manager->persist($categorie);
+                $categories[$nomCat] = $categorie;
 
-                if (isset($piece_data['zones'])) {
-                    foreach ($piece_data['zones'] as $zone_data) {
-                        $zone = new Zone();
-                        $zone->setNom(is_array($zone_data) ? $zone_data['nom'] : $zone_data);
-                        $zone->setPiece($piece);
-                        $manager->persist($zone);
-
-                        if (is_array($zone_data) && isset($zone_data['rangements'])) {
-                            foreach ($zone_data['rangements'] as $rangement_data) {
-                                $rangement = new Rangement();
-                                $rangement->setNom($rangement_data['nom']);
-                                $rangement->setType($rangement_data['type']);
-                                $rangement->setZone($zone);
-                                $manager->persist($rangement);
-
-                                if (isset($rangement_data['emplacements'])) {
-                                    foreach ($rangement_data['emplacements'] as $emplacement_data) {
-                                        $emplacement = new Emplacement();
-                                        $emplacement->setNom($emplacement_data['nom']);
-                                        $emplacement->setRangement($rangement);
-                                        $manager->persist($emplacement);
-
-                                        if (isset($emplacement_data['lots'])) {
-                                            foreach ($emplacement_data['lots'] as $lot_data) {
-                                                $famille_info = $lot_data['famille'];
-                                                $famille = new FamilleArticle();
-                                                $famille->setCategorie($famille_info['categorie']);
-                                                $famille->setMarque($famille_info['marque']);
-                                                $famille->setDescription($famille_info['description']);
-                                                $manager->persist($famille);
-
-                                                $lot = new Lot();
-                                                $lot->setNombre($lot_data['nombre']);
-                                                $lot->setFamille($famille);
-                                                $lot->setEmplacement($emplacement);
-                                                $manager->persist($lot);
-                                                $manager->persist($lot);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // On flush exceptionnellement pour avoir l'ID en base
+                $manager->flush();
             }
+
+            $famille = new FamilleArticle();
+            $famille->setMarque($line["Marque"]);
+            $famille->setModele($line["Modele"]);
+            $famille->setCategorie($categories[$nomCat]);
+
+            $manager->persist($famille);
+
+            // Batch flush plus grand
+            if (($i % 100) === 0) {
+                $manager->flush();
+                $manager->detach($famille); // On détache juste l'objet pour vider la RAM
+            }
+            $i++;
         }
 
         $manager->flush();
+        $manager->clear();
+        fclose($handle);
     }
 }

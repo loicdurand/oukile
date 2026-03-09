@@ -32,11 +32,11 @@ class FamilleArticle
     #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?Categorie $categorie = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?string $marque = null;
 
-    #[ORM\Column(length: 20, nullable: true)]
+    #[ORM\Column(length: 50, nullable: true)]
     #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
     private ?string $modele = null;
 
