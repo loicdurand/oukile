@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FamilleArticleRepository::class)]
+#[ORM\UniqueConstraint(name: 'unique_famille', columns: ['marque', 'modele'])]
 #[ApiResource(
     normalizationContext: ['groups' => ['familleArticle:read']],
     denormalizationContext: ['groups' => ['familleArticle:write']]

@@ -19,49 +19,63 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $connection = $manager->getConnection();
-        // 1. On coupe les logs pour économiser la RAM
-        // $connection->getConfiguration()->setSQLLogger(null);
 
-        $filePath = __DIR__ . "/materiel-solaris.csv";
-        $handle = fopen($filePath, "r");
+        $handle = fopen(__DIR__ . "/materiel-solaris.csv", "r");
         $header = fgetcsv($handle);
 
-        // On charge TOUTES les catégories existantes une seule fois en mémoire
-        // (800 lignes, c'est rien pour un tableau PHP indexé)
+        // 1. On pré-charge les catégories pour le mapping
         $categories = [];
-        $existingCats = $manager->getRepository(Categorie::class)->findAll();
-        foreach ($existingCats as $cat) {
+        foreach ($manager->getRepository(Categorie::class)->findAll() as $cat) {
             $categories[$cat->getNom()] = $cat;
+        }
+
+        // 2. On pré-charge les Familles existantes (Clé = Marque:Modele)
+        // Cela permet d'éviter les doublons dès le départ
+        $famillesExistantes = [];
+        foreach ($manager->getRepository(FamilleArticle::class)->findAll() as $f) {
+            $key = strtolower($f->getMarque() . ':' . $f->getModele());
+            $famillesExistantes[$key] = $f;
         }
 
         $i = 0;
         while (($row = fgetcsv($handle)) !== false) {
             $line = array_combine($header, $row);
-            $nomCat = $line["Familles"];
 
-            // Si la catégorie n'est pas dans notre index local, on la crée
+            $nomCat = $line["Familles"];
+            $marque = $line["Marque"];
+            $modele = $line["Modele"];
+            $key = strtolower($marque . ':' . $modele);
+
+            // Gestion de la catégorie (Auto-création si absente)
             if (!isset($categories[$nomCat])) {
                 $categorie = new Categorie();
                 $categorie->setNom($nomCat);
                 $manager->persist($categorie);
                 $categories[$nomCat] = $categorie;
-
-                // On flush exceptionnellement pour avoir l'ID en base
-                $manager->flush();
+                $manager->flush(); // Flush immédiat pour l'ID
             }
 
-            $famille = new FamilleArticle();
-            $famille->setMarque($line["Marque"]);
-            $famille->setModele($line["Modele"]);
-            $famille->setCategorie($categories[$nomCat]);
+            // 3. LOGIQUE UPSERT : On ne crée que si la clé n'existe pas dans notre index
+            if (!isset($famillesExistantes[$key])) {
+                $famille = new FamilleArticle();
+                $famille->setMarque($marque);
+                $famille->setModele($modele);
+                $famille->setCategorie($categories[$nomCat]);
 
-            $manager->persist($famille);
+                $manager->persist($famille);
 
-            // Batch flush plus grand
+                // On l'ajoute à l'index pour que la ligne suivante (si doublon) ne la recrée pas
+                $famillesExistantes[$key] = $famille;
+            } else {
+                // Optionnel : Mettre à jour la catégorie si elle a changé dans le CSV
+                $famillesExistantes[$key]->setCategorie($categories[$nomCat]);
+            }
+
+            // Batch processing
             if (($i % 100) === 0) {
                 $manager->flush();
-                $manager->detach($famille); // On détache juste l'objet pour vider la RAM
+                // Note: On ne fait pas clear() ici car on veut garder nos index $categories 
+                // et $famillesExistantes actifs (objets managés).
             }
             $i++;
         }
@@ -69,8 +83,6 @@ class AppFixtures extends Fixture
         $manager->flush();
         $manager->clear();
         fclose($handle);
-
-        $this->fusionnerDoublons($manager);
     }
 
     public function fusionnerDoublons(ObjectManager $manager): void
