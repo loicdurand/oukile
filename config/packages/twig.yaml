@@ -5,7 +5,7 @@ twig:
         app_env: '%env(APP_ENV)%'
         app_name: 'Oukilé?' 
         app_tagline: 'COMGENDGP'
-        app_slug: 'Arrez de gérer votre matériel avec Excell!'
+        app_slug: 'Arrêtez de gérer votre matériel avec Excell!'
 
 when@test:
     twig:

@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Rangement{% endblock %}
+{% block title %}Éditer un rangement
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Rangement</h1>
 
-    {{ include('rangement/_form.html.twig', {'button_label': 'Update'}) }}
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_rangement_index') }}">back to list</a>
+	<h1 class="fr-mt-2w">Éditer un rangement</h1>
 
-    {{ include('rangement/_delete_form.html.twig') }}
+	{{ include('rangement/_form_with_type_creation.html.twig', {'button_label': 'Mettre à jour'}) }}
+
 {% endblock %}

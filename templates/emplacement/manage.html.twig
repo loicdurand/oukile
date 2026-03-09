@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion de contenu
+{% endblock %}
+
+{% block body %}
+
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
+
+	<h1 class="fr-mt-2w">
+		Contenu de l'emplacement -
+		{{emplacement.nom}}
+	</h1>
+
+	<p>
+		<span class="fr-bold">Rappel:</span>
+		{{emplacement.nom}}
+		fait partie de
+		{{emplacement.rangement.nom}}
+		({{emplacement.rangement.type.nom}})
+	</p>
+
+	{{ include('emplacement/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
+{% endblock %}

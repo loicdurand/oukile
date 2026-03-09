@@ -23,8 +23,8 @@
 						({{ piece.unite.code }})</td>
 					<td>{{ piece.nom }}</td>
 					<td>
-						<a href="{{ path('app_piece_show', {'id': piece.id}) }}">show</a>
-						<a href="{{ path('app_piece_edit', {'id': piece.id}) }}">edit</a>
+						<a href="{{ path('oukile_piece_show', {'id': piece.id}) }}">show</a>
+						<a href="{{ path('oukile_piece_edit', {'id': piece.id}) }}">edit</a>
 					</td>
 				</tr>
 			{% else %}
@@ -35,5 +35,5 @@
 		</tbody>
 	</table>
 
-	<a href="{{ path('app_piece_new') }}">Create new</a>
+	<a href="{{ path('oukile_piece_new') }}">Create new</a>
 {% endblock %}

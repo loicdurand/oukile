@@ -1,35 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Lot index{% endblock %}
+{% block title %}Lot index
+{% endblock %}
 
 {% block body %}
-    <h1>Lot index</h1>
+	<h1>Lot index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for lot in lots %}
-            <tr>
-                <td>{{ lot.id }}</td>
-                <td>{{ lot.nombre }}</td>
-                <td>
-                    <a href="{{ path('app_lot_show', {'id': lot.id}) }}">show</a>
-                    <a href="{{ path('app_lot_edit', {'id': lot.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nombre</th>
+				<th>Catégorie</th>
+				<th>Marque</th>
+				<th>Modèle</th>
+				<th>Description</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for lot in lots %}
+				<tr>
+					<td>{{ lot.id }}</td>
+					<td>{{ lot.nombre }}</td>
+					<td>{{ lot.familleArticle.categorie.nom }}</td>
+					<td>{{ lot.familleArticle.marque }}</td>
+					<td>{{ lot.familleArticle.modele }}</td>
+					<td>{{ lot.familleArticle.description }}</td>
+					<td>
+						<a href="{{ path('app_lot_show', {'id': lot.id}) }}">show</a>
+						<a href="{{ path('app_lot_edit', {'id': lot.id}) }}">edit</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="3">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
 
-    <a href="{{ path('app_lot_new') }}">Create new</a>
+	<a href="{{ path('app_lot_new') }}">Create new</a>
 {% endblock %}

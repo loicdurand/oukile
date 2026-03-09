@@ -1,0 +1,309 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Stock rapide
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('stock') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('stock') }}
+{% endblock %}
+
+{% block body %}
+
+	<p class="fr-mt-2w fr-mb-4w">
+		Les salles et zones de votre unités ont été configurées sur la page de
+		<a class="fr-link" target="_self" href="{{ path('oukile_unite_show',{id: 1})}}" title="Gestion de l'unité">gestion de votre unité</a>
+	</p>
+
+	<div
+		id="qs-app" class="fr-tabs qs-app">
+
+		{# ── Tab bar ────────────────────────────────────────────────────────── #}
+
+		<nav role="tablist" aria-label="Fonctions">
+			<ul class="fr-tabs__list" role="tablist" aria-label="Fonctions de gestion du stock">
+				<li role="presentation">
+					<button class="fr-tabs__tab qs__tabs" id="tab-trouver" role="tab" aria-selected="true" aria-controls="panel-trouver">
+						<span class="qs__tab-icon" aria-hidden="true">&#128269;</span>
+						<span class="qs__tab-label">Trouver</span>
+						<kbd class="qs__tab-kbd" title="Raccourci : touche 1">1</kbd>
+					</button>
+				</li>
+				<li role="presentation">
+					<button class="fr-tabs__tab qs__tabs" id="tab-ranger" role="tab" aria-selected="false" aria-controls="panel-ranger">
+						<span class="qs__tab-icon" aria-hidden="true">&#128229;</span>
+						<span class="qs__tab-label">Ranger</span>
+						<kbd class="qs__tab-kbd" title="Raccourci : touche 2">2</kbd>
+					</button>
+				</li>
+				<li role="presentation">
+					<button class="fr-tabs__tab qs__tabs" id="tab-sortir" role="tab" aria-selected="false" aria-controls="panel-sortir">
+						<span class="qs__tab-icon" aria-hidden="true">&#128228;</span>
+						<span class="qs__tab-label">Sortir</span>
+						<kbd class="qs__tab-kbd" title="Raccourci : touche 3">3</kbd>
+					</button>
+				</li>
+				<li role="presentation">
+					<button class="fr-tabs__tab qs__tabs" id="tab-catalogue" role="tab" aria-selected="false" aria-controls="panel-catalogue">
+						<span class="qs__tab-icon" aria-hidden="true">&#128218;</span>
+						<span class="qs__tab-label">Articles</span>
+						{# <kbd class="qs__tab-kbd" title="Raccourci : touche 4">4</kbd> #}
+					</button>
+				</li>
+			</ul>
+		</nav>
+
+		{# ── Panel : Trouver ────────────────────────────────────────────────── #}
+
+		<div class="fr-tabs__panel fr-tabs__panel--selected" id="panel-trouver" role="tabpanel" aria-labelledby="tab-trouver">
+			<div class="qs__autocomplete fr-input-group">
+				<label class="fr-label" for="input-0">
+					Rechercher un article (marque, modèle, description)…
+				</label>
+				<input type="search" id="trouver-query" class="fr-input qs__input" autocomplete="off" aria-label="Rechercher un article" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="trouver-dropdown" aria-expanded="false" autofocus/>
+				<ul class="qs__dropdown" id="trouver-dropdown" role="listbox" aria-label="Suggestions d'articles" hidden></ul>
+			</div>
+
+			<div class="qs__loading" id="trouver-loading" hidden>
+				<span class="qs__spinner" aria-hidden="true"></span>
+				Recherche en cours…
+			</div>
+
+			<div class="qs__results" id="trouver-results" aria-live="polite"></div>
+		</div>
+
+		{# ── Panel : Ranger ─────────────────────────────────────────────────── #}
+
+		<div
+			class="fr-tabs__panel" id="panel-ranger" role="tabpanel" aria-labelledby="tab-ranger" hidden>
+			{# Step 1 : search #}
+			<div class="qs__step" id="ranger-step-search">
+				<div class="qs__autocomplete fr-input-group">
+					<label class="fr-label" for="input-0">
+						Quel article ranger ?
+					</label>
+					<input type="search" id="ranger-query" class="fr-input qs__input" placeholder="marque, modèle, description" autocomplete="off" aria-label="Rechercher un article à ranger" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="ranger-dropdown" aria-expanded="false"/>
+					<ul class="qs__dropdown" id="ranger-dropdown" role="listbox" aria-label="Suggestions d'articles" hidden></ul>
+				</div>
+			</div>
+
+			{# Step 2 : location #}
+			<div class="qs__step" id="ranger-step-location" hidden>
+				<div class="qs__famille-badge" id="ranger-famille-badge">
+					<span id="ranger-famille-label"></span>
+					<button class="qs__reset-btn" id="ranger-reset" type="button" title="Changer d'article" aria-label="Changer d'article">&#x2715;</button>
+				</div>
+
+				<div class="qs__selects">
+					<div class="qs__select-group">
+						<label class="qs__label" for="ranger-piece">Pièce</label>
+						<select id="ranger-piece" class="qs__select">
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__select-group">
+						<label class="qs__label" for="ranger-zone">Zone</label>
+						<select id="ranger-zone" class="qs__select" disabled>
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__select-group">
+						<label class="qs__label" for="ranger-rangement">Rangement</label>
+						<select id="ranger-rangement" class="qs__select" disabled>
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__select-group">
+						<label class="qs__label" for="ranger-emplacement">Emplacement</label>
+						<select id="ranger-emplacement" class="qs__select" disabled>
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__quantity-group">
+						<label class="qs__label" for="ranger-quantite">Quantité</label>
+						<input type="number" id="ranger-quantite" class="qs__input qs__input--number" value="1" min="1" aria-label="Quantité à ranger"/>
+					</div>
+				</div>
+
+				<button class="qs__confirm-btn" id="ranger-confirm" type="button" disabled>
+					<span class="qs__confirm-icon" aria-hidden="true">&#128229;</span>
+					Ranger
+				</button>
+			</div>
+
+			<div class="qs__feedback" id="ranger-feedback" role="alert" hidden></div>
+		</div>
+
+		{# ── Panel : Sortir ─────────────────────────────────────────────────── #}
+
+		<div
+			class="fr-tabs__panel" id="panel-sortir" role="tabpanel" aria-labelledby="tab-sortir" hidden>
+			{# Step 1 : search #}
+			<div class="qs__step" id="sortir-step-search">
+				<div class="qs__autocomplete fr-input-group">
+					<label class="fr-label" for="input-0">
+						Quel article sortir ?
+					</label>
+					<input type="search" id="sortir-query" class="fr-input qs__input" placeholder="marque, modèle, description" autocomplete="off" aria-label="Rechercher un article à sortir" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="sortir-dropdown" aria-expanded="false"/>
+					<ul class="qs__dropdown" id="sortir-dropdown" role="listbox" aria-label="Suggestions d'articles" hidden></ul>
+				</div>
+			</div>
+
+			{# Step 2 : location #}
+			<div class="qs__step" id="sortir-step-location" hidden>
+				<div class="qs__famille-badge" id="sortir-famille-badge">
+					<span id="sortir-famille-label"></span>
+					<button class="qs__reset-btn" id="sortir-reset" type="button" title="Changer d'article" aria-label="Changer d'article">&#x2715;</button>
+				</div>
+
+				<div class="qs__selects">
+					<div class="qs__select-group">
+						<label class="qs__label" for="sortir-piece">Pièce</label>
+						<select id="sortir-piece" class="qs__select">
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__select-group">
+						<label class="qs__label" for="sortir-zone">Zone</label>
+						<select id="sortir-zone" class="qs__select" disabled>
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__select-group">
+						<label class="qs__label" for="sortir-rangement">Rangement</label>
+						<select id="sortir-rangement" class="qs__select" disabled>
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__select-group">
+						<label class="qs__label" for="sortir-emplacement">Emplacement</label>
+						<select id="sortir-emplacement" class="qs__select" disabled>
+							<option value="">— Choisir —</option>
+						</select>
+					</div>
+					<div class="qs__quantity-group">
+						<label class="qs__label" for="sortir-quantite">Quantité</label>
+						<input type="number" id="sortir-quantite" class="qs__input qs__input--number" value="1" min="1" aria-label="Quantité à sortir"/>
+					</div>
+				</div>
+
+				<button class="qs__confirm-btn qs__confirm-btn--danger" id="sortir-confirm" type="button" disabled>
+					<span class="qs__confirm-icon" aria-hidden="true">&#128228;</span>
+					Sortir
+				</button>
+			</div>
+
+			<div class="qs__feedback" id="sortir-feedback" role="alert" hidden></div>
+		</div>
+
+		{# ── Panel : Catalogue ──────────────────────────────────────────────── #}
+
+		<div class="fr-tabs__panel" id="panel-catalogue" role="tabpanel" aria-labelledby="tab-catalogue" hidden>
+			<div class="cat__feedback" id="cat-feedback" hidden></div>
+
+			{# ── Section : Articles (FamilleArticle) ──────────────────────── #}
+
+			<section class="cat__section" aria-labelledby="cat-famille-heading">
+				<div class="cat__section-header">
+					<div class="cat__section-title-group">
+						<h2 class="cat__section-title" id="cat-famille-heading">
+							<span aria-hidden="true">📦</span>
+							Articles
+						</h2>
+						<span class="cat__count" id="cat-famille-count" aria-live="polite"></span>
+					</div>
+					<button class="fr-btn fr-btn--sm fr-icon-add-line" id="cat-famille-create" type="button">
+						Nouvel article
+					</button>
+				</div>
+
+				<div class="cat__search-row">
+					<label class="fr-label fr-sr-only" for="cat-famille-search">Filtrer les articles</label>
+					<input type="search" id="cat-famille-search" class="fr-input cat__search" placeholder="Filtrer par marque, modèle, description, catégorie…" autocomplete="off" aria-label="Filtrer les articles"/>
+				</div>
+
+				<div class="fr-table fr-table--bordered cat__table-wrapper">
+					<div class="fr-table__wrapper">
+						<div class="fr-table__container">
+							<div class="fr-table__content">
+								<table>
+									<thead>
+										<tr>
+											<th scope="col">Marque / Modèle</th>
+											<th scope="col">Description</th>
+											<th scope="col">Catégorie</th>
+											<th scope="col" class="cat__col-actions">
+												<span class="fr-sr-only">Actions</span>
+											</th>
+										</tr>
+									</thead>
+									<tbody id="cat-famille-tbody">
+										<tr>
+											<td colspan="4" class="cat__empty">Chargement…</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{# ── Section : Catégories ─────────────────────────────────────── #}
+
+			<section class="cat__section" aria-labelledby="cat-categorie-heading">
+				<div class="cat__section-header">
+					<div class="cat__section-title-group">
+						<h2 class="cat__section-title" id="cat-categorie-heading">
+							<span aria-hidden="true">🏷️</span>
+							Catégories
+						</h2>
+						<span class="cat__count" id="cat-categorie-count" aria-live="polite"></span>
+					</div>
+					<button class="fr-btn fr-btn--sm fr-btn--secondary fr-icon-add-line" id="cat-categorie-create" type="button">
+						Nouvelle catégorie
+					</button>
+				</div>
+
+				<div class="cat__search-row">
+					<label class="fr-label fr-sr-only" for="cat-categorie-search">Filtrer les catégories</label>
+					<input type="search" id="cat-categorie-search" class="fr-input cat__search" placeholder="Filtrer par nom…" autocomplete="off" aria-label="Filtrer les catégories"/>
+				</div>
+
+				<div class="fr-table fr-table--bordered cat__table-wrapper">
+					<div class="fr-table__wrapper">
+						<div class="fr-table__container">
+							<div class="fr-table__content">
+								<table>
+									<thead>
+										<tr>
+											<th scope="col">Nom</th>
+											<th scope="col">Articles</th>
+											<th scope="col" class="cat__col-actions">
+												<span class="fr-sr-only">Actions</span>
+											</th>
+										</tr>
+									</thead>
+									<tbody id="cat-categorie-tbody">
+										<tr>
+											<td colspan="3" class="cat__empty">Chargement…</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+		{# /panel-catalogue #}
+
+	</div>
+	{# /qs-app #}
+{% endblock %}

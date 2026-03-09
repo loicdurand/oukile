@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Emplacement{% endblock %}
+{% block title %}Nouvel emplacement
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Emplacement</h1>
 
-    {{ include('emplacement/_form.html.twig') }}
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_emplacement_index') }}">back to list</a>
+	<h1 class="fr-mt-2w">Créer un nouvel emplacement</h1>
+
+	{{ include('emplacement/_form.html.twig') }}
+
 {% endblock %}

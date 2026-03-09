@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Unite{% endblock %}
+{% block title %}Éditer une unité
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Unite</h1>
 
-    {{ include('unite/_form.html.twig', {'button_label': 'Update'}) }}
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_unite_index') }}">back to list</a>
+	<h1 class="fr-mt-2w">Éditer une unité</h1>
 
-    {{ include('unite/_delete_form.html.twig') }}
+	{{ include('unite/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+
 {% endblock %}

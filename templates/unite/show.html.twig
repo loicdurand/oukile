@@ -1,30 +1,278 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Unite{% endblock %}
+{% block title %}
+	{{ unite.nom }}
+{% endblock %}
 
 {% block body %}
-    <h1>Unite</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ unite.id }}</td>
-            </tr>
-            <tr>
-                <th>Code</th>
-                <td>{{ unite.code }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ unite.nom }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_unite_index') }}">Retour à la liste</a>
 
-    <a href="{{ path('app_unite_index') }}">back to list</a>
+	<main>
 
-    <a href="{{ path('app_unite_edit', {'id': unite.id}) }}">edit</a>
+		<div class="fr-table" id="table-unite-component">
+			<div class="fr-table__wrapper">
+				<div class="fr-table__container">
+					<div class="fr-table__content">
 
-    {{ include('unite/_delete_form.html.twig') }}
+						<table class="table">
+							<caption>
+								Détail de l'unité
+
+							</caption>
+							<tbody>
+								<tr>
+									<th>Code</th>
+									<td>{{ unite.code }}</td>
+								</tr>
+								<tr>
+									<th>Nom</th>
+									<td>{{ unite.nom }}</td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<ul class="fr-mb-1w fr-btns-group fr-btns-group--inline">
+			<li>
+				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_unite_edit', {'id': unite.id}) }}">Éditer</a>
+			</li>
+			<li>
+				{{ include('unite/_delete_form.html.twig') }}
+			</li>
+		</ul>
+
+		<h2 class="fr-h4">Pièces de l'unité</h2>
+
+		<ul class="fr-mt-4w fr-mb-2w fr-btns-group fr-btns-group--inline">
+			<li>
+				<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_piece_new', {'id': unite.id}) }}">+ Ajouter une pièce</a>
+			</li>
+		</ul>
+
+		<div id="success-message-piece" class="fr-alert fr-alert--success fr-mb-2w cs-disappear fr-hidden cs-hide">
+			<h3 class="fr-alert__title">La pièce a été mise à jour avec succès.</h3>
+		</div>
+
+		<div id="error-message-piece" class="fr-alert fr-alert--warning fr-mb-2w cs-disappear fr-hidden cs-hide">
+			<h3 class="fr-alert__title">Une erreur est survenue. La mise à jour a échoué.</h3>
+		</div>
+
+		<div data-fr-group="true" class="fr-accordions-group">
+			{% for piece in unite.pieces %}
+				{% set nz = piece.zones | length %}
+				<section class="fr-accordion">
+					<h3 class="fr-accordion__title cs-relative">
+
+						<button type="button" class="fr-accordion__btn {{ nz == 0 ? 'cs-text-default-grey cs-text-fw-initial' :''}}" aria-expanded="false" aria-controls="accordion-piece-{{piece.id}}">
+							<a class="action_edit" data-deletebtn="delete_piece_{{piece.id}}" data-message="message-piece" id="action_patch_pieces_{{piece.id}}_nom" href="{{ path('oukile_piece_edit', {'id': piece.id}) }}">
+								{{ piece.nom }}
+							</a>
+
+						</button>
+						<form class="" method="post" action="{{ path('oukile_piece_delete', {'id': piece.id}) }}" onsubmit="return confirm('Êtes vous sûr de vouloir supprimer cette pièce?');">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ piece.id) }}">
+							<button id="delete_piece_{{piece.id}}" class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm cs-cross-btn fr-hidden" title="Supprimer">
+								&#x2715;
+							</button>
+						</form>
+
+					</h3>
+					<div class="fr-collapse" id="accordion-piece-{{piece.id}}">
+
+						<p>
+							{% if nz == 0 %}
+								Cette pièce est vide.
+							{% elseif nz == 1 %}
+								Cette pièce contient une zone.
+							{% else %}
+								Cette pièce contient
+								{{ nz }}
+								zones:
+							{% endif %}
+						</p>
+
+						<div id="success-message-zone-{{piece.id}}" class="fr-alert fr-alert--success fr-mb-2w cs-disappear fr-hidden cs-hide">
+							<h3 class="fr-alert__title">La zone a été mise à jour avec succès.</h3>
+						</div>
+
+						<div id="error-message-zone-{{piece.id}}" class="fr-alert fr-alert--warning fr-mb-2w cs-disappear fr-hidden cs-hide">
+							<h3 class="fr-alert__title">Une erreur est survenue. La mise à jour a échoué.</h3>
+						</div>
+
+						{% if nz > 0 %}
+							<div data-fr-group="true" class="fr-accordions-group">
+								{% for zone in piece.zones %}
+									<section class="fr-accordion">
+										<h4 class="fr-accordion__title cs-relative">
+											<button type="button" class="fr-accordion__btn" aria-expanded="false" aria-controls="accordion-zone-{{zone.id}}">
+												<a class="action_edit" data-deletebtn="delete_zone_{{zone.id}}" data-message="message-zone-{{piece.id}}" id="action_patch_zones_{{zone.id}}_nom" href="{{ path('oukile_zone_edit', {'id': zone.id}) }}">
+													{{ zone.nom }}
+												</a>
+											</button>
+											<form method="post" action="{{ path('oukile_zone_delete', {'id': zone.id}) }}" onsubmit="return confirm('Êtes vous sûr de vouloir supprimer cette zone?');">
+												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ zone.id) }}">
+												<button id="delete_zone_{{zone.id}}" class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm cs-cross-btn fr-hidden" title="Supprimer">
+													&#x2715;
+												</button>
+											</form>
+										</h4>
+										<div class="fr-collapse" id="accordion-zone-{{zone.id}}">
+
+											<div id="success-message-rangement-{{zone.id}}" class="fr-alert fr-alert--success fr-mb-2w cs-disappear fr-hidden cs-hide">
+												<h3 class="fr-alert__title">La zone a été mise à jour avec succès.</h3>
+											</div>
+
+											<div id="error-message-rangement-{{zone.id}}" class="fr-alert fr-alert--warning fr-mb-2w cs-disappear fr-hidden cs-hide">
+												<h3 class="fr-alert__title">Une erreur est survenue. La mise à jour a échoué.</h3>
+											</div>
+
+											<p>
+												{% set nr = zone.rangements | length %}
+												{% if nr == 0 %}
+													Cette zone ne contient aucun rangement.
+												{% elseif nr == 1 %}
+													Cette zone contient un rangement.
+												{% else %}
+													Cette zone contient
+													{{ nr }}
+													rangements:
+												{% endif %}
+
+												<ul class="fr-btns-group fr-btns-group--inline">
+													<li>
+														<a class="fr-btn fr-btn--tertiary-no-outline" href="{{ path('oukile_rangement_new', {'id': zone.id}) }}">+ Ajouter un rangement</a>
+													</li>
+												</ul>
+
+											</p>
+
+											{% if nr > 0%}
+												<div class="fr-grid fr-grid-row fr-grid-row--gutters">
+													{% for rangement in zone.rangements %}
+														<div class="fr-col-6 fr-col-md-6 fr-col-lg-12 fr-mb-2w">
+															<div class="fr-card">
+																<div class="fr-p-4w">
+
+																	<h5 class="fr-card__title fr-pb-2w">
+																		{{ rangement.type.nom | capitalize }}
+																		-
+																		<a class="relative action_edit" data-deletebtn="delete_rangement_{{rangement.id}}" data-message="message-rangement-{{zone.id}}" id="action_patch_rangements_{{rangement.id}}_nom" href="{{ path('oukile_rangement_edit', {'id': rangement.id}) }}">
+																			{{ rangement.nom }}
+																		</a>
+																		<form class="cs-inline" method="post" action="{{ path('oukile_rangement_delete', {'id': rangement.id}) }}" onsubmit="return confirm('Êtes vous sûr de vouloir supprimer cette pièce?');">
+																			<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ rangement.id) }}">
+																			<button id="delete_rangement_{{rangement.id}}" class="fr-btn fr-btn--tertiary-no-outline fr-btn--sm cs-cross-btn fr-hidden" title="Supprimer">
+																				&#x2715;
+																			</button>
+																		</form>
+																	</h5>
+
+																	<ul class="fr-card__desc fr-btns-group fr-btns-group--inline">
+																		<li>
+																			<a class="fr-btn fr-btn--tertiary-no-outline" href="{{ path('oukile_emplacement_new', {'id': rangement.id}) }}">+ Ajouter un emplacement</a>
+																		</li>
+																	</ul>
+
+																	{% set ne = rangement.emplacements | length %}
+																	{% if ne == 0 %}
+																		<p class="fr-card__desc">Rangement vide.</p>
+
+																	{% else %}
+
+																		{% for i, emplacement in rangement.emplacements %}
+
+																			{% set nl = emplacement.lots | length %}
+
+																			<p class="fr-card__desc fr-p cs-relative cs-emplacement-vide {{ i==0 ? 'fr-mt-1w' : '' }}">
+																				<span>-
+																					{{emplacement.nom}}</span>
+																				&nbsp;
+																				<a class="fr-btn fr-btn--sm fr-icon-edit-line fr-btn--tertiary" href="{{ path('oukile_emplacement_manage', {'id': emplacement.id}) }}">Gérer le contenu</a>
+
+																				{% if nl == 0 %}
+																					<a class="fr-link cs-absolute right-0 fr-icon-delete-line fr-link--icon-left" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>
+																					{{ include('emplacement/_delete_form.html.twig') }}
+																				{% endif %}
+
+																			</p>
+
+																			{% if nl > 0 %}
+
+																				<div class="fr-card__desc fr-table fr-table--no-caption" id="table-emplacement-{{emplacement.id}}-component">
+																					<div class="fr-table__wrapper">
+																						<div class="fr-table__container">
+																							<div class="fr-table__content">
+																								<table id="table-emplacement-{{emplacement.id}}">
+																									<caption class="fr-p">
+																										{{emplacement.nom}}
+																									</caption>
+																									<thead>
+																										<tr>
+																											<th>
+																												Nombre
+																											</th>
+																											<th>
+																												Catégorie
+																											</th>
+																											<th>
+																												Marque / Modèle
+																											</th>
+																											<th>
+																												Description
+																											</th>
+																										</tr>
+																									</thead>
+																									<tbody>
+																										{% for i,lot in emplacement.lots %}
+																											<tr id="table-emplacement-{{emplacement.id}}-row-key-{{lot.id}}" data-row-key="{{ i + 1}}">
+																												<td>{{ lot.nombre }}</td>
+																												<td>{{ lot.famille.categorie.nom }}</td>
+																												<td>{{ lot.famille.marque }}
+																													{{ lot.famille.modele }}</td>
+																												<td>{{ lot.famille.description }}</td>
+																											</tr>
+																										{% endfor %}
+																									</tbody>
+																								</table>
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			{% endif %}
+
+																		{% endfor %}
+																	{% endif %}
+
+																</div>
+															</div>
+														</div>
+													{% else %}
+														<p>Aucune pièce associée à cette unité.</p>
+													{% endfor %}
+
+												</div>
+											{% endif %}
+										</div>
+									</section>
+								{% endfor %}
+							</div>
+						{% endif %}
+						<ul class="fr-mt-4w fr-btns-group fr-btns-group--inline">
+							<li>
+								<a class="fr-btn fr-btn--tertiary" href="{{ path('oukile_zone_new', {'id': piece.id}) }}">+ Ajouter une zone</a>
+							</li>
+						</ul>
+					</div>
+				</section>
+			{% else %}
+				<p>Aucune pièce associée à cette unité.</p>
+			{% endfor %}
+		</div>
+
+	</main>
 {% endblock %}

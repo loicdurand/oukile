@@ -1,0 +1,81 @@
+{{ form_start(form) }}
+<div class="fr-form-group">
+	{{ form_label(form.nom) }}
+	{{ form_widget(form.nom) }}
+</div>
+
+<div class="fr-form-group">
+	<fieldset class="fr-fieldset" id="rangement-type-fieldset">
+		<legend class="fr-fieldset__legend--regular fr-fieldset__legend">
+			{{ form_label(form.type) }}
+		</legend>
+		<div class="fr-fieldset__content">
+			<div>
+				{{ form_widget(form.type) }}
+				{% if form_errors(form.type) %}
+					<div class="fr-error-text">
+						{{ form_errors(form.type) }}
+					</div>
+				{% endif %}
+			</div>
+
+			{% if form.createNewType is defined %}
+
+				<div class="fr-checkbox-group fr-mt-2w">
+					{{ form_widget(form.createNewType) }}
+					{{ form_label(form.createNewType) }}
+					<div class="fr-messages-group" id="checkbox-0-messages" aria-live="polite"></div>
+				</div>
+
+				<div id="new-type-form" class="fr-mt-3w" style="display: none;">
+					<fieldset class="fr-fieldset">
+
+						<div class="fr-fieldset__content">
+							<div class="fr-form-group">
+								{{ form_label(form.newTypeName) }}
+								{{ form_widget(form.newTypeName) }}
+								{% if form_errors(form.newTypeName) %}
+									<div class="fr-error-text">
+										{{ form_errors(form.newTypeName) }}
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			{% endif %}
+		</div>
+	</fieldset>
+</div>
+
+<div class="fr-form-group">
+	{{ form_label(form.zone) }}
+	{{ form_widget(form.zone) }}
+</div>
+
+<button class="fr-mt-4w fr-mb-2w fr-btn fr-icon-add-line fr-btn--icon-left">{{ button_label|default('Enregistrer') }}</button>
+{{ form_end(form) }}
+
+{% if form.createNewType is defined %}
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+const createNewTypeCheckbox = document.querySelector('[name*="createNewType"]');
+const newTypeForm = document.getElementById('new-type-form');
+const typeSelect = document.querySelector('[name*="type"]');
+
+if (createNewTypeCheckbox) {
+createNewTypeCheckbox.addEventListener('change', function () {
+if (this.checked) {
+newTypeForm.style.display = 'block';
+typeSelect.parentElement.style.opacity = '0.5';
+typeSelect.disabled = true;
+} else {
+newTypeForm.style.display = 'none';
+typeSelect.parentElement.style.opacity = '1';
+typeSelect.disabled = false;
+}
+});
+}
+});
+	</script>
+{% endif %}

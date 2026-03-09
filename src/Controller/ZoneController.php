@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Zone;
 use App\Form\ZoneType;
+use App\Repository\PieceRepository;
 use App\Repository\ZoneRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,7 +15,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/zone')]
 final class ZoneController extends AbstractController
 {
-    #[Route(name: 'app_zone_index', methods: ['GET'])]
+    #[Route(name: 'oukile_zone_index', methods: ['GET'])]
     public function index(ZoneRepository $zoneRepository): Response
     {
         return $this->render('zone/index.html.twig', [
@@ -22,10 +23,20 @@ final class ZoneController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_zone_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new', name: 'oukile_zone_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, PieceRepository $pieceRepository): Response
     {
         $zone = new Zone();
+        
+        // Récupérer le paramètre 'id' de l'URL pour pré-sélectionner la pièce
+        $pieceId = $request->query->get('id');
+        if ($pieceId) {
+            $piece = $pieceRepository->find($pieceId);
+            if ($piece) {
+                $zone->setPiece($piece);
+            }
+        }
+        
         $form = $this->createForm(ZoneType::class, $zone);
         $form->handleRequest($request);
 
@@ -33,7 +44,7 @@ final class ZoneController extends AbstractController
             $entityManager->persist($zone);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_zone_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('zone/new.html.twig', [
@@ -42,7 +53,7 @@ final class ZoneController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_zone_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'oukile_zone_show', methods: ['GET'])]
     public function show(Zone $zone): Response
     {
         return $this->render('zone/show.html.twig', [
@@ -50,7 +61,7 @@ final class ZoneController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_zone_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'oukile_zone_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Zone $zone, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ZoneType::class, $zone);
@@ -59,7 +70,7 @@ final class ZoneController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_zone_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('zone/edit.html.twig', [
@@ -68,14 +79,14 @@ final class ZoneController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_zone_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'oukile_zone_delete', methods: ['POST'])]
     public function delete(Request $request, Zone $zone, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$zone->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $zone->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($zone);
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_zone_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('oukile_unite_index', [], Response::HTTP_SEE_OTHER);
     }
 }

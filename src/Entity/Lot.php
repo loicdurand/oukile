@@ -3,25 +3,49 @@
 namespace App\Entity;
 
 use App\Repository\LotRepository;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: LotRepository::class)]
+#[
+    ApiResource(
+        normalizationContext: ["groups" => ["lot:read"]],
+        denormalizationContext: ["groups" => ["lot:write"]],
+    ),
+]
+#[
+    ApiFilter(
+        SearchFilter::class,
+        properties: [
+            "famille.id" => "exact",
+            "emplacement.id" => "exact",
+            "emplacement.rangement.zone.piece.unite.id" => "exact",
+        ],
+    ),
+]
 class Lot
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(["lot:read", "lot:write", "emplacement:read"])]
     private ?int $id = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(["lot:read", "lot:write", "emplacement:read"])]
     private ?int $nombre = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lots')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["lot:read", "lot:write", "emplacement:read"])]
     private ?FamilleArticle $famille = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lots')]
+    #[ORM\ManyToOne(inversedBy: "lots")]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["lot:read", "lot:write"])]
     private ?Emplacement $emplacement = null;
 
     public function getId(): ?int
@@ -41,12 +65,12 @@ class Lot
         return $this;
     }
 
-    public function getFamilleArticle(): ?FamilleArticle
+    public function getFamille(): ?FamilleArticle
     {
         return $this->famille;
     }
 
-    public function setFamilleArticle(?FamilleArticle $famille): static
+    public function setFamille(?FamilleArticle $famille): static
     {
         $this->famille = $famille;
 

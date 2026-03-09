@@ -1,0 +1,891 @@
+// =============================================================================
+// Quick Stock SPA — styles
+// Naming: BEM with .qs__ prefix
+// Tokens: DSFR CSS custom properties + Marianne font
+// =============================================================================
+
+// ── DSFR token aliases ──────────────────────────────────────────────────────
+// All colours come from the DSFR CSS variables injected by @gouvfr/dsfr.
+// We only define fallbacks for the very few cases where we need a tint.
+
+$qs-transition: 160ms ease;
+
+// ── Root ───────────────────────────────────────────────────────────────────
+
+.qs {
+    max-width: 700px;
+    margin: var(--spacing-6w, 1.5rem) auto var(--spacing-12w, 3rem);
+    font-family: Marianne, arial, sans-serif;
+    color: var(--text-default-grey);
+
+    &[data-loading] {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}
+
+.qs-app {
+    min-height: 80%;
+}
+
+// ── Tab bar ────────────────────────────────────────────────────────────────
+
+.qs__tab {
+    &:hover {
+        background: var(--background-default-grey-hover);
+        color: var(--text-action-high-blue-france);
+    }
+
+    &--active {
+        background: var(--background-default-grey);
+        color: var(--text-action-high-blue-france);
+        font-weight: 700;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+
+        & .qs__tab-label {
+            color: #fff;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+}
+
+.qs__tab-label {
+    margin: 0 0.5rem;
+}
+
+.qs__tab-icon {
+    font-size: 1.1em;
+    line-height: 1;
+}
+
+.qs__tab-kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid var(--border-default-grey);
+    border-radius: 3px;
+    font-size: 0.625rem;
+    font-family: monospace;
+    background: var(--background-alt-grey);
+    color: var(--text-mention-grey);
+    line-height: 1;
+    opacity: 0.8;
+
+    .qs__tab--active & {
+        border-color: var(--border-action-high-blue-france);
+        color: var(--text-action-high-blue-france);
+        background: var(--background-contrast-blue-france);
+    }
+}
+
+// ── Panel ──────────────────────────────────────────────────────────────────
+
+.qs__panel {
+    background: var(--background-default-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    padding: var(--spacing-4w, 1rem);
+    box-shadow: var(--raised-shadow, 0 2px 6px rgba(0, 0, 18, 0.08));
+    animation: qs-fade-in 180ms ease;
+}
+
+@keyframes qs-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// ── Loading indicator ──────────────────────────────────────────────────────
+
+.qs__loading {
+    align-items: center;
+    gap: var(--spacing-2v, 0.5rem);
+    margin-top: var(--spacing-2w, 0.5rem);
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
+
+    &:not([hidden]) {
+        display: flex;
+    }
+}
+
+.qs__spinner {
+    flex-shrink: 0;
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--border-default-grey);
+    border-top-color: var(--border-action-high-blue-france);
+    border-radius: 50%;
+    animation: qs-spin 600ms linear infinite;
+}
+
+@keyframes qs-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// ── Autocomplete dropdown ──────────────────────────────────────────────────
+
+.qs__autocomplete {
+    position: relative;
+}
+
+.qs__dropdown {
+    position: absolute;
+    inset-inline: 0;
+    top: calc(100% + 2px);
+    background: var(--background-default-grey);
+    border: 1px solid var(--border-action-high-blue-france);
+    border-radius: 0 0 0.25rem 0.25rem;
+    box-shadow: var(--raised-shadow, 0 4px 12px rgba(0, 0, 18, 0.12));
+    max-height: 260px;
+    overflow-y: auto;
+    z-index: 200;
+    margin: 0;
+    padding: var(--spacing-1v, 0.25rem);
+    list-style: none;
+}
+
+.qs__dropdown-item {
+    padding: var(--spacing-2v, 0.5rem) var(--spacing-3v, 0.75rem);
+    border-radius: 2px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition:
+        background $qs-transition,
+        color $qs-transition;
+
+    &:hover,
+    &--active {
+        background: var(--background-contrast-blue-france);
+        color: var(--text-action-high-blue-france);
+    }
+}
+
+.qs__dropdown-empty {
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3v, 0.75rem);
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
+    font-style: italic;
+}
+
+// ── Steps (ranger / sortir) ────────────────────────────────────────────────
+
+.qs__step+.qs__step {
+    margin-top: var(--spacing-3w, 0.75rem);
+    padding-top: var(--spacing-3w, 0.75rem);
+    border-top: 1px solid var(--border-default-grey);
+}
+
+// ── Famille badge ──────────────────────────────────────────────────────────
+
+.qs__famille-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2v, 0.5rem);
+    background: var(--background-contrast-blue-france);
+    color: var(--text-action-high-blue-france);
+    border-radius: 999px;
+    padding: var(--spacing-1w, 0.25rem) var(--spacing-3w, 0.75rem);
+    font-size: 0.875rem;
+    font-weight: 700;
+    margin-bottom: var(--spacing-3w, 0.75rem);
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.qs__reset-btn {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-mention-grey);
+    font-size: 0.875rem;
+    padding: 2px 5px;
+    border-radius: 2px;
+    line-height: 1;
+    transition:
+        color $qs-transition,
+        background $qs-transition;
+
+    &:hover {
+        color: var(--text-default-error);
+        background: var(--background-contrast-error);
+    }
+}
+
+// ── Location selects ───────────────────────────────────────────────────────
+
+.qs__selects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-3w, 0.75rem) var(--spacing-4w, 1rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
+
+    @media (max-width: 520px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.qs__select-group,
+.qs__quantity-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1v, 0.25rem);
+}
+
+.qs__label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-mention-grey);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.qs__select {
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3v, 0.75rem);
+    border: 2px solid var(--border-default-grey);
+    border-radius: 0.25rem 0.25rem 0 0;
+    border-bottom-color: var(--border-plain-grey);
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    background: var(--background-default-grey);
+    color: var(--text-default-grey);
+    cursor: pointer;
+    outline: none;
+    transition:
+        border-color $qs-transition,
+        box-shadow $qs-transition;
+
+    &:focus {
+        border-color: var(--border-action-high-blue-france);
+        border-bottom-color: var(--border-action-high-blue-france);
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        background: var(--background-disabled-grey);
+        color: var(--text-disabled-grey);
+        border-bottom-color: var(--border-disabled-grey);
+        cursor: not-allowed;
+    }
+}
+
+// ── Confirm button ─────────────────────────────────────────────────────────
+// Mirror fr-btn styling without adding the class to the Twig template.
+
+.qs__confirm-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2v, 0.5rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-6v, 1.5rem);
+    background: var(--background-action-high-blue-france);
+    color: var(--text-inverted-blue-france);
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    cursor: pointer;
+    transition:
+        background $qs-transition,
+        transform 80ms ease;
+
+    &:hover:not(:disabled) {
+        background: var(--background-action-high-blue-france-hover);
+    }
+
+    &:active:not(:disabled) {
+        background: var(--background-action-high-blue-france-active);
+    }
+
+    &:disabled {
+        background: var(--background-disabled-grey);
+        color: var(--text-disabled-grey);
+        cursor: not-allowed;
+    }
+
+    &--danger {
+        background: var(--background-action-high-error);
+        color: var(--text-inverted-error);
+
+        &:hover:not(:disabled) {
+            background: var(--background-action-high-error-hover);
+        }
+
+        &:active:not(:disabled) {
+            background: var(--background-action-high-error-active);
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+}
+
+.qs__confirm-icon {
+    font-size: 1em;
+    line-height: 1;
+}
+
+// ── Results (Trouver) ──────────────────────────────────────────────────────
+
+.qs__results {
+    margin-top: var(--spacing-3w, 0.75rem);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3w, 0.75rem);
+}
+
+.qs__result-card {
+    background: var(--background-alt-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    padding: var(--spacing-3w, 0.75rem);
+    transition: border-color $qs-transition;
+
+    &:hover {
+        border-color: var(--border-action-high-blue-france);
+    }
+}
+
+.qs__result-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--spacing-1v, 0.25rem) var(--spacing-3v, 0.75rem);
+    margin-bottom: var(--spacing-2w, 0.5rem);
+}
+
+.qs__result-title {
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--text-default-grey);
+}
+
+.qs__result-subtitle {
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
+    flex: 1 1 auto;
+}
+
+.qs__result-categorie {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    background: var(--background-contrast-blue-france);
+    color: var(--text-action-high-blue-france);
+    padding: 2px var(--spacing-2v, 0.5rem);
+    border-radius: 999px;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+// ── Location list ──────────────────────────────────────────────────────────
+
+.qs__location-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.qs__location-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-1w, 0.25rem) var(--spacing-3v, 0.75rem);
+    background: var(--background-default-grey);
+    border-left: 3px solid var(--border-action-high-blue-france);
+    gap: var(--spacing-4w, 1rem);
+    font-size: 0.875rem;
+}
+
+.qs__location-path {
+    flex: 1 1 auto;
+    color: var(--text-mention-grey);
+}
+
+.qs__location-actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1v, 0.25rem);
+}
+
+.qs__location-qty {
+    font-weight: 700;
+    color: var(--text-action-high-blue-france);
+    font-size: 0.875rem;
+    min-width: 2.25rem;
+    text-align: center;
+}
+
+// ── +/− quick-action buttons ───────────────────────────────────────────────
+
+.qs__qty-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    border: 1px solid var(--border-default-grey);
+    background: var(--background-default-grey);
+    color: var(--text-default-grey);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+        background $qs-transition,
+        border-color $qs-transition,
+        color $qs-transition;
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &--plus {
+        border-color: var(--border-action-high-blue-france);
+        color: var(--text-action-high-blue-france);
+
+        &:hover {
+            background: var(--background-action-high-blue-france);
+            color: var(--text-inverted-blue-france);
+        }
+    }
+
+    &--minus {
+        border-color: var(--border-plain-error);
+        color: var(--text-default-error);
+
+        &:hover {
+            background: var(--background-action-high-error);
+            color: var(--text-inverted-error);
+        }
+    }
+}
+
+.qs__location-empty {
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
+    font-style: italic;
+    margin: 0;
+    padding: var(--spacing-1v, 0.25rem) 0;
+}
+
+// ── Feedback ───────────────────────────────────────────────────────────────
+// Mirror fr-alert styling (success / error) without the full component markup.
+
+.qs__feedback {
+    margin-top: var(--spacing-3w, 0.75rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-4w, 1rem);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+
+    &--success {
+        background: var(--background-contrast-success);
+        color: var(--text-default-success);
+        border-left: 4px solid var(--border-plain-success);
+    }
+
+    &--error {
+        background: var(--background-contrast-error);
+        color: var(--text-default-error);
+        border-left: 4px solid var(--border-plain-error);
+    }
+}
+
+// ── Empty / error states ───────────────────────────────────────────────────
+
+.qs__no-results,
+.qs__error {
+    text-align: center;
+    color: var(--text-mention-grey);
+    font-size: 0.875rem;
+    padding: var(--spacing-6w, 1.5rem);
+    margin: 0;
+}
+
+.qs__error {
+    color: var(--text-default-error);
+}
+
+// ── Confirmation modal ─────────────────────────────────────────────────────
+// Uses the native <dialog> element styled to match fr-modal.
+
+.qs__modal {
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0;
+    width: min(480px, calc(100vw - 2rem));
+    box-shadow: 0 8px 32px rgba(0, 0, 18, 0.18);
+    background: var(--background-default-grey);
+
+    &::backdrop {
+        background: rgba(0, 0, 18, 0.48);
+    }
+}
+
+.qs__modal-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.qs__modal-header {
+    padding: var(--spacing-4w, 1rem) var(--spacing-6w, 1.5rem) 0;
+    border-bottom: 1px solid var(--border-default-grey);
+    padding-bottom: var(--spacing-3w, 0.75rem);
+}
+
+.qs__modal-title {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-default-grey);
+    margin: 0;
+}
+
+.qs__modal-body {
+    padding: var(--spacing-4w, 1rem) var(--spacing-6w, 1.5rem);
+}
+
+.qs__modal-message {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1rem;
+    color: var(--text-default-grey);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.qs__modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3w, 0.75rem);
+    padding: 0 var(--spacing-6w, 1.5rem) var(--spacing-4w, 1rem);
+}
+
+.qs__modal-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-6v, 1.5rem);
+    border-radius: 0.25rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    cursor: pointer;
+    transition: background $qs-transition;
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+
+    &--cancel {
+        background: transparent;
+        color: var(--text-action-high-blue-france);
+        border: 1px solid var(--border-action-high-blue-france);
+
+        &:hover:not(:disabled) {
+            background: var(--background-contrast-blue-france);
+        }
+    }
+
+    &--confirm {
+        background: var(--background-action-high-blue-france);
+        color: var(--text-inverted-blue-france);
+        border: 1px solid transparent;
+
+        &:hover:not(:disabled) {
+            background: var(--background-action-high-blue-france-hover);
+        }
+
+        &:active:not(:disabled) {
+            background: var(--background-action-high-blue-france-active);
+        }
+    }
+
+    &--danger {
+        background: var(--background-action-high-error);
+        color: var(--text-inverted-error);
+        border: 1px solid transparent;
+
+        &:hover:not(:disabled) {
+            background: var(--background-action-high-error-hover);
+        }
+    }
+}
+
+// ── Form modal fields ──────────────────────────────────────────────────────
+
+.qs__modal--form {
+    width: min(540px, calc(100vw - 2rem));
+}
+
+.cat__form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1v, 0.25rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
+
+    &:last-of-type {
+        margin-bottom: 0;
+    }
+}
+
+.cat__form-input,
+.cat__form-select {
+    // fr-input / fr-select already provide base styles via DSFR;
+    // we only ensure box-sizing consistency here.
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.cat__form-error {
+    margin-top: var(--spacing-2w, 0.5rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-3w, 0.75rem);
+    border-left: 4px solid var(--border-plain-error);
+    background: var(--background-contrast-error);
+    color: var(--text-default-error);
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0 0.25rem 0.25rem 0;
+}
+
+// ── Catalogue panel ────────────────────────────────────────────────────────
+
+.cat__feedback {
+    margin-bottom: var(--spacing-3w, 0.75rem);
+    padding: var(--spacing-2w, 0.5rem) var(--spacing-4w, 1rem);
+    border-radius: 0.25rem;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+
+    &--success {
+        background: var(--background-contrast-success);
+        color: var(--text-default-success);
+        border-left: 4px solid var(--border-plain-success);
+    }
+
+    &--error {
+        background: var(--background-contrast-error);
+        color: var(--text-default-error);
+        border-left: 4px solid var(--border-plain-error);
+    }
+}
+
+.cat__section {
+    margin-bottom: var(--spacing-8w, 2rem);
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.cat__section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--spacing-2w, 0.5rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
+}
+
+.cat__section-title-group {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3w, 0.75rem);
+}
+
+.cat__section-title {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--text-default-grey);
+    margin: 0;
+}
+
+.cat__count {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--text-mention-grey);
+    background: var(--background-alt-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 999px;
+    padding: 2px var(--spacing-2v, 0.5rem);
+    white-space: nowrap;
+}
+
+.cat__search-row {
+    margin-bottom: var(--spacing-3w, 0.75rem);
+}
+
+.cat__search {
+    // fr-input provides the base; ensure full width.
+    box-sizing: border-box;
+    width: 100%;
+}
+
+// ── Catalogue table ────────────────────────────────────────────────────────
+
+.cat__table-wrapper {
+    // fr-table handles most styling; we fine-tune here.
+    width: 100%;
+    overflow-x: auto;
+
+    table {
+        width: 100%;
+    }
+}
+
+.cat__col-actions {
+    width: 6rem;
+    text-align: right;
+}
+
+.cat__row {
+    transition: background $qs-transition;
+
+    &:hover {
+        background: var(--background-alt-grey);
+    }
+}
+
+.cat__cell {
+    vertical-align: middle;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-default-grey);
+
+    &--main {
+        font-weight: 700;
+    }
+
+    &--actions {
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    &--count {
+        text-align: center;
+    }
+}
+
+.cat__muted {
+    color: var(--text-disabled-grey);
+}
+
+.cat__empty {
+    text-align: center;
+    color: var(--text-mention-grey);
+    font-style: italic;
+    font-size: 0.875rem;
+    padding: var(--spacing-6w, 1.5rem) !important;
+}
+
+// ── Catalogue badges ───────────────────────────────────────────────────────
+
+.cat__badge {
+    display: inline-block;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    background: var(--background-contrast-blue-france);
+    color: var(--text-action-high-blue-france);
+    padding: 2px var(--spacing-2v, 0.5rem);
+    border-radius: 999px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.cat__count-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    background: var(--background-alt-grey);
+    color: var(--text-default-grey);
+    border: 1px solid var(--border-default-grey);
+    border-radius: 999px;
+    padding: 0 var(--spacing-1v, 0.25rem);
+}
+
+// ── Catalogue action buttons ───────────────────────────────────────────────
+
+.cat__action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--border-default-grey);
+    border-radius: 0.25rem;
+    background: var(--background-default-grey);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition:
+        background $qs-transition,
+        border-color $qs-transition;
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+
+    &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+    }
+
+    &--edit {
+        &:hover:not(:disabled) {
+            background: var(--background-contrast-blue-france);
+            border-color: var(--border-action-high-blue-france);
+        }
+    }
+
+    &--delete {
+        &:hover:not(:disabled) {
+            background: var(--background-contrast-error);
+            border-color: var(--border-plain-error);
+        }
+    }
+}
+
+
+button#tab-catalogue.fr-tabs__tab.qs__tabs {
+    background-color: #fff;
+}

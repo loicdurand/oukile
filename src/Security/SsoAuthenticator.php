@@ -43,7 +43,7 @@ class SsoAuthenticator extends AbstractAuthenticator
         if (is_null($this->sso::user()))
             return true;
 
-        if (!isset($_COOKIE[$_ENV['COOKIE_NAME']]))
+        if (isset($_COOKIE[$_ENV['COOKIE_NAME']]))
             return true;
 
         if ($request->getPathInfo() == '/login')
@@ -108,7 +108,7 @@ class SsoAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // Redirige vers une page après authentification réussie
-        return new RedirectResponse($this->urlGenerator->generate('oukile_index'));
+        return new RedirectResponse($this->urlGenerator->generate('oukile_stock'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
