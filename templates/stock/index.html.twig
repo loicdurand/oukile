@@ -17,7 +17,7 @@
 
 	<p class="fr-mt-2w fr-mb-4w">
 		Les salles et zones de votre unités ont été configurées sur la page de
-		<a class="fr-link" target="_self" href="{{ path('oukile_unite_show',{id: 1})}}" title="Gestion de l'unité">gestion de votre unité</a>
+		<a class="fr-link" target="_self" href="{{ path('oukile_unite_show',{id: user.unite.id})}}" title="Gestion de l'unité">gestion de votre unité</a>.
 	</p>
 
 	<div
@@ -87,7 +87,7 @@
 					<label class="fr-label" for="input-0">
 						Quel article ranger ?
 					</label>
-					<input type="search" id="ranger-query" class="fr-input qs__input" placeholder="marque, modèle, description" autocomplete="off" aria-label="Rechercher un article à ranger" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="ranger-dropdown" aria-expanded="false"/>
+					<input type="search" id="ranger-query" class="fr-input qs__input" placeholder="marque, modèle, description…" autocomplete="off" aria-label="Rechercher un article à ranger" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="ranger-dropdown" aria-expanded="false"/>
 					<ul class="qs__dropdown" id="ranger-dropdown" role="listbox" aria-label="Suggestions d'articles" hidden></ul>
 				</div>
 			</div>
@@ -149,7 +149,7 @@
 					<label class="fr-label" for="input-0">
 						Quel article sortir ?
 					</label>
-					<input type="search" id="sortir-query" class="fr-input qs__input" placeholder="marque, modèle, description" autocomplete="off" aria-label="Rechercher un article à sortir" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="sortir-dropdown" aria-expanded="false"/>
+					<input type="search" id="sortir-query" class="fr-input qs__input" placeholder="marque, modèle, description…" autocomplete="off" aria-label="Rechercher un article à sortir" aria-autocomplete="list" aria-haspopup="listbox" aria-controls="sortir-dropdown" aria-expanded="false"/>
 					<ul class="qs__dropdown" id="sortir-dropdown" role="listbox" aria-label="Suggestions d'articles" hidden></ul>
 				</div>
 			</div>

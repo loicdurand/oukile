@@ -4,7 +4,7 @@ import '/node_modules/@gouvfr/dsfr/dist/dsfr.css';
 import "/node_modules/@gouvfr/dsfr/dist/utility/icons/icons.main.min.css";
 import './styles/app.scss';
 import axios from 'axios';
-import { onReady } from './javascripts/utils/document';
+import { onReady } from './javascripts/utils/document.ts';
 
 // JAVASCRIPTS
 import "/node_modules/@gouvfr/dsfr/dist/dsfr/dsfr.module";
