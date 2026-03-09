@@ -108,7 +108,7 @@ class SsoAuthenticator extends AbstractAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // Redirige vers une page après authentification réussie
-        return new RedirectResponse($this->urlGenerator->generate('oukile_index'));
+        return new RedirectResponse($this->urlGenerator->generate('oukile_stock'));
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
