@@ -184,7 +184,7 @@ $qs-transition: 160ms ease;
 
 // ── Steps (ranger / sortir) ────────────────────────────────────────────────
 
-.qs__step+.qs__step {
+.qs__step + .qs__step {
     margin-top: var(--spacing-3w, 0.75rem);
     padding-top: var(--spacing-3w, 0.75rem);
     border-top: 1px solid var(--border-default-grey);
@@ -884,7 +884,6 @@ $qs-transition: 160ms ease;
         }
     }
 }
-
 
 button#tab-catalogue.fr-tabs__tab.qs__tabs {
     background-color: #fff;
