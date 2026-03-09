@@ -82,7 +82,7 @@
 
 										{% if user is defined and user.userId %}
 											<a class="fr-btn fr-icon-logout-box-r-line" href="{{ path('oukile_logout') }}" title="Se déconnecter">
-												<span class="login">{{user.titre}}&nbsp;- Déconnexion</span>.
+												<span id="login" data-unite="{{user.unite.id}}" class="login">{{user.titre}}&nbsp;- Déconnexion</span>.
 											</a>
 										{% else %}
 											<a class="fr-btn fr-icon-logout-box-r-line" href="{{ path('oukile_login') }}" title="Se connecter">
