@@ -51,7 +51,7 @@ function renderCard(
 
 // ── Init ──────────────────────────────────────────────────────────────────
 
-export function initTrouver(): () => void {
+export function initTrouver(): { focus: () => void; reset: () => void } {
     const input = document.getElementById("trouver-query") as HTMLInputElement;
     const dropdown = document.getElementById(
         "trouver-dropdown",
@@ -87,5 +87,11 @@ export function initTrouver(): () => void {
         loadAndRender,
     );
 
-    return () => autocomplete.focus();
+    function reset(): void {
+        autocomplete.reset();
+        results.innerHTML = "";
+        loading.hidden = true;
+    }
+
+    return { focus: () => autocomplete.focus(), reset };
 }

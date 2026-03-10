@@ -1,3 +1,3 @@
-import { createMouvementTab } from './mouvement';
+import { createMouvementTab } from "./mouvement";
 
-export const initRanger = (): (() => void) => createMouvementTab('ranger');
+export const initRanger = () => createMouvementTab("ranger");

@@ -715,7 +715,7 @@ function confirmDeleteCategorie(c: Categorie): void {
 
 // ── Init ──────────────────────────────────────────────────────────────────
 
-export function initCatalogue(): () => void {
+export function initCatalogue(): { focus: () => void; reset: () => void } {
     familleTableBody = document.getElementById(
         "cat-famille-tbody",
     ) as HTMLTableSectionElement;
@@ -768,6 +768,24 @@ export function initCatalogue(): () => void {
     renderFamilleRows([]);
     renderCategorieRows([]);
 
-    // Return focus function for tab manager
-    return () => familleSearch.focus();
+    // Return focus+reset for tab manager
+    function reset(): void {
+        familleSearch.value = "";
+        familleCurrentResults = [];
+        familleTotalItems = 0;
+        familleCurrentPage = 1;
+        familleCount.textContent = "";
+        famillePagination.innerHTML = "";
+        renderFamilleRows([]);
+
+        categorieSearch.value = "";
+        categorieCurrentResults = [];
+        categorieTotalItems = 0;
+        categorieCurrentPage = 1;
+        categorieCount.textContent = "";
+        categoriePagination.innerHTML = "";
+        renderCategorieRows([]);
+    }
+
+    return { focus: () => familleSearch.focus(), reset };
 }

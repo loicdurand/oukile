@@ -789,6 +789,10 @@ $qs-transition: 160ms ease;
     white-space: nowrap;
 }
 
+.cat__count:empty {
+    display: none;
+}
+
 .cat__search-row {
     margin-bottom: var(--spacing-3w, 0.75rem);
 }

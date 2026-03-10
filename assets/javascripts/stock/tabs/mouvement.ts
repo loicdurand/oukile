@@ -30,9 +30,12 @@ function showFeedback(el: HTMLElement, message: string, isError = false): void {
 
 /**
  * Initialises a Ranger or Sortir tab.
- * Returns a function that focuses the tab's primary input (used by the tab manager).
+ * Returns { focus, reset } for the tab manager.
  */
-export function createMouvementTab(mode: MouvementMode): () => void {
+export function createMouvementTab(mode: MouvementMode): {
+    focus: () => void;
+    reset: () => void;
+} {
     const p = mode; // element id prefix
 
     const queryInput = document.getElementById(
@@ -250,5 +253,9 @@ export function createMouvementTab(mode: MouvementMode): () => void {
         }
     });
 
-    return () => autocomplete.focus();
+    function resetSearch(): void {
+        autocomplete.reset();
+    }
+
+    return { focus: () => autocomplete.focus(), reset: resetSearch };
 }
