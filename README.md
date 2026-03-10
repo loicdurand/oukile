@@ -1,4 +1,4 @@
-# Oukilé? | Application de gestion de stock | v0.0.2
+# Oukilé? | Application de gestion de stock | v0.0.3
 
 ## Description
 Une application web sécurisée et intuitive pour trouver rapidemment un article rangé quelque part.
