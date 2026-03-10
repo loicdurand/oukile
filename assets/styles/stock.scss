@@ -344,6 +344,49 @@ $qs-transition: 160ms ease;
     line-height: 1;
 }
 
+// ── Similar stock panel (Ranger / Sortir) ──────────────────────────────────
+
+.qs__similar {
+    margin-top: var(--spacing-4w, 1rem);
+    padding: var(--spacing-3w, 0.75rem) var(--spacing-4w, 1rem);
+    background: var(--background-contrast-info);
+    border-left: 4px solid var(--border-plain-info);
+    border-radius: 0 0.25rem 0.25rem 0;
+
+    // Graceful fallback if --background-contrast-info is not defined
+    // (older DSFR versions use a different token name)
+    @supports not (background: var(--background-contrast-info)) {
+        background: var(--background-alt-blue-france);
+        border-left-color: var(--border-action-high-blue-france);
+    }
+}
+
+.qs__similar-header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-2v, 0.5rem);
+    margin-bottom: var(--spacing-2w, 0.5rem);
+}
+
+.qs__similar-icon {
+    font-size: 1rem;
+    line-height: 1.5;
+    flex-shrink: 0;
+}
+
+.qs__similar-title {
+    margin: 0;
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--text-default-grey);
+    line-height: 1.5;
+}
+
+.qs__similar-loading {
+    margin-top: var(--spacing-1w, 0.25rem);
+}
+
 // ── Results (Trouver) ──────────────────────────────────────────────────────
 
 .qs__results {
@@ -811,6 +854,67 @@ $qs-transition: 160ms ease;
     font-style: italic;
     font-size: 0.875rem;
     padding: var(--spacing-6w, 1.5rem) !important;
+
+    &--loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--spacing-2v, 0.5rem);
+        font-style: normal;
+    }
+}
+
+.cat__filter-row {
+    margin-top: var(--spacing-2w, 0.5rem);
+    margin-bottom: var(--spacing-3w, 0.75rem);
+}
+
+// ── Pagination ─────────────────────────────────────────────────────────────
+
+.cat__pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-3w, 0.75rem);
+    margin-top: var(--spacing-3w, 0.75rem);
+}
+
+.cat__page-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--spacing-1w, 0.25rem) var(--spacing-3w, 0.75rem);
+    border: 1px solid var(--border-action-high-blue-france);
+    border-radius: 0.25rem;
+    background: var(--background-default-grey);
+    color: var(--text-action-high-blue-france);
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background $qs-transition;
+
+    &:hover:not(:disabled) {
+        background: var(--background-contrast-blue-france);
+    }
+
+    &:disabled {
+        border-color: var(--border-disabled-grey);
+        color: var(--text-disabled-grey);
+        cursor: not-allowed;
+    }
+
+    &:focus-visible {
+        outline: 2px solid var(--border-action-high-blue-france);
+        outline-offset: 2px;
+    }
+}
+
+.cat__page-info {
+    font-family: Marianne, arial, sans-serif;
+    font-size: 0.875rem;
+    color: var(--text-mention-grey);
+    min-width: 7rem;
+    text-align: center;
 }
 
 // ── Catalogue badges ───────────────────────────────────────────────────────

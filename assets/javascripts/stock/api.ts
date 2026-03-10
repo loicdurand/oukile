@@ -43,6 +43,21 @@ export async function getCategories(): Promise<Categorie[]> {
     return fetchAll<Categorie>(`${API_BASE}/categories`);
 }
 
+/**
+ * Searches categories by name with server-side pagination.
+ */
+export async function searchCategoriesInCatalogue(
+    query: string,
+    page: number,
+    itemsPerPage: number,
+): Promise<{ items: Categorie[]; total: number }> {
+    const q = encodeURIComponent(query);
+    const data = await fetchJson<ApiCollection<Categorie>>(
+        `${API_BASE}/categories?nom=${q}&page=${page}&itemsPerPage=${itemsPerPage}`,
+    );
+    return { items: data.member, total: data.totalItems };
+}
+
 export async function createCategorie(nom: string): Promise<Categorie> {
     const res = await fetch(`${API_BASE}/categories`, {
         method: "POST",
@@ -84,6 +99,63 @@ export async function deleteCategorie(id: number): Promise<void> {
 
 export async function getFamilles(): Promise<FamilleArticle[]> {
     return fetchAll<FamilleArticle>(`${API_BASE}/famille_articles`);
+}
+
+/**
+ * Searches famille_articles with server-side pagination.
+ * Deduplicates results from the 3 partial-match filters (marque, modele, description).
+ * Optionally filters to only familles that have stock in the given unite.
+ */
+export async function searchFamillesInCatalogue(
+    query: string,
+    page: number,
+    itemsPerPage: number,
+    uniteId: number | null,
+): Promise<{ items: FamilleArticle[]; total: number }> {
+    const q = encodeURIComponent(query);
+    const uniteParam =
+        uniteId !== null
+            ? `&lots.emplacement.rangement.zone.piece.unite.id=${uniteId}`
+            : "";
+    const pagination = `&page=${page}&itemsPerPage=${itemsPerPage}`;
+
+    // Run the 3 partial-match queries in parallel
+    const [byMarque, byModele, byDesc] = await Promise.all([
+        fetchJson<ApiCollection<FamilleArticle>>(
+            `${API_BASE}/famille_articles?marque=${q}${uniteParam}${pagination}`,
+        ),
+        fetchJson<ApiCollection<FamilleArticle>>(
+            `${API_BASE}/famille_articles?modele=${q}${uniteParam}${pagination}`,
+        ),
+        fetchJson<ApiCollection<FamilleArticle>>(
+            `${API_BASE}/famille_articles?description=${q}${uniteParam}${pagination}`,
+        ),
+    ]);
+
+    // Deduplicate across the 3 result sets
+    const seen = new Set<number>();
+    const items: FamilleArticle[] = [];
+    for (const f of [
+        ...byMarque.member,
+        ...byModele.member,
+        ...byDesc.member,
+    ]) {
+        if (!seen.has(f.id)) {
+            seen.add(f.id);
+            items.push(f);
+        }
+    }
+
+    // Total is the sum of distinct totals (approximate upper bound).
+    // We use the deduplicated item count as the reliable figure for this page,
+    // and the max of the three totalItems as an approximation for pagination.
+    const total = Math.max(
+        byMarque.totalItems,
+        byModele.totalItems,
+        byDesc.totalItems,
+    );
+
+    return { items, total };
 }
 
 export async function createFamille(payload: {

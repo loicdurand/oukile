@@ -6,44 +6,65 @@ use App\Repository\FamilleArticleRepository;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FamilleArticleRepository::class)]
-#[ORM\UniqueConstraint(name: 'unique_famille', columns: ['marque', 'modele'])]
-#[ApiResource(
-    normalizationContext: ['groups' => ['familleArticle:read']],
-    denormalizationContext: ['groups' => ['familleArticle:write']]
-)]
-#[ApiFilter(SearchFilter::class, properties: [
-    'marque'      => 'partial',
-    'modele'      => 'partial',
-    'description' => 'partial',
-])]
+#[ORM\UniqueConstraint(name: "unique_famille", columns: ["marque", "modele"])]
+#[
+    ApiResource(
+        normalizationContext: ["groups" => ["familleArticle:read"]],
+        denormalizationContext: ["groups" => ["familleArticle:write"]],
+    ),
+]
+#[
+    ApiFilter(
+        SearchFilter::class,
+        properties: [
+            "marque" => "partial",
+            "modele" => "partial",
+            "description" => "partial",
+            "lots.emplacement.rangement.zone.piece.unite.id" => "exact",
+        ],
+    ),
+]
 class FamilleArticle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
+    #[Groups(["familleArticle:read", "familleArticle:write", "lot:read"])]
     private ?int $id = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
+    #[Groups(["familleArticle:read", "familleArticle:write", "lot:read"])]
     private ?Categorie $categorie = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
+    #[Groups(["familleArticle:read", "familleArticle:write", "lot:read"])]
     private ?string $marque = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
+    #[Groups(["familleArticle:read", "familleArticle:write", "lot:read"])]
     private ?string $modele = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['familleArticle:read', 'familleArticle:write', 'lot:read'])]
+    #[Groups(["familleArticle:read", "familleArticle:write", "lot:read"])]
     private ?string $description = null;
+
+    /**
+     * @var Collection<int, Lot>
+     */
+    #[ORM\OneToMany(targetEntity: Lot::class, mappedBy: "famille")]
+    private Collection $lots;
+
+    public function __construct()
+    {
+        $this->lots = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
