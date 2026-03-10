@@ -19,32 +19,49 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $etagere = new TypeRangement();
-        $etagere->setNom('étagère');
-        $manager->persist($etagere);
 
-        $ecran = new Categorie();
-        $ecran->setNom('Écran');
-        $manager->persist($ecran);
+        /**
+         * ARCHITECTURE DE L'UNITÉ (PIÈCES, ZONES, RANGEMENTS, ETC...)
+         */
 
-        $familles = [
-            'acer_22' => [
-                'categorie' => $ecran,
-                'marque' => 'Acer',
-                'description' => 'Écran Acer 22" pied rotatif'
-            ],
-            'dell_24' => [
-                'categorie' => $ecran,
-                'marque' => 'Dell',
-                'description' => 'Écran Dell 24" pied fixe'
+        $types_rangements = [];
+        $rangements = ['étagère', 'bureau', 'armoire', 'plan de travail', 'table', 'tiroclass'];
+        foreach ($rangements as $rangement) {
+            $entity = new TypeRangement();
+            $entity->setNom($rangement);
+            $manager->persist($entity);
+            $manager->flush();
+            $types_rangements[$rangement] = $entity;
+        }
+
+        $meubles_partie_bureau = [];
+        $personnels = ['Ch', 'L', 'T', 'B', 'F', 'N'];
+        foreach ($personnels as $personnel) {
+            $meubles_partie_bureau[] = [
+                'type' => $types_rangements['bureau'],
+                'nom' => 'Bureau de ' . $personnel,
+                'emplacements' => [
+                    ['nom' => 'Plan de travail'],
+                    ['nom' => 'Tiroir du haut'],
+                    ['nom' => 'Tiroir du milieu'],
+                    ['nom' => 'Tiroir du bas'],
+                ]
+            ];
+        }
+        $meubles_partie_bureau[] = [
+            'type' => $types_rangements['armoire'],
+            'nom' => 'Armoire basse fournitures',
+            'emplacements' => [
+                ['nom' => 'Étagère du haut'],
+                ['nom' => 'Étagère du milieu'],
+                ['nom' => 'Étagères du bas'],
             ]
         ];
 
         $unites = [
             [
-                'nom' => 'DSOLC Baie-Mahault',
-                'code' => '00086977',
-                'dpt' => 971,
+                'nom' => 'UNITÉ Ville',
+                'code' => '00088888',
                 'pieces' => [
                     [
                         'nom' => 'BTI',
@@ -53,22 +70,10 @@ class AppFixtures extends Fixture
                                 'nom' => 'Zone étagères',
                                 'rangements' => [
                                     [
-                                        'type' => $etagere,
-                                        'nom' => 'A',
+                                        'type' => $types_rangements['étagère'],
+                                        'nom' => 'Étagère A',
                                         'emplacements' => [
-                                            [
-                                                'nom' => 'A10',
-                                                'lots' => [
-                                                    [
-                                                        'nombre' => 8,
-                                                        'famille' => $familles['acer_22']
-                                                    ],
-                                                    [
-                                                        'nombre' => 2,
-                                                        'famille' => $familles['dell_24']
-                                                    ]
-                                                ]
-                                            ],
+                                            ['nom' => 'A10'],
                                             ['nom' => 'A11'],
                                             ['nom' => 'A12'],
                                             ['nom' => 'A20'],
@@ -80,8 +85,8 @@ class AppFixtures extends Fixture
                                         ]
                                     ],
                                     [
-                                        'type' => $etagere,
-                                        'nom' => 'B',
+                                        'type' => $types_rangements['étagère'],
+                                        'nom' => 'Étagère B',
                                         'emplacements' => [
                                             ['nom' => 'B10'],
                                             ['nom' => 'B11'],
@@ -89,8 +94,8 @@ class AppFixtures extends Fixture
                                         ]
                                     ],
                                     [
-                                        'type' => $etagere,
-                                        'nom' => 'C'
+                                        'type' => $types_rangements['étagère'],
+                                        'nom' => 'Étagère C'
                                     ]
                                 ]
                             ],
@@ -101,7 +106,46 @@ class AppFixtures extends Fixture
                         'nom' => 'Garage'
                     ],
                     [
-                        'nom' => 'Atelier'
+                        'nom' => 'Atelier',
+                        'zones' => [
+                            [
+                                'nom' => 'Partie bureaux',
+                                'rangements' => $meubles_partie_bureau
+                            ],
+                            [
+                                'nom' => 'Salle café',
+                                'rangements' => [
+                                    [
+                                        'type' => $types_rangements['bureau'],
+                                        'nom' => 'Bureau de Cé',
+                                        'emplacements' => [
+                                            ['nom' => 'Plan de travail'],
+                                            ['nom' => 'Tiroir du haut'],
+                                            ['nom' => 'Tiroir du milieu'],
+                                            ['nom' => 'Tiroir du bas'],
+                                        ]
+                                    ],
+                                    [
+                                        'type' => $types_rangements['armoire'],
+                                        'nom' => 'Armoire basse sous TV',
+                                        'emplacements' => [
+                                            ['nom' => 'Tiroir du haut'],
+                                            ['nom' => 'Tiroir du milieu'],
+                                            ['nom' => 'Tiroir du bas'],
+                                        ]
+                                    ],
+                                    [
+                                        'type' => $types_rangements['armoire'],
+                                        'nom' => 'Armoire départs / arrivées',
+                                        'emplacements' => [
+                                            ['nom' => 'Étagère CGD PAP'],
+                                            ['nom' => 'Étagère CGD LE MOULE'],
+                                            ['nom' => 'Étagères SCL'],
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ]
                     ],
                     [
                         'nom' => 'Salle Pinabel'
@@ -114,7 +158,6 @@ class AppFixtures extends Fixture
             $unite = new Unite();
             $unite->setCode($unite_data['code']);
             $unite->setNom($unite_data['nom']);
-            $unite->setDepartement($unite_data['dpt']);
             $manager->persist($unite);
             foreach ($unite_data['pieces'] as $piece_data) {
                 $piece = new Piece();
@@ -171,5 +214,73 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+
+        /**
+         * INSERTION DES MATÉRIELS SOLARIS
+         */
+
+        $handle = fopen(__DIR__ . "/materiel-solaris.csv", "r");
+        $header = fgetcsv($handle);
+
+        // 1. On pré-charge les catégories pour le mapping
+        $categories = [];
+        foreach ($manager->getRepository(Categorie::class)->findAll() as $cat) {
+            $categories[$cat->getNom()] = $cat;
+        }
+
+        // 2. On pré-charge les Familles existantes (Clé = Marque:Modele)
+        // Cela permet d'éviter les doublons dès le départ
+        $famillesExistantes = [];
+        foreach ($manager->getRepository(FamilleArticle::class)->findAll() as $f) {
+            $key = strtolower($f->getMarque() . ':' . $f->getModele());
+            $famillesExistantes[$key] = $f;
+        }
+
+        $i = 0;
+        while (($row = fgetcsv($handle)) !== false) {
+            $line = array_combine($header, $row);
+
+            $nomCat = $line["Familles"];
+            $marque = $line["Marque"];
+            $modele = $line["Modele"];
+            $key = strtolower($marque . ':' . $modele);
+
+            // Gestion de la catégorie (Auto-création si absente)
+            if (!isset($categories[$nomCat])) {
+                $categorie = new Categorie();
+                $categorie->setNom($nomCat);
+                $manager->persist($categorie);
+                $categories[$nomCat] = $categorie;
+                $manager->flush(); // Flush immédiat pour l'ID
+            }
+
+            // 3. LOGIQUE UPSERT : On ne crée que si la clé n'existe pas dans notre index
+            if (!isset($famillesExistantes[$key])) {
+                $famille = new FamilleArticle();
+                $famille->setMarque($marque);
+                $famille->setModele($modele);
+                $famille->setCategorie($categories[$nomCat]);
+
+                $manager->persist($famille);
+
+                // On l'ajoute à l'index pour que la ligne suivante (si doublon) ne la recrée pas
+                $famillesExistantes[$key] = $famille;
+            } else {
+                // Optionnel : Mettre à jour la catégorie si elle a changé dans le CSV
+                $famillesExistantes[$key]->setCategorie($categories[$nomCat]);
+            }
+
+            // Batch processing
+            if (($i % 100) === 0) {
+                $manager->flush();
+                // Note: On ne fait pas clear() ici car on veut garder nos index $categories 
+                // et $famillesExistantes actifs (objets managés).
+            }
+            $i++;
+        }
+
+        $manager->flush();
+        $manager->clear();
+        fclose($handle);
     }
 }

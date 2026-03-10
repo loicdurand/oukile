@@ -9,7 +9,12 @@ type TabId = "trouver" | "ranger" | "sortir" | "catalogue";
 const TAB_ORDER: TabId[] = ["trouver", "ranger", "sortir", "catalogue"];
 
 let activeTab: TabId = "trouver";
-const focusFns = new Map<TabId, () => void>();
+
+interface TabHandlers {
+    focus: () => void;
+    reset: () => void;
+}
+const tabHandlers = new Map<TabId, TabHandlers>();
 
 // ── Helpers ───────────────────────────────────────────────────────────────
 
@@ -25,6 +30,11 @@ function isInputFocused(): boolean {
 // ── Tab management ────────────────────────────────────────────────────────
 
 function activateTab(id: TabId): void {
+    // Reset the tab we're leaving
+    if (activeTab !== id) {
+        tabHandlers.get(activeTab)?.reset();
+    }
+
     TAB_ORDER.forEach((tabId) => {
         const btn = document.getElementById(
             `tab-${tabId}`,
@@ -38,7 +48,7 @@ function activateTab(id: TabId): void {
     });
 
     activeTab = id;
-    focusFns.get(id)?.();
+    tabHandlers.get(id)?.focus();
 }
 
 function cycleTab(): void {
@@ -60,11 +70,11 @@ export async function initApp(): Promise<void> {
         delete appEl.dataset.loading;
     }
 
-    // Init tab logic — each returns a focus function.
-    focusFns.set("trouver", initTrouver());
-    focusFns.set("ranger", initRanger());
-    focusFns.set("sortir", initSortir());
-    focusFns.set("catalogue", initCatalogue());
+    // Init tab logic — each returns { focus, reset }.
+    tabHandlers.set("trouver", initTrouver());
+    tabHandlers.set("ranger", initRanger());
+    tabHandlers.set("sortir", initSortir());
+    tabHandlers.set("catalogue", initCatalogue());
 
     // Wire up tab buttons.
     TAB_ORDER.forEach((id) => {
