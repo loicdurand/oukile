@@ -4,6 +4,12 @@
 	{{ unite.nom }}
 {% endblock %}
 
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('unite') }}
+	{{ encore_entry_link_tags('unite') }}
+{% endblock %}
+
 {% block body %}
 
 	<a class="fr-link fr-icon-arrow-left-line fr-link--icon-left" href="{{ path('oukile_stock') }}">Retour à l'accueil</a>
@@ -192,6 +198,13 @@
 																					{{emplacement.nom}}</span>
 																				&nbsp;
 																				<a class="fr-btn fr-btn--sm fr-icon-edit-line fr-btn--tertiary" href="{{ path('oukile_emplacement_manage', {'id': emplacement.id}) }}">Gérer le contenu</a>
+																				<button
+																					type="button"
+																					class="fr-btn fr-btn--sm fr-icon-add-line fr-btn--tertiary"
+																					data-depot-emplacement-id="{{ emplacement.id }}"
+																					data-depot-emplacement-label="{{ emplacement.nom }}"
+																					title="Déposer des articles ici"
+																				>Déposer</button>
 
 																				{% if nl == 0 %}
 																					<a class="fr-link cs-absolute right-0 fr-icon-delete-line fr-link--icon-left" href="" onclick="return document.getElementById('delete-emplacement-{{emplacement.id}}').click();">Supprimer</a>

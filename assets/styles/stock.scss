@@ -996,3 +996,18 @@ $qs-transition: 160ms ease;
 button#tab-catalogue.fr-tabs__tab.qs__tabs {
     background-color: #fff;
 }
+
+// ── Depot modal — quantity controls ───────────────────────────────────────
+// Minimal helpers for the +/− row inside the DSFR fr-modal.
+
+.depot__qty-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2v, 0.5rem);
+    margin-top: var(--spacing-1w, 0.25rem);
+}
+
+.depot__qty-input {
+    width: 5rem !important;
+    text-align: center;
+}
