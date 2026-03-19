@@ -14,17 +14,15 @@ export function getParent(
   if (typeof element_or_selector === "string")
     element = document.querySelector(element_or_selector);
 
-  // Si l'élément n'est pas un élément, on retourne null
-  if (typeof element !== "object") return null;
-
-  // Contrôle des erreurs
-  if (!element || !selector) return null;
-
-  // Si l'élément est déjà le parent, on retourne null
-  if (element.matches(selector)) return null;
-
-  // Si l'élément n'est pas le parent, on retourne null
-  if (!element.parentElement) return null;
+  // Si l'élément n'est pas une instance d'HTMLElement ou si l'élément n'a pas de parent, on retourne null
+  if (
+    typeof element !== "object" ||
+    !element ||
+    !selector ||
+    element.matches(selector) ||
+    !element.parentElement
+  )
+    return null;
 
   let parent = element.parentElement;
   while (parent) {
