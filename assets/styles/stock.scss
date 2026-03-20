@@ -153,7 +153,7 @@ $qs-transition: 160ms ease;
     box-shadow: var(--raised-shadow, 0 4px 12px rgba(0, 0, 18, 0.12));
     max-height: 260px;
     overflow-y: auto;
-    z-index: 1100;
+    z-index: 2000;
     margin: 0;
     padding: var(--spacing-1v, 0.25rem);
     list-style: none;
@@ -1003,9 +1003,19 @@ button#tab-catalogue.fr-tabs__tab.qs__tabs {
 // only on the depot modal so the suggestion list can overflow freely.
 
 #depot-modal {
+    // Restore visible overflow so the autocomplete dropdown can overflow
+    // the modal body without being clipped.
     .fr-modal__body,
     .fr-modal__content {
         overflow: visible;
+    }
+
+    // The DSFR footer is position:sticky / z-index:1250 inside an
+    // overflow:auto scroll container. Now that overflow is visible the
+    // sticky stacking context persists and slides over the dropdown.
+    // Resetting to static removes it from the stacking order entirely.
+    .fr-modal__footer {
+        position: static;
     }
 }
 
