@@ -151,6 +151,8 @@ $qs-transition: 160ms ease;
     border: 1px solid var(--border-action-high-blue-france);
     border-radius: 0 0 0.25rem 0.25rem;
     box-shadow: var(--raised-shadow, 0 4px 12px rgba(0, 0, 18, 0.12));
+    // Default max-height for dropdowns outside a modal.
+    // Inside #depot-modal this is overridden to leave room for the footer.
     max-height: 260px;
     overflow-y: auto;
     z-index: 2000;
@@ -1003,11 +1005,17 @@ button#tab-catalogue.fr-tabs__tab.qs__tabs {
 // only on the depot modal so the suggestion list can overflow freely.
 
 #depot-modal {
+    // Push the DSFR custom property so fr-modal__body grows taller on all
+    // breakpoints (default is calc(100vh - 2rem) mobile / 80vh ≥ md).
+    --modal-max-height: 92vh;
+
     // Restore visible overflow so the autocomplete dropdown can overflow
     // the modal body without being clipped.
     .fr-modal__body,
     .fr-modal__content {
         overflow: visible;
+        // Override the 80vh cap set at ≥ md breakpoint.
+        max-height: var(--modal-max-height);
     }
 
     // The DSFR footer is position:sticky / z-index:1250 inside an
@@ -1016,6 +1024,12 @@ button#tab-catalogue.fr-tabs__tab.qs__tabs {
     // Resetting to static removes it from the stacking order entirely.
     .fr-modal__footer {
         position: static;
+    }
+
+    // Cap the dropdown height so it never overflows the modal viewport.
+    // 92vh (modal) − ~180px (header + label + footer) ≈ safe space for items.
+    .qs__dropdown {
+        max-height: min(260px, calc(var(--modal-max-height) - 18rem));
     }
 }
 
