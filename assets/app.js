@@ -25,7 +25,7 @@ function init(callback) {
                 lien_editable.addEventListener("dblclick", edit);
             },
         );
-        callback();
+        if (typeof callback === "function") callback();
     });
 }
 
