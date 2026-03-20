@@ -283,14 +283,35 @@ class DepotModal {
     this.emplacementIri = `/api/emplacements/${emplacementId}`;
     this.locationLabel.textContent = `Emplacement : ${emplacementLabel}`;
     this.resetFull();
-    // Use the DSFR JS API to open the modal so it manages focus trap & scroll lock
-    const dsfr = (window as any).dsfr;
-    if (dsfr?.modal) {
-      dsfr(this.dialog).modal.disclose();
-    } else {
-      this.dialog.showModal();
-    }
+    this.openDialog();
     this.queryInput.focus();
+  }
+
+  private openDialog(): void {
+    const dsfr = (window as any).dsfr;
+    if (!dsfr) {
+      // DSFR not loaded at all — plain native dialog
+      this.dialog.showModal();
+      return;
+    }
+
+    // Ensure the DSFR has observed this dialog element (it may have been
+    // injected into the DOM after the initial DSFR scan).
+    if (typeof dsfr.observe === "function") {
+      dsfr.observe(this.dialog);
+    }
+
+    // Give the DSFR one microtask to register the new component, then call
+    // disclose(). If the instance is still null (older DSFR build without
+    // observe()), fall back to showModal().
+    Promise.resolve().then(() => {
+      const instance = dsfr(this.dialog);
+      if (instance?.modal) {
+        instance.modal.disclose();
+      } else {
+        this.dialog.showModal();
+      }
+    });
   }
 
   // ── Internal helpers ──────────────────────────────────────────────────
